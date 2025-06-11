@@ -1,4 +1,4 @@
-26244796635397614
+26216829118477807
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -66646,6 +66646,13 @@ solder jumper open
 0
 3
 3
+KiCad-SSD1306-128x64
+128x64OLED
+
+
+0
+4
+4
 LED_SMD
 LED-APA102-2020
 http://www.led-color.com/upload/201604/APA102-2020%20SMD%20LED.pdf
@@ -73224,7 +73231,7 @@ SW_MX_HE_0deg_1u
 Footprint for Cherry MX style hall effect switches (Gateron Jade) and A110x/MT910xET/HAL9303SO pinout compatible sensors
 cherry mx switch hall effect he 
 0
-5
+4
 3
 PCM_marbastlib-xp-he
 SW_MX_HE_0deg_2.25
@@ -96193,13 +96200,6 @@ rotary encoder illuminated switch vertical
 0
 9
 8
-SSD1306
-128x64OLED
-
-
-0
-4
-4
 Sensor
 ASAIR_AM2302_P2.54mm_Lead2.75mm_TabDown
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/AM2302.pdf
@@ -105097,6 +105097,27 @@ Varistor VF
 0
 2
 2
+keypad_kicad
+heartsteel
+
+
+0
+0
+0
+keypad_kicad
+hust
+
+
+0
+0
+0
+keypad_kicad
+hutao
+
+
+0
+0
+0
 kicad_blackpill
 BlackPill_STLINK
 STM32F4-based development board with ST-LINK header
@@ -105104,136 +105125,3 @@ stm32 arm
 0
 44
 44
-voidswitch
-VoidSwitch_1.5u_SMD
-Void Switch 1.5U Layout Template
-Void Switch Hall Effect keyswitch 1.5U
-0
-0
-0
-voidswitch
-VoidSwitch_1.25u_SMD
-Void Switch 1.25U Layout Template
-Void Switch Hall Effect keyswitch 1.25U
-0
-0
-0
-voidswitch
-VoidSwitch_1.75u_SMD
-Void Switch 1.75U Layout Template
-Void Switch Hall Effect keyswitch 1.75U
-0
-0
-0
-voidswitch
-VoidSwitch_1u_SMD
-Void Switch 1U Layout Template
-Void Switch Hall Effect keyswitch 1.00u 1U
-0
-0
-0
-voidswitch
-VoidSwitch_2.5u_SMD
-Void Switch 2.5U Layout Template
-Void Switch Hall Effect keyswitch 2.5U
-0
-0
-0
-voidswitch
-VoidSwitch_2.25u_SMD
-Void Switch 2.25U Layout Template
-Void Switch Hall Effect keyswitch 2.25U
-0
-0
-0
-voidswitch
-VoidSwitch_2.75u_SMD
-Void Switch 2.75U Layout Template
-Void Switch Hall Effect keyswitch 2.75U
-0
-0
-0
-voidswitch
-VoidSwitch_2u_SMD
-Void Switch 2U Layout Template
-Void Switch Hall Effect keyswitch 2U
-0
-0
-0
-voidswitch
-VoidSwitch_2uv_SMD
-Void Switch 2U Layout Template (Vertical e.g. for numpad)
-Void Switch Hall Effect keyswitch 2UV
-0
-0
-0
-voidswitch
-VoidSwitch_3u_SMD
-Void Switch 3U Layout Template
-Void Switch Hall Effect keyswitch 3U
-0
-0
-0
-voidswitch
-VoidSwitch_5u_SMD
-Void Switch 5U Layout Template
-Void Switch Hall Effect keyswitch 5U
-0
-0
-0
-voidswitch
-VoidSwitch_6.25u_SMD
-Void Switch 6.25U Layout Template
-Void Switch Hall Effect keyswitch 6.25U
-0
-0
-0
-voidswitch
-VoidSwitch_6u_SMD
-Void Switch 6U Layout Template
-Void Switch Hall Effect keyswitch 6U
-0
-0
-0
-voidswitch
-VoidSwitch_60_pct
-Layout Template for a 60% keyboard
-Void Switch Hall Effect keyswitch sixty 60
-0
-0
-0
-voidswitch
-VoidSwitch_65_pct
-Layout Template for a 65% keyboard
-Void Switch Hall Effect keyswitch 65
-0
-0
-0
-voidswitch
-VoidSwitch_75_pct
-Layout Template for a 75% keyboard
-Void Switch Hall Effect keyswitch 75
-0
-0
-0
-voidswitch
-VoidSwitch_Repo_QR_0.5mm
-QR Code that points to the void_switch repo (0.5mm version)
-qr code void switch
-0
-569
-0
-voidswitch
-VoidSwitch_TKL
-Layout Template for a tenkeyless (TLK) keyboard
-Void Switch Hall Effect keyswitch tkl
-0
-0
-0
-voidswitch
-VoidSwitch_full_size
-Layout Template for a full size keyboard
-Void Switch Hall Effect keyswitch full
-0
-0
-0
