@@ -16,7 +16,6 @@ static uint8_t modifiers = 0;
 static uint8_t keycodes[6] = {0};
 // static uint8_t is_screaming = 0;
 static uint8_t consumer_report = 0;
-static uint8_t test=0;
 
 CFG_TUSB_MEM_SECTION CFG_TUSB_MEM_ALIGN static uint8_t usb_vendor_control_buffer[400];
 
@@ -26,18 +25,6 @@ void hid_init() {
 
 void hid_task() {
   tud_task();
-//  if (tud_hid_ready()){
-//	  if (test==0){
-//	  keycodes[1]=0x22;
-//		  tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keycodes);
-//		  test==1;
-//		  HAL_Delay(10);
-//		  keycodes[1]=0x0;
-//		  tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keycodes);
-//
-//	  }
-//
-//  }
 
   if ((should_send_consumer_report || should_send_keyboard_report) && tud_hid_ready()) {
     if (tud_suspended()) {
