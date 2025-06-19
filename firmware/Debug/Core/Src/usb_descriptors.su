@@ -1,0 +1,5 @@
+../Core/Src/usb_descriptors.c:68:16:tud_descriptor_device_cb	4	static
+../Core/Src/usb_descriptors.c:85:16:tud_hid_descriptor_report_cb	16	static
+../Core/Src/usb_descriptors.c:118:16:tud_descriptor_configuration_cb	16	static
+../Core/Src/usb_descriptors.c:157:16:tud_descriptor_bos_cb	4	static
+../Core/Src/usb_descriptors.c:217:17:tud_descriptor_string_cb	40	static

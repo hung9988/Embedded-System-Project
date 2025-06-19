@@ -1,0 +1,9 @@
+../Core/Src/hid.c:23:6:hid_init	16	static
+../Core/Src/hid.c:27:6:hid_task	24	static
+../Core/Src/hid.c:57:6:hid_press_key	24	static
+../Core/Src/hid.c:92:6:hid_release_key	24	static
+../Core/Src/hid.c:125:6:tud_hid_set_protocol_cb	16	static
+../Core/Src/hid.c:136:6:tud_hid_report_complete_cb	16	static
+../Core/Src/hid.c:145:10:tud_hid_get_report_cb	16	static
+../Core/Src/hid.c:158:6:tud_hid_set_report_cb	16	static
+../Core/Src/hid.c:188:6:tud_vendor_control_xfer_cb	24	static

@@ -33,6 +33,6 @@
 ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2099:19:HAL_PCD_DeActivateRemoteWakeup	1
 ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2128:18:HAL_PCD_GetState	1
 ../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2140:19:HAL_PCD_SetTestMode	2
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2182:26:PCD_WriteEmptyTxFifo	8
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2242:26:PCD_EP_OutXfrComplete_int	16
-../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2354:26:PCD_EP_OutSetupPacket_int	5
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2181:26:PCD_WriteEmptyTxFifo	8
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2241:26:PCD_EP_OutXfrComplete_int	16
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c:2353:26:PCD_EP_OutSetupPacket_int	5

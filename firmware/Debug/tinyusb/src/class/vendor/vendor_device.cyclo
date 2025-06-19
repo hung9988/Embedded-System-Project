@@ -1,0 +1,13 @@
+../tinyusb/src/class/vendor/vendor_device.c:74:6:tud_vendor_n_mounted	4
+../tinyusb/src/class/vendor/vendor_device.c:83:10:tud_vendor_n_available	2
+../tinyusb/src/class/vendor/vendor_device.c:90:6:tud_vendor_n_peek	2
+../tinyusb/src/class/vendor/vendor_device.c:97:10:tud_vendor_n_read	2
+../tinyusb/src/class/vendor/vendor_device.c:105:6:tud_vendor_n_read_flush	2
+../tinyusb/src/class/vendor/vendor_device.c:117:10:tud_vendor_n_write	2
+../tinyusb/src/class/vendor/vendor_device.c:125:10:tud_vendor_n_write_flush	2
+../tinyusb/src/class/vendor/vendor_device.c:133:10:tud_vendor_n_write_available	2
+../tinyusb/src/class/vendor/vendor_device.c:144:6:vendord_init	2
+../tinyusb/src/class/vendor/vendor_device.c:175:6:vendord_deinit	2
+../tinyusb/src/class/vendor/vendor_device.c:184:6:vendord_reset	2
+../tinyusb/src/class/vendor/vendor_device.c:197:10:vendord_open	18
+../tinyusb/src/class/vendor/vendor_device.c:241:6:vendord_xfer_cb	11

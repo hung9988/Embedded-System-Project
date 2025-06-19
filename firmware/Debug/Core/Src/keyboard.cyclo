@@ -1,0 +1,8 @@
+../Core/Src/keyboard.c:32:9:get_bitmask_for_modifier	9
+../Core/Src/keyboard.c:55:10:get_usage_consumer_control	2
+../Core/Src/keyboard.c:63:6:init_key	5
+../Core/Src/keyboard.c:101:9:update_key_state	18
+../Core/Src/keyboard.c:180:6:update_key_actuation	17
+../Core/Src/keyboard.c:269:6:update_key	2
+../Core/Src/keyboard.c:277:6:keyboard_init_keys	4
+../Core/Src/keyboard.c:289:6:keyboard_task	12
