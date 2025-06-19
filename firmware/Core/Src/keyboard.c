@@ -3,7 +3,6 @@
 #include "hid.h"
 #include <class/hid/hid.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
@@ -33,8 +32,6 @@ struct user_config keyboard_user_config = {
 uint32_t keyboard_last_cycle_duration = 0;
 
 static uint8_t key_triggered = 0;
-
-struct key* current_pressed_key = NULL;
 
 uint8_t get_bitmask_for_modifier(uint8_t keycode) {
   switch (keycode) {
@@ -334,62 +331,4 @@ void keyboard_task() {
   }
 
   keyboard_last_cycle_duration = keyboard_get_time() - started_at;
-}
-
-void snaptap_task() {
-    static struct key* current_pressed_key = NULL;
-    struct key* new_pressed_key = NULL;
-
-    // Tìm phím đang được giữ (trạng thái TRIGGERED)
-    for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-        for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-            struct key* key = &keyboard_keys[adc_channel][amux_channel];
-            if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-                new_pressed_key = key;
-                break;
-            }
-        }
-        if (new_pressed_key) break;
-    }
-
-    // Nếu phím mới khác phím cũ
-    if (new_pressed_key != current_pressed_key) {
-        if (current_pressed_key) {
-            // Release phím cũ ngay khi phím mới được nhấn
-            hid_release_key(current_pressed_key, _BASE_LAYER);
-        }
-        if (new_pressed_key) {
-            // Press phím mới đúng 1 lần
-            hid_press_key(new_pressed_key, _BASE_LAYER);
-        }
-        current_pressed_key = new_pressed_key;
-    }
-}
-
-void check_snaptap_debug() {
-    static struct key* last_pressed_key = NULL;
-    struct key* current_pressed_key = NULL;
-
-    // Tìm phím đang được giữ (trạng thái TRIGGERED)
-    for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-        for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-            struct key* key = &keyboard_keys[adc_channel][amux_channel];
-            if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-                current_pressed_key = key;
-                break;
-            }
-        }
-        if (current_pressed_key) break;
-    }
-
-    // Nếu phím mới khác phím cũ, in log
-    if (current_pressed_key != last_pressed_key) {
-        if (last_pressed_key) {
-            printf("Release key: row=%d, col=%d\n", last_pressed_key->row, last_pressed_key->column);
-        }
-        if (current_pressed_key) {
-            printf("Press key: row=%d, col=%d\n", current_pressed_key->row, current_pressed_key->column);
-        }
-        last_pressed_key = current_pressed_key;
-    }
 }
