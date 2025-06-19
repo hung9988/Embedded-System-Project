@@ -6,7 +6,7 @@
 
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
-	    .reverse_magnet_pole = 1,
+	    .reverse_magnet_pole = 0,
 	    .trigger_offset = 64,
 	    .reset_threshold = 3,
 	    .rapid_trigger_offset = 40,
@@ -14,14 +14,18 @@ struct user_config keyboard_user_config = {
 	    .tap_timeout = 200,
 	    .keymaps = {
 	        // clang-format off
-	        [_BASE_LAYER] = {
-	            {41, HID_KEY_GRAVE, HID_KEY_1, 30, 31, 32, HID_KEY_5, HID_KEY_6, HID_KEY_7, HID_KEY_8, HID_KEY_9, HID_KEY_0, HID_KEY_MINUS, HID_KEY_EQUAL, HID_KEY_BACKSPACE, HID_KEY_PERIOD},
-
-	        },
-	        [_TAP_LAYER] = {
-	        		{HID_KEY_ESCAPE, HID_KEY_GRAVE, 30, 31, 33, 32, HID_KEY_5, HID_KEY_6, HID_KEY_7, HID_KEY_8, HID_KEY_9, HID_KEY_0, HID_KEY_MINUS, HID_KEY_EQUAL, HID_KEY_BACKSPACE, HID_KEY_PERIOD},
-
-	        },
+	            [_BASE_LAYER] = {
+	                {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+	                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
+	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
+	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F},
+	            },
+	            [_TAP_LAYER] = {
+	                {____, ____, ____, ____},
+	                {____, ____, ____, ____},
+	                {____, ____, ____, ____},
+	                {____, ____, ____, ____},
+	            },
 	        // clang-format on
 	    }};
 
@@ -102,7 +106,7 @@ uint8_t update_key_state(struct key *key) {
   struct state state;
 
   // Get a reading
-  state.value = keyboard_user_config.reverse_magnet_pole ? 4092 - keyboard_read_adc() : keyboard_read_adc();
+  state.value = keyboard_user_config.reverse_magnet_pole ? 4095 - keyboard_read_adc() : keyboard_read_adc();
 
   if (key->calibration.cycles_count < CALIBRATION_CYCLES) {
     // Calibrate idle value
@@ -213,7 +217,7 @@ void update_key_actuation(struct key *key) {
     if (is_after_trigger_offset) {
       if (key->layers[_TAP_LAYER].value) {
         key->actuation.status = STATUS_MIGHT_BE_TAP;
-         key_triggered = 1;
+        // key_triggered = 1;
       } else {
         key->actuation.status = STATUS_TRIGGERED;
         key_triggered = 1;
@@ -275,7 +279,6 @@ void update_key(struct key *key) {
 }
 
 void keyboard_init_keys() {
- 
 
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {

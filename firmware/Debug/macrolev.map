@@ -175,7 +175,6 @@ Discarded input sections
  .text          0x00000000        0x0 ./Core/Src/hid.o
  .data          0x00000000        0x0 ./Core/Src/hid.o
  .bss           0x00000000        0x0 ./Core/Src/hid.o
- .bss.test      0x00000000        0x1 ./Core/Src/hid.o
  .debug_macro   0x00000000      0xad8 ./Core/Src/hid.o
  .debug_macro   0x00000000       0x70 ./Core/Src/hid.o
  .debug_macro   0x00000000       0x22 ./Core/Src/hid.o
@@ -840,7 +839,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 ./Core/Src/syscalls.o
  .debug_macro   0x00000000       0xce ./Core/Src/syscalls.o
  .debug_line    0x00000000      0x8ac ./Core/Src/syscalls.o
- .debug_str     0x00000000     0x99e4 ./Core/Src/syscalls.o
+ .debug_str     0x00000000     0x99d7 ./Core/Src/syscalls.o
  .comment       0x00000000       0x44 ./Core/Src/syscalls.o
  .debug_frame   0x00000000      0x2ac ./Core/Src/syscalls.o
  .ARM.attributes
@@ -905,7 +904,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x6a ./Core/Src/sysmem.o
  .debug_macro   0x00000000      0x1df ./Core/Src/sysmem.o
  .debug_line    0x00000000      0x588 ./Core/Src/sysmem.o
- .debug_str     0x00000000     0x7782 ./Core/Src/sysmem.o
+ .debug_str     0x00000000     0x7775 ./Core/Src/sysmem.o
  .comment       0x00000000       0x44 ./Core/Src/sysmem.o
  .debug_frame   0x00000000       0x34 ./Core/Src/sysmem.o
  .ARM.attributes
@@ -1510,7 +1509,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
  .debug_line    0x00000000      0xef6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
- .debug_str     0x00000000    0x8ce19 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
+ .debug_str     0x00000000    0x8ce0c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
  .debug_frame   0x00000000      0x250 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.o
  .ARM.attributes
@@ -1787,7 +1786,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
  .debug_line    0x00000000     0x101a ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
- .debug_str     0x00000000    0x8cbf2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+ .debug_str     0x00000000    0x8cbe5 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
  .debug_frame   0x00000000      0x250 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
  .ARM.attributes
@@ -1901,7 +1900,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_line    0x00000000     0x1429 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
- .debug_str     0x00000000    0x8c9ac ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
+ .debug_str     0x00000000    0x8c99f ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_frame   0x00000000       0xac ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .ARM.attributes
@@ -2025,7 +2024,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_line    0x00000000      0xab6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
- .debug_str     0x00000000    0x8c844 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
+ .debug_str     0x00000000    0x8c837 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_frame   0x00000000      0x174 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .ARM.attributes
@@ -2376,7 +2375,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .debug_line    0x00000000      0x7ff ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
- .debug_str     0x00000000    0x8c812 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
+ .debug_str     0x00000000    0x8c805 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .debug_frame   0x00000000       0xb0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .ARM.attributes
@@ -2846,7 +2845,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_line    0x00000000      0x837 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
- .debug_str     0x00000000    0x8cbba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
+ .debug_str     0x00000000    0x8cbad ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_frame   0x00000000       0x60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .ARM.attributes
@@ -3127,7 +3126,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_line    0x00000000      0x877 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
- .debug_str     0x00000000    0x8cba6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
+ .debug_str     0x00000000    0x8cb99 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_frame   0x00000000       0xb0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .ARM.attributes
@@ -3267,7 +3266,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_line    0x00000000      0x9bc ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
- .debug_str     0x00000000    0x8ca20 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
+ .debug_str     0x00000000    0x8ca13 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_frame   0x00000000      0x264 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .ARM.attributes
@@ -3393,7 +3392,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_line    0x00000000      0x986 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
- .debug_str     0x00000000    0x8c99b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
+ .debug_str     0x00000000    0x8c98e ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_frame   0x00000000      0x15c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .ARM.attributes
@@ -3624,7 +3623,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_line    0x00000000      0xb63 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
- .debug_str     0x00000000    0x8c972 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
+ .debug_str     0x00000000    0x8c965 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_frame   0x00000000      0x118 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .ARM.attributes
@@ -3728,7 +3727,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
  .debug_line    0x00000000      0x7b2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
- .debug_str     0x00000000    0x8c613 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+ .debug_str     0x00000000    0x8c606 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
  .ARM.attributes
                 0x00000000       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
@@ -3831,7 +3830,7 @@ Discarded input sections
  .debug_macro   0x00000000       0xba ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
  .debug_macro   0x00000000      0x126 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
  .debug_line    0x00000000      0x7b5 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
- .debug_str     0x00000000    0x8c616 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+ .debug_str     0x00000000    0x8c609 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
  .ARM.attributes
                 0x00000000       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
@@ -3846,7 +3845,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x11 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
  .debug_macro   0x00000000      0xad8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
  .debug_line    0x00000000       0x57 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
- .debug_str     0x00000000     0x2e9d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
+ .debug_str     0x00000000     0x2e90 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
  .comment       0x00000000       0x44 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
  .ARM.attributes
                 0x00000000       0x34 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.o
@@ -4041,8 +4040,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/audio/audio_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/audio/audio_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/audio/audio_device.o
- .debug_line    0x00000000      0x12c ./tinyusb/src/class/audio/audio_device.o
- .debug_str     0x00000000     0x5233 ./tinyusb/src/class/audio/audio_device.o
+ .debug_line    0x00000000      0x112 ./tinyusb/src/class/audio/audio_device.o
+ .debug_str     0x00000000     0x5226 ./tinyusb/src/class/audio/audio_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/audio/audio_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/audio/audio_device.o
@@ -4066,8 +4065,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/bth/bth_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/bth/bth_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/bth/bth_device.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/bth/bth_device.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/bth/bth_device.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/bth/bth_device.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/bth/bth_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/bth/bth_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/bth/bth_device.o
@@ -4091,8 +4090,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/cdc/cdc_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/cdc/cdc_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/cdc/cdc_device.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/cdc/cdc_device.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/cdc/cdc_device.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/cdc/cdc_device.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/cdc/cdc_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/cdc/cdc_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/cdc/cdc_device.o
@@ -4116,8 +4115,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/cdc/cdc_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/cdc/cdc_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/cdc/cdc_host.o
- .debug_line    0x00000000      0x126 ./tinyusb/src/class/cdc/cdc_host.o
- .debug_str     0x00000000     0x522d ./tinyusb/src/class/cdc/cdc_host.o
+ .debug_line    0x00000000      0x10c ./tinyusb/src/class/cdc/cdc_host.o
+ .debug_str     0x00000000     0x5220 ./tinyusb/src/class/cdc/cdc_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/cdc/cdc_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/cdc/cdc_host.o
@@ -4141,8 +4140,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/cdc/cdc_rndis_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/cdc/cdc_rndis_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/cdc/cdc_rndis_host.o
- .debug_line    0x00000000      0x12c ./tinyusb/src/class/cdc/cdc_rndis_host.o
- .debug_str     0x00000000     0x5233 ./tinyusb/src/class/cdc/cdc_rndis_host.o
+ .debug_line    0x00000000      0x112 ./tinyusb/src/class/cdc/cdc_rndis_host.o
+ .debug_str     0x00000000     0x5226 ./tinyusb/src/class/cdc/cdc_rndis_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/cdc/cdc_rndis_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/cdc/cdc_rndis_host.o
@@ -4166,8 +4165,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/dfu/dfu_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/dfu/dfu_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/dfu/dfu_device.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/dfu/dfu_device.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/dfu/dfu_device.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/dfu/dfu_device.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/dfu/dfu_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/dfu/dfu_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/dfu/dfu_device.o
@@ -4191,8 +4190,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/dfu/dfu_rt_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/dfu/dfu_rt_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/dfu/dfu_rt_device.o
- .debug_line    0x00000000      0x12b ./tinyusb/src/class/dfu/dfu_rt_device.o
- .debug_str     0x00000000     0x5232 ./tinyusb/src/class/dfu/dfu_rt_device.o
+ .debug_line    0x00000000      0x111 ./tinyusb/src/class/dfu/dfu_rt_device.o
+ .debug_str     0x00000000     0x5225 ./tinyusb/src/class/dfu/dfu_rt_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/dfu/dfu_rt_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/dfu/dfu_rt_device.o
@@ -4330,8 +4329,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/hid/hid_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/hid/hid_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/hid/hid_host.o
- .debug_line    0x00000000      0x126 ./tinyusb/src/class/hid/hid_host.o
- .debug_str     0x00000000     0x522d ./tinyusb/src/class/hid/hid_host.o
+ .debug_line    0x00000000      0x10c ./tinyusb/src/class/hid/hid_host.o
+ .debug_str     0x00000000     0x5220 ./tinyusb/src/class/hid/hid_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/hid/hid_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/hid/hid_host.o
@@ -4355,8 +4354,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/midi/midi_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/midi/midi_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/midi/midi_device.o
- .debug_line    0x00000000      0x12a ./tinyusb/src/class/midi/midi_device.o
- .debug_str     0x00000000     0x5231 ./tinyusb/src/class/midi/midi_device.o
+ .debug_line    0x00000000      0x110 ./tinyusb/src/class/midi/midi_device.o
+ .debug_str     0x00000000     0x5224 ./tinyusb/src/class/midi/midi_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/midi/midi_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/midi/midi_device.o
@@ -4380,8 +4379,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/midi/midi_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/midi/midi_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/midi/midi_host.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/midi/midi_host.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/midi/midi_host.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/midi/midi_host.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/midi/midi_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/midi/midi_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/midi/midi_host.o
@@ -4405,8 +4404,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/msc/msc_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/msc/msc_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/msc/msc_device.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/msc/msc_device.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/msc/msc_device.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/msc/msc_device.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/msc/msc_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/msc/msc_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/msc/msc_device.o
@@ -4430,8 +4429,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/msc/msc_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/msc/msc_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/msc/msc_host.o
- .debug_line    0x00000000      0x126 ./tinyusb/src/class/msc/msc_host.o
- .debug_str     0x00000000     0x522d ./tinyusb/src/class/msc/msc_host.o
+ .debug_line    0x00000000      0x10c ./tinyusb/src/class/msc/msc_host.o
+ .debug_str     0x00000000     0x5220 ./tinyusb/src/class/msc/msc_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/msc/msc_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/msc/msc_host.o
@@ -4455,8 +4454,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/net/ecm_rndis_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/net/ecm_rndis_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/net/ecm_rndis_device.o
- .debug_line    0x00000000      0x12e ./tinyusb/src/class/net/ecm_rndis_device.o
- .debug_str     0x00000000     0x5235 ./tinyusb/src/class/net/ecm_rndis_device.o
+ .debug_line    0x00000000      0x114 ./tinyusb/src/class/net/ecm_rndis_device.o
+ .debug_str     0x00000000     0x5228 ./tinyusb/src/class/net/ecm_rndis_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/net/ecm_rndis_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/net/ecm_rndis_device.o
@@ -4480,8 +4479,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/net/ncm_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/net/ncm_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/net/ncm_device.o
- .debug_line    0x00000000      0x128 ./tinyusb/src/class/net/ncm_device.o
- .debug_str     0x00000000     0x522f ./tinyusb/src/class/net/ncm_device.o
+ .debug_line    0x00000000      0x10e ./tinyusb/src/class/net/ncm_device.o
+ .debug_str     0x00000000     0x5222 ./tinyusb/src/class/net/ncm_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/net/ncm_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/net/ncm_device.o
@@ -4505,8 +4504,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/usbtmc/usbtmc_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/usbtmc/usbtmc_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/usbtmc/usbtmc_device.o
- .debug_line    0x00000000      0x12e ./tinyusb/src/class/usbtmc/usbtmc_device.o
- .debug_str     0x00000000     0x5235 ./tinyusb/src/class/usbtmc/usbtmc_device.o
+ .debug_line    0x00000000      0x114 ./tinyusb/src/class/usbtmc/usbtmc_device.o
+ .debug_str     0x00000000     0x5228 ./tinyusb/src/class/usbtmc/usbtmc_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/usbtmc/usbtmc_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/usbtmc/usbtmc_device.o
@@ -4641,8 +4640,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/vendor/vendor_host.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/vendor/vendor_host.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/vendor/vendor_host.o
- .debug_line    0x00000000      0x12c ./tinyusb/src/class/vendor/vendor_host.o
- .debug_str     0x00000000     0x5233 ./tinyusb/src/class/vendor/vendor_host.o
+ .debug_line    0x00000000      0x112 ./tinyusb/src/class/vendor/vendor_host.o
+ .debug_str     0x00000000     0x5226 ./tinyusb/src/class/vendor/vendor_host.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/vendor/vendor_host.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/vendor/vendor_host.o
@@ -4666,8 +4665,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/class/video/video_device.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/class/video/video_device.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/class/video/video_device.o
- .debug_line    0x00000000      0x12c ./tinyusb/src/class/video/video_device.o
- .debug_str     0x00000000     0x5233 ./tinyusb/src/class/video/video_device.o
+ .debug_line    0x00000000      0x112 ./tinyusb/src/class/video/video_device.o
+ .debug_str     0x00000000     0x5226 ./tinyusb/src/class/video/video_device.o
  .comment       0x00000000       0x44 ./tinyusb/src/class/video/video_device.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/class/video/video_device.o
@@ -5055,8 +5054,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/host/hub.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/host/hub.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/host/hub.o
- .debug_line    0x00000000      0x11c ./tinyusb/src/host/hub.o
- .debug_str     0x00000000     0x5223 ./tinyusb/src/host/hub.o
+ .debug_line    0x00000000      0x102 ./tinyusb/src/host/hub.o
+ .debug_str     0x00000000     0x5216 ./tinyusb/src/host/hub.o
  .comment       0x00000000       0x44 ./tinyusb/src/host/hub.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/host/hub.o
@@ -5080,8 +5079,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/host/usbh.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/host/usbh.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/host/usbh.o
- .debug_line    0x00000000      0x11d ./tinyusb/src/host/usbh.o
- .debug_str     0x00000000     0x5224 ./tinyusb/src/host/usbh.o
+ .debug_line    0x00000000      0x103 ./tinyusb/src/host/usbh.o
+ .debug_str     0x00000000     0x5217 ./tinyusb/src/host/usbh.o
  .comment       0x00000000       0x44 ./tinyusb/src/host/usbh.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/host/usbh.o
@@ -5105,8 +5104,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
- .debug_line    0x00000000      0x137 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
- .debug_str     0x00000000     0x523e ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
+ .debug_line    0x00000000      0x11d ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
+ .debug_str     0x00000000     0x5231 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/analog/max3421/hcd_max3421.o
@@ -5130,8 +5129,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/bridgetek/ft9xx/dcd_ft9xx.o
@@ -5155,8 +5154,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
- .debug_line    0x00000000      0x135 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
- .debug_str     0x00000000     0x523c ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
+ .debug_line    0x00000000      0x11b ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
+ .debug_str     0x00000000     0x522f ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/chipidea/ci_fs/dcd_ci_fs.o
@@ -5180,8 +5179,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
- .debug_line    0x00000000      0x135 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
- .debug_str     0x00000000     0x523c ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
+ .debug_line    0x00000000      0x11b ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
+ .debug_str     0x00000000     0x522f ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/chipidea/ci_hs/dcd_ci_hs.o
@@ -5205,8 +5204,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
- .debug_line    0x00000000      0x135 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
- .debug_str     0x00000000     0x523c ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
+ .debug_line    0x00000000      0x11b ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
+ .debug_str     0x00000000     0x522f ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/chipidea/ci_hs/hcd_ci_hs.o
@@ -5230,8 +5229,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
- .debug_line    0x00000000      0x137 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
- .debug_str     0x00000000     0x523e ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
+ .debug_line    0x00000000      0x11d ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
+ .debug_str     0x00000000     0x5231 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/dialog/da146xx/dcd_da146xx.o
@@ -5255,8 +5254,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/ehci/ehci.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/ehci/ehci.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/ehci/ehci.o
- .debug_line    0x00000000      0x126 ./tinyusb/src/portable/ehci/ehci.o
- .debug_str     0x00000000     0x522d ./tinyusb/src/portable/ehci/ehci.o
+ .debug_line    0x00000000      0x10c ./tinyusb/src/portable/ehci/ehci.o
+ .debug_str     0x00000000     0x5220 ./tinyusb/src/portable/ehci/ehci.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/ehci/ehci.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/ehci/ehci.o
@@ -5280,8 +5279,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/espressif/esp32sx/dcd_esp32sx.o
@@ -5305,8 +5304,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
- .debug_line    0x00000000      0x131 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
- .debug_str     0x00000000     0x5238 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
+ .debug_line    0x00000000      0x117 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
+ .debug_str     0x00000000     0x522b ./tinyusb/src/portable/mentor/musb/dcd_musb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/mentor/musb/dcd_musb.o
@@ -5330,8 +5329,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
- .debug_line    0x00000000      0x131 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
- .debug_str     0x00000000     0x5238 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
+ .debug_line    0x00000000      0x117 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
+ .debug_str     0x00000000     0x522b ./tinyusb/src/portable/mentor/musb/hcd_musb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/mentor/musb/hcd_musb.o
@@ -5355,8 +5354,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
- .debug_line    0x00000000      0x132 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
- .debug_str     0x00000000     0x5239 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
+ .debug_line    0x00000000      0x118 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
+ .debug_str     0x00000000     0x522c ./tinyusb/src/portable/microchip/pic/dcd_pic.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/microchip/pic/dcd_pic.o
@@ -5380,8 +5379,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/microchip/pic32mz/dcd_pic32mz.o
@@ -5405,8 +5404,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
- .debug_line    0x00000000      0x134 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
- .debug_str     0x00000000     0x523b ./tinyusb/src/portable/microchip/samd/dcd_samd.o
+ .debug_line    0x00000000      0x11a ./tinyusb/src/portable/microchip/samd/dcd_samd.o
+ .debug_str     0x00000000     0x522e ./tinyusb/src/portable/microchip/samd/dcd_samd.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/microchip/samd/dcd_samd.o
@@ -5430,8 +5429,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
- .debug_line    0x00000000      0x134 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
- .debug_str     0x00000000     0x523b ./tinyusb/src/portable/microchip/samg/dcd_samg.o
+ .debug_line    0x00000000      0x11a ./tinyusb/src/portable/microchip/samg/dcd_samg.o
+ .debug_str     0x00000000     0x522e ./tinyusb/src/portable/microchip/samg/dcd_samg.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/microchip/samg/dcd_samg.o
@@ -5455,8 +5454,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
- .debug_line    0x00000000      0x138 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
- .debug_str     0x00000000     0x523f ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
+ .debug_line    0x00000000      0x11e ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
+ .debug_str     0x00000000     0x5232 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/microchip/samx7x/dcd_samx7x.o
@@ -5480,8 +5479,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
- .debug_line    0x00000000      0x13e ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
- .debug_str     0x00000000     0x5245 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
+ .debug_line    0x00000000      0x124 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
+ .debug_str     0x00000000     0x5238 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/mindmotion/mm32/dcd_mm32f327x_otg.o
@@ -5505,8 +5504,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
- .debug_line    0x00000000      0x133 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
- .debug_str     0x00000000     0x523a ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
+ .debug_line    0x00000000      0x119 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
+ .debug_str     0x00000000     0x522d ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nordic/nrf5x/dcd_nrf5x.o
@@ -5530,8 +5529,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nuvoton/nuc120/dcd_nuc120.o
@@ -5555,8 +5554,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nuvoton/nuc121/dcd_nuc121.o
@@ -5580,8 +5579,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nuvoton/nuc505/dcd_nuc505.o
@@ -5605,8 +5604,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
- .debug_line    0x00000000      0x12e ./tinyusb/src/portable/nxp/khci/dcd_khci.o
- .debug_str     0x00000000     0x5235 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
+ .debug_line    0x00000000      0x114 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
+ .debug_str     0x00000000     0x5228 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nxp/khci/dcd_khci.o
@@ -5630,8 +5629,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
- .debug_line    0x00000000      0x12e ./tinyusb/src/portable/nxp/khci/hcd_khci.o
- .debug_str     0x00000000     0x5235 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
+ .debug_line    0x00000000      0x114 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
+ .debug_str     0x00000000     0x5228 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nxp/khci/hcd_khci.o
@@ -5655,8 +5654,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nxp/lpc17_40/dcd_lpc17_40.o
@@ -5680,8 +5679,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
- .debug_line    0x00000000      0x136 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
- .debug_str     0x00000000     0x523d ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
+ .debug_line    0x00000000      0x11c ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
+ .debug_str     0x00000000     0x5230 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nxp/lpc17_40/hcd_lpc17_40.o
@@ -5705,8 +5704,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/nxp/lpc_ip3511/dcd_lpc_ip3511.o
@@ -5730,8 +5729,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/ohci/ohci.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/ohci/ohci.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/ohci/ohci.o
- .debug_line    0x00000000      0x126 ./tinyusb/src/portable/ohci/ohci.o
- .debug_str     0x00000000     0x522d ./tinyusb/src/portable/ohci/ohci.o
+ .debug_line    0x00000000      0x10c ./tinyusb/src/portable/ohci/ohci.o
+ .debug_str     0x00000000     0x5220 ./tinyusb/src/portable/ohci/ohci.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/ohci/ohci.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/ohci/ohci.o
@@ -5755,8 +5754,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
- .debug_line    0x00000000      0x13c ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
- .debug_str     0x00000000     0x5243 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
+ .debug_line    0x00000000      0x122 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
+ .debug_str     0x00000000     0x5236 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/raspberrypi/pio_usb/dcd_pio_usb.o
@@ -5780,8 +5779,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
- .debug_line    0x00000000      0x13c ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
- .debug_str     0x00000000     0x5243 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
+ .debug_line    0x00000000      0x122 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
+ .debug_str     0x00000000     0x5236 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/raspberrypi/pio_usb/hcd_pio_usb.o
@@ -5805,8 +5804,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/raspberrypi/rp2040/dcd_rp2040.o
@@ -5830,8 +5829,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/raspberrypi/rp2040/hcd_rp2040.o
@@ -5855,8 +5854,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
- .debug_line    0x00000000      0x13a ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
- .debug_str     0x00000000     0x5241 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
+ .debug_line    0x00000000      0x120 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
+ .debug_str     0x00000000     0x5234 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/raspberrypi/rp2040/rp2040_usb.o
@@ -5880,8 +5879,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
- .debug_line    0x00000000      0x134 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
- .debug_str     0x00000000     0x523b ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
+ .debug_line    0x00000000      0x11a ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
+ .debug_str     0x00000000     0x522e ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/renesas/rusb2/dcd_rusb2.o
@@ -5905,8 +5904,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
- .debug_line    0x00000000      0x134 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
- .debug_str     0x00000000     0x523b ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
+ .debug_line    0x00000000      0x11a ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
+ .debug_str     0x00000000     0x522e ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/renesas/rusb2/hcd_rusb2.o
@@ -5930,8 +5929,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
- .debug_line    0x00000000      0x137 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
- .debug_str     0x00000000     0x523e ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
+ .debug_line    0x00000000      0x11d ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
+ .debug_str     0x00000000     0x5231 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/renesas/rusb2/rusb2_common.o
@@ -5955,8 +5954,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
- .debug_line    0x00000000      0x131 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
- .debug_str     0x00000000     0x5238 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
+ .debug_line    0x00000000      0x117 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
+ .debug_str     0x00000000     0x522b ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/sony/cxd56/dcd_cxd56.o
@@ -5980,8 +5979,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
- .debug_line    0x00000000      0x13b ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
- .debug_str     0x00000000     0x5242 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
+ .debug_line    0x00000000      0x121 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
+ .debug_str     0x00000000     0x5235 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/st/stm32_fsdev/dcd_stm32_fsdev.o
@@ -6083,8 +6082,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x2e ./tinyusb/src/portable/st/typec/typec_stm32.o
  .debug_macro   0x00000000       0x25 ./tinyusb/src/portable/st/typec/typec_stm32.o
  .debug_macro   0x00000000       0x1f ./tinyusb/src/portable/st/typec/typec_stm32.o
- .debug_line    0x00000000      0x7b2 ./tinyusb/src/portable/st/typec/typec_stm32.o
- .debug_str     0x00000000     0xbf5d ./tinyusb/src/portable/st/typec/typec_stm32.o
+ .debug_line    0x00000000      0x77e ./tinyusb/src/portable/st/typec/typec_stm32.o
+ .debug_str     0x00000000     0xbf50 ./tinyusb/src/portable/st/typec/typec_stm32.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/st/typec/typec_stm32.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/st/typec/typec_stm32.o
@@ -6120,8 +6119,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
- .debug_line    0x00000000      0x4f0 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
- .debug_str     0x00000000     0x6150 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
+ .debug_line    0x00000000      0x4d6 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
+ .debug_str     0x00000000     0x6143 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/sunxi/dcd_sunxi_musb.o
@@ -6492,8 +6491,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
- .debug_line    0x00000000      0x133 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
- .debug_str     0x00000000     0x523a ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
+ .debug_line    0x00000000      0x119 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
+ .debug_str     0x00000000     0x522d ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/synopsys/dwc2/hcd_dwc2.o
@@ -6517,8 +6516,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/template/dcd_template.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/template/dcd_template.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/template/dcd_template.o
- .debug_line    0x00000000      0x132 ./tinyusb/src/portable/template/dcd_template.o
- .debug_str     0x00000000     0x5239 ./tinyusb/src/portable/template/dcd_template.o
+ .debug_line    0x00000000      0x118 ./tinyusb/src/portable/template/dcd_template.o
+ .debug_str     0x00000000     0x522c ./tinyusb/src/portable/template/dcd_template.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/template/dcd_template.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/template/dcd_template.o
@@ -6542,8 +6541,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/template/hcd_template.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/template/hcd_template.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/template/hcd_template.o
- .debug_line    0x00000000      0x132 ./tinyusb/src/portable/template/hcd_template.o
- .debug_str     0x00000000     0x5239 ./tinyusb/src/portable/template/hcd_template.o
+ .debug_line    0x00000000      0x118 ./tinyusb/src/portable/template/hcd_template.o
+ .debug_str     0x00000000     0x522c ./tinyusb/src/portable/template/hcd_template.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/template/hcd_template.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/template/hcd_template.o
@@ -6567,8 +6566,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
- .debug_line    0x00000000      0x139 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
- .debug_str     0x00000000     0x5240 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
+ .debug_line    0x00000000      0x11f ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
+ .debug_str     0x00000000     0x5233 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/ti/msp430x5xx/dcd_msp430x5xx.o
@@ -6592,8 +6591,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
- .debug_line    0x00000000      0x137 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
- .debug_str     0x00000000     0x523e ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
+ .debug_line    0x00000000      0x11d ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
+ .debug_str     0x00000000     0x5231 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/valentyusb/eptri/dcd_eptri.o
@@ -6617,8 +6616,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
- .debug_line    0x00000000      0x12f ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
- .debug_str     0x00000000     0x5236 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
+ .debug_line    0x00000000      0x115 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
+ .debug_str     0x00000000     0x5229 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/wch/dcd_ch32_usbfs.o
@@ -6642,8 +6641,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
- .debug_line    0x00000000      0x12f ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
- .debug_str     0x00000000     0x5236 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
+ .debug_line    0x00000000      0x115 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
+ .debug_str     0x00000000     0x5229 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
  .comment       0x00000000       0x44 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/portable/wch/dcd_ch32_usbhs.o
@@ -6796,8 +6795,8 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ./tinyusb/src/typec/usbc.o
  .debug_macro   0x00000000       0x48 ./tinyusb/src/typec/usbc.o
  .debug_macro   0x00000000      0x1c4 ./tinyusb/src/typec/usbc.o
- .debug_line    0x00000000      0x11e ./tinyusb/src/typec/usbc.o
- .debug_str     0x00000000     0x5225 ./tinyusb/src/typec/usbc.o
+ .debug_line    0x00000000      0x104 ./tinyusb/src/typec/usbc.o
+ .debug_str     0x00000000     0x5218 ./tinyusb/src/typec/usbc.o
  .comment       0x00000000       0x44 ./tinyusb/src/typec/usbc.o
  .ARM.attributes
                 0x00000000       0x34 ./tinyusb/src/typec/usbc.o
@@ -7245,28 +7244,28 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                 0x08000b18       0x28 ./Core/Src/keyboard.o
                 0x08000b18                get_usage_consumer_control
  .text.init_key
-                0x08000b40      0x1bc ./Core/Src/keyboard.o
+                0x08000b40      0x1c4 ./Core/Src/keyboard.o
                 0x08000b40                init_key
  .text.update_key_state
-                0x08000cfc      0x2ac ./Core/Src/keyboard.o
-                0x08000cfc                update_key_state
+                0x08000d04      0x2ac ./Core/Src/keyboard.o
+                0x08000d04                update_key_state
  .text.update_key_actuation
-                0x08000fa8      0x1c4 ./Core/Src/keyboard.o
-                0x08000fa8                update_key_actuation
+                0x08000fb0      0x1b8 ./Core/Src/keyboard.o
+                0x08000fb0                update_key_actuation
  .text.update_key
-                0x0800116c       0x24 ./Core/Src/keyboard.o
-                0x0800116c                update_key
+                0x08001168       0x24 ./Core/Src/keyboard.o
+                0x08001168                update_key
  .text.keyboard_init_keys
-                0x08001190       0x70 ./Core/Src/keyboard.o
-                0x08001190                keyboard_init_keys
+                0x0800118c       0x70 ./Core/Src/keyboard.o
+                0x0800118c                keyboard_init_keys
  .text.keyboard_task
-                0x08001200      0x1b0 ./Core/Src/keyboard.o
-                0x08001200                keyboard_task
- .text.main     0x080013b0       0x40 ./Core/Src/main.o
-                0x080013b0                main
+                0x080011fc      0x1b0 ./Core/Src/keyboard.o
+                0x080011fc                keyboard_task
+ .text.main     0x080013ac       0x40 ./Core/Src/main.o
+                0x080013ac                main
  .text.SystemClock_Config
-                0x080013f0       0xd0 ./Core/Src/main.o
-                0x080013f0                SystemClock_Config
+                0x080013ec       0xd4 ./Core/Src/main.o
+                0x080013ec                SystemClock_Config
  .text.MX_ADC1_Init
                 0x080014c0       0xa4 ./Core/Src/main.o
  .text.MX_I2C1_Init
@@ -8277,34 +8276,34 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
 LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libm.a
 LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a
 
-.debug_info     0x00000000    0x1b46b
+.debug_info     0x00000000    0x1b45a
  .debug_info    0x00000000      0x1a8 ./Core/Src/config.o
- .debug_info    0x000001a8      0xba8 ./Core/Src/hid.o
- .debug_info    0x00000d50      0x7bb ./Core/Src/keyboard.o
- .debug_info    0x0000150b     0x187e ./Core/Src/main.o
- .debug_info    0x00002d89     0x134f ./Core/Src/stm32f4xx_hal_msp.o
- .debug_info    0x000040d8      0x19d ./Core/Src/stm32f4xx_it.o
- .debug_info    0x00004275      0x53e ./Core/Src/system_stm32f4xx.o
- .debug_info    0x000047b3      0xb70 ./Core/Src/usb_descriptors.o
- .debug_info    0x00005323       0x30 ./Core/Startup/startup_stm32f411ceux.o
- .debug_info    0x00005353      0x8c4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_info    0x00005c17      0xcd1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
- .debug_info    0x000068e8      0xcc7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_info    0x000075af      0x58c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
- .debug_info    0x00007b3b      0x7db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
- .debug_info    0x00008316      0x6f9 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_info    0x00008a0f     0x2426 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
- .debug_info    0x0000ae35     0x1577 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
- .debug_info    0x0000c3ac      0x8f2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_info    0x0000cc9e     0x1993 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
- .debug_info    0x0000e631     0x1573 ./tinyusb/src/class/hid/hid_device.o
- .debug_info    0x0000fba4     0x105f ./tinyusb/src/class/vendor/vendor_device.o
- .debug_info    0x00010c03     0x13b1 ./tinyusb/src/common/tusb_fifo.o
- .debug_info    0x00011fb4     0x2fa1 ./tinyusb/src/device/usbd.o
- .debug_info    0x00014f55      0x751 ./tinyusb/src/device/usbd_control.o
- .debug_info    0x000156a6     0x36c3 ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
- .debug_info    0x00018d69     0x1200 ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
- .debug_info    0x00019f69     0x1502 ./tinyusb/src/tusb.o
+ .debug_info    0x000001a8      0xb97 ./Core/Src/hid.o
+ .debug_info    0x00000d3f      0x7bb ./Core/Src/keyboard.o
+ .debug_info    0x000014fa     0x187e ./Core/Src/main.o
+ .debug_info    0x00002d78     0x134f ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_info    0x000040c7      0x19d ./Core/Src/stm32f4xx_it.o
+ .debug_info    0x00004264      0x53e ./Core/Src/system_stm32f4xx.o
+ .debug_info    0x000047a2      0xb70 ./Core/Src/usb_descriptors.o
+ .debug_info    0x00005312       0x30 ./Core/Startup/startup_stm32f411ceux.o
+ .debug_info    0x00005342      0x8c4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_info    0x00005c06      0xcd1 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
+ .debug_info    0x000068d7      0xcc7 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_info    0x0000759e      0x58c ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
+ .debug_info    0x00007b2a      0x7db ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
+ .debug_info    0x00008305      0x6f9 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_info    0x000089fe     0x2426 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
+ .debug_info    0x0000ae24     0x1577 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
+ .debug_info    0x0000c39b      0x8f2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_info    0x0000cc8d     0x1993 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+ .debug_info    0x0000e620     0x1573 ./tinyusb/src/class/hid/hid_device.o
+ .debug_info    0x0000fb93     0x105f ./tinyusb/src/class/vendor/vendor_device.o
+ .debug_info    0x00010bf2     0x13b1 ./tinyusb/src/common/tusb_fifo.o
+ .debug_info    0x00011fa3     0x2fa1 ./tinyusb/src/device/usbd.o
+ .debug_info    0x00014f44      0x751 ./tinyusb/src/device/usbd_control.o
+ .debug_info    0x00015695     0x36c3 ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
+ .debug_info    0x00018d58     0x1200 ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
+ .debug_info    0x00019f58     0x1502 ./tinyusb/src/tusb.o
 
 .debug_abbrev   0x00000000     0x4a64
  .debug_abbrev  0x00000000       0xb3 ./Core/Src/config.o
@@ -8530,64 +8529,64 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_macro   0x0001e0db      0x3f9 ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
  .debug_macro   0x0001e4d4      0x288 ./tinyusb/src/tusb.o
 
-.debug_line     0x00000000    0x1ae93
- .debug_line    0x00000000      0x767 ./Core/Src/config.o
- .debug_line    0x00000767      0xbc2 ./Core/Src/hid.o
- .debug_line    0x00001329      0xc80 ./Core/Src/keyboard.o
- .debug_line    0x00001fa9      0xc71 ./Core/Src/main.o
- .debug_line    0x00002c1a      0x8a2 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_line    0x000034bc      0xcfa ./Core/Src/stm32f4xx_it.o
- .debug_line    0x000041b6      0x841 ./Core/Src/system_stm32f4xx.o
- .debug_line    0x000049f7      0x995 ./Core/Src/usb_descriptors.o
- .debug_line    0x0000538c       0x7a ./Core/Startup/startup_stm32f411ceux.o
- .debug_line    0x00005406      0xaae ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_line    0x00005eb4     0x1202 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
- .debug_line    0x000070b6      0xd54 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_line    0x00007e0a      0xb67 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
- .debug_line    0x00008971      0xc7b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
- .debug_line    0x000095ec      0xbca ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_line    0x0000a1b6     0x3b60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
- .debug_line    0x0000dd16     0x14f0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
- .debug_line    0x0000f206      0xea3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_line    0x000100a9     0x1d6d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
- .debug_line    0x00011e16      0xe50 ./tinyusb/src/class/hid/hid_device.o
- .debug_line    0x00012c66      0xce8 ./tinyusb/src/class/vendor/vendor_device.o
- .debug_line    0x0001394e     0x11bd ./tinyusb/src/common/tusb_fifo.o
- .debug_line    0x00014b0b     0x1c22 ./tinyusb/src/device/usbd.o
- .debug_line    0x0001672d      0xb21 ./tinyusb/src/device/usbd_control.o
- .debug_line    0x0001724e     0x1c47 ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
- .debug_line    0x00018e95      0xf23 ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
- .debug_line    0x00019db8     0x10db ./tinyusb/src/tusb.o
+.debug_line     0x00000000    0x1aba0
+ .debug_line    0x00000000      0x740 ./Core/Src/config.o
+ .debug_line    0x00000740      0xb77 ./Core/Src/hid.o
+ .debug_line    0x000012b7      0xc55 ./Core/Src/keyboard.o
+ .debug_line    0x00001f0c      0xc71 ./Core/Src/main.o
+ .debug_line    0x00002b7d      0x8a2 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_line    0x0000341f      0xcac ./Core/Src/stm32f4xx_it.o
+ .debug_line    0x000040cb      0x841 ./Core/Src/system_stm32f4xx.o
+ .debug_line    0x0000490c      0x947 ./Core/Src/usb_descriptors.o
+ .debug_line    0x00005253       0x7a ./Core/Startup/startup_stm32f411ceux.o
+ .debug_line    0x000052cd      0xaae ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_line    0x00005d7b     0x1202 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
+ .debug_line    0x00006f7d      0xd54 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_line    0x00007cd1      0xb67 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
+ .debug_line    0x00008838      0xc7b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
+ .debug_line    0x000094b3      0xbca ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_line    0x0000a07d     0x3b60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
+ .debug_line    0x0000dbdd     0x14f0 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
+ .debug_line    0x0000f0cd      0xea3 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_line    0x0000ff70     0x1d6d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+ .debug_line    0x00011cdd      0xe1c ./tinyusb/src/class/hid/hid_device.o
+ .debug_line    0x00012af9      0xcb4 ./tinyusb/src/class/vendor/vendor_device.o
+ .debug_line    0x000137ad     0x1196 ./tinyusb/src/common/tusb_fifo.o
+ .debug_line    0x00014943     0x1bd4 ./tinyusb/src/device/usbd.o
+ .debug_line    0x00016517      0xad3 ./tinyusb/src/device/usbd_control.o
+ .debug_line    0x00016fea     0x1c13 ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
+ .debug_line    0x00018bfd      0xeef ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
+ .debug_line    0x00019aec     0x10b4 ./tinyusb/src/tusb.o
 
-.debug_str      0x00000000    0xb5b03
- .debug_str     0x00000000    0xb5b03 ./Core/Src/config.o
-                               0xf242 (size before relaxing)
- .debug_str     0x000b5b03    0x19ffc ./Core/Src/hid.o
- .debug_str     0x000b5b03     0xf76f ./Core/Src/keyboard.o
- .debug_str     0x000b5b03    0x916bf ./Core/Src/main.o
- .debug_str     0x000b5b03    0x8d620 ./Core/Src/stm32f4xx_hal_msp.o
- .debug_str     0x000b5b03    0xa1990 ./Core/Src/stm32f4xx_it.o
- .debug_str     0x000b5b03    0x8c7ea ./Core/Src/system_stm32f4xx.o
- .debug_str     0x000b5b03    0x1b378 ./Core/Src/usb_descriptors.o
- .debug_str     0x000b5b03       0x84 ./Core/Startup/startup_stm32f411ceux.o
- .debug_str     0x000b5b03    0x8d216 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
- .debug_str     0x000b5b03    0x8cdc5 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
- .debug_str     0x000b5b03    0x8cf4e ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
- .debug_str     0x000b5b03    0x8c9c8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
- .debug_str     0x000b5b03    0x8caeb ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
- .debug_str     0x000b5b03    0x8c965 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
- .debug_str     0x000b5b03    0x8d7fb ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
- .debug_str     0x000b5b03    0x8d2b6 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
- .debug_str     0x000b5b03    0x8cc1e ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
- .debug_str     0x000b5b03    0x8d191 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
- .debug_str     0x000b5b03    0x19ff4 ./tinyusb/src/class/hid/hid_device.o
- .debug_str     0x000b5b03    0x13502 ./tinyusb/src/class/vendor/vendor_device.o
- .debug_str     0x000b5b03     0xc424 ./tinyusb/src/common/tusb_fifo.o
- .debug_str     0x000b5b03    0x1ab37 ./tinyusb/src/device/usbd.o
- .debug_str     0x000b5b03    0x197b8 ./tinyusb/src/device/usbd_control.o
- .debug_str     0x000b5b03    0xa1e58 ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
- .debug_str     0x000b5b03    0xa0f9e ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
- .debug_str     0x000b5b03    0x19e1a ./tinyusb/src/tusb.o
+.debug_str      0x00000000    0xb5af5
+ .debug_str     0x00000000    0xb5af5 ./Core/Src/config.o
+                               0xf234 (size before relaxing)
+ .debug_str     0x000b5af5    0x19fe9 ./Core/Src/hid.o
+ .debug_str     0x000b5af5     0xf761 ./Core/Src/keyboard.o
+ .debug_str     0x000b5af5    0x916b1 ./Core/Src/main.o
+ .debug_str     0x000b5af5    0x8d613 ./Core/Src/stm32f4xx_hal_msp.o
+ .debug_str     0x000b5af5    0xa1983 ./Core/Src/stm32f4xx_it.o
+ .debug_str     0x000b5af5    0x8c7dd ./Core/Src/system_stm32f4xx.o
+ .debug_str     0x000b5af5    0x1b36b ./Core/Src/usb_descriptors.o
+ .debug_str     0x000b5af5       0x77 ./Core/Startup/startup_stm32f411ceux.o
+ .debug_str     0x000b5af5    0x8d209 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+ .debug_str     0x000b5af5    0x8cdb8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.o
+ .debug_str     0x000b5af5    0x8cf41 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+ .debug_str     0x000b5af5    0x8c9bb ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
+ .debug_str     0x000b5af5    0x8cade ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
+ .debug_str     0x000b5af5    0x8c958 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+ .debug_str     0x000b5af5    0x8d7ee ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
+ .debug_str     0x000b5af5    0x8d2a9 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
+ .debug_str     0x000b5af5    0x8cc11 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+ .debug_str     0x000b5af5    0x8d184 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+ .debug_str     0x000b5af5    0x19fe7 ./tinyusb/src/class/hid/hid_device.o
+ .debug_str     0x000b5af5    0x134f5 ./tinyusb/src/class/vendor/vendor_device.o
+ .debug_str     0x000b5af5     0xc417 ./tinyusb/src/common/tusb_fifo.o
+ .debug_str     0x000b5af5    0x1ab2a ./tinyusb/src/device/usbd.o
+ .debug_str     0x000b5af5    0x197ab ./tinyusb/src/device/usbd_control.o
+ .debug_str     0x000b5af5    0xa1e4b ./tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o
+ .debug_str     0x000b5af5    0xa0f91 ./tinyusb/src/portable/synopsys/dwc2/dwc2_common.o
+ .debug_str     0x000b5af5    0x19e0d ./tinyusb/src/tusb.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/config.o
@@ -8706,6 +8705,6 @@ LOAD C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_frame   0x000053d0       0x34 C:/ST/STM32CubeIDE_1.18.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/thumb/v7e-m+fp/hard\libgcc.a(_udivmoddi4.o)
 
 .debug_line_str
-                0x00000000       0x68
+                0x00000000       0x5b
  .debug_line_str
-                0x00000000       0x68 ./Core/Startup/startup_stm32f411ceux.o
+                0x00000000       0x5b ./Core/Startup/startup_stm32f411ceux.o
