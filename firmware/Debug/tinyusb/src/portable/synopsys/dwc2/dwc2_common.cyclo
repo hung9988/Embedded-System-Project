@@ -1,0 +1,10 @@
+../tinyusb/src/portable/synopsys/dwc2/dwc2_stm32.h:169:20:dwc2_phy_init	2
+../tinyusb/src/portable/synopsys/dwc2/dwc2_stm32.h:244:20:dwc2_phy_update	11
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:47:13:reset_core	5
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:64:13:phy_fs_init	1
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:90:13:phy_hs_init	4
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:149:13:check_dwc2	5
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:175:6:dwc2_core_is_highspeed	2
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:200:6:dwc2_core_init	8
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:264:6:dfifo_read_packet	5
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:289:6:dfifo_write_packet	5

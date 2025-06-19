@@ -1,4 +1,4 @@
-26216829118477807
+26211580455020697
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -105097,27 +105097,6 @@ Varistor VF
 0
 2
 2
-keypad_kicad
-heartsteel
-
-
-0
-0
-0
-keypad_kicad
-hust
-
-
-0
-0
-0
-keypad_kicad
-hutao
-
-
-0
-0
-0
 kicad_blackpill
 BlackPill_STLINK
 STM32F4-based development board with ST-LINK header
