@@ -21,6 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ssd1306.h"
+#include "ssd1306_conf.h"
+#include "ssd1306_fonts.h"
 #include "DRV2605L.h"
 #include "config.h"
 #include "hid.h"
