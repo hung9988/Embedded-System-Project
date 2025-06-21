@@ -1,0 +1,6 @@
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:47:13:reset_core.constprop	0	static
+../tinyusb/src/portable/synopsys/dwc2/dwc2_stm32.h:244:20:dwc2_phy_update.part.0.constprop	0	static
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:175:6:dwc2_core_is_highspeed	0	static
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:200:6:dwc2_core_init	16	static,ignoring_inline_asm
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:264:6:dfifo_read_packet	12	static
+../tinyusb/src/portable/synopsys/dwc2/dwc2_common.c:289:6:dfifo_write_packet	16	static

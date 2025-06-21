@@ -1,5 +1,4 @@
 #include "config.h"
-#include "DRV2605L.h"
 #include "keyboard.h"
 #include "stdlib.h"
 #include <class/hid/hid.h>
