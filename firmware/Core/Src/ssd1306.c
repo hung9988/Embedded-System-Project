@@ -591,3 +591,17 @@ void ssd1306_SetDisplayOn(const uint8_t on) {
 uint8_t ssd1306_GetDisplayOn() {
     return SSD1306.DisplayOn;
 }
+
+void ssd1306_FlipScreen(uint8_t flip_horizontal, uint8_t flip_vertical) {
+    if (flip_horizontal) {
+        ssd1306_WriteCommand(0xA1);
+    } else {
+        ssd1306_WriteCommand(0xA0);
+    }
+
+    if (flip_vertical) {
+        ssd1306_WriteCommand(0xC8);
+    } else {
+        ssd1306_WriteCommand(0xC0);
+    }
+}

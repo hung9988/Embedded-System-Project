@@ -205,6 +205,13 @@ void ssd1306_SetDisplayOn(const uint8_t on);
  */
 uint8_t ssd1306_GetDisplayOn();
 
+/**
+ * @brief Flip screen orientation.
+ * @param[in] flip_horizontal 1 to flip horizontally, 0 to keep normal.
+ * @param[in] flip_vertical   1 to flip vertically, 0 to keep normal.
+ */
+void ssd1306_FlipScreen(uint8_t flip_horizontal, uint8_t flip_vertical);
+
 // Low-level procedures
 void ssd1306_Reset(void);
 void ssd1306_WriteCommand(uint8_t byte);
