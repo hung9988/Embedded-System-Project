@@ -2,8 +2,7 @@
 ../Core/Src/hid.c:29:6:hid_task	7
 ../Core/Src/hid.c:46:6:hid_press_key	7
 ../Core/Src/hid.c:81:6:hid_release_key	7
-../Core/Src/hid.c:114:6:echo_all	4
-../Core/Src/hid.c:133:6:tud_hid_set_protocol_cb	1
-../Core/Src/hid.c:193:6:tud_hid_report_complete_cb	3
-../Core/Src/hid.c:218:6:tud_cdc_line_state_cb	3
-../Core/Src/hid.c:231:6:tud_cdc_rx_cb	1
+../Core/Src/hid.c:114:6:tud_hid_set_protocol_cb	1
+../Core/Src/hid.c:173:6:tud_hid_report_complete_cb	3
+../Core/Src/hid.c:198:6:tud_cdc_line_state_cb	3
+../Core/Src/hid.c:211:6:tud_cdc_rx_cb	1

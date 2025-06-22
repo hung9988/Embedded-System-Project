@@ -150,11 +150,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1) {
     // MARK: Main loop
-	tud_task();
+	  tud_task();
     keyboard_task();
+    //keyboard_task_snaptap();
     hid_task();
-    cdc_task();
-
+    //cdc_task();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
