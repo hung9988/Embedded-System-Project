@@ -20,6 +20,7 @@ static void print_config(void);
 static void set_config_value(char *param, char *value);
 static void print_keymap(uint8_t layer);
 static void set_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t value);
+static void set_macro_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t values[MAX_MACRO_LEN]);
 static void save_config(void);
 static void load_config(void);
 static void reset_config(void);
@@ -179,6 +180,41 @@ static void process_command(char *cmd) {
     } else {
       cdc_write_string_chunked("Usage: setkey <layer> <row> <col> <value>\r\n");
     }
+  } else if (strcmp(token, "setmacro") == 0) {
+    char *layer_str = strtok(NULL, " ");
+    char *row_str = strtok(NULL, " ");
+    char *col_str = strtok(NULL, " ");
+
+    if (layer_str && row_str && col_str) {
+      uint8_t layer = atoi(layer_str);
+      uint8_t row = atoi(row_str);
+      uint8_t col = atoi(col_str);
+
+      if (layer < LAYERS_COUNT && row < MATRIX_ROWS && col < MATRIX_COLS) {
+        uint16_t values[MAX_MACRO_LEN];
+        uint8_t value_count = 0;
+
+        // Parse up to MAX_MACRO_LEN values
+        char *value_str = strtok(NULL, " ");
+        while (value_str && value_count < MAX_MACRO_LEN) {
+          values[value_count] = atoi(value_str);
+          value_count++;
+          value_str = strtok(NULL, " ");
+        }
+
+        // Fill remaining slots with ____ if not enough values provided
+        while (value_count < MAX_MACRO_LEN) {
+          values[value_count] = ____;
+          value_count++;
+        }
+
+        set_macro_keymap_value(layer, row, col, values);
+      } else {
+        cdc_write_string_chunked("Invalid layer/row/col values\r\n");
+      }
+    } else {
+      cdc_write_string_chunked("Usage: setmacro <layer> <row> <col> <value1> [value2] [value3] [value4]\r\n");
+    }
   } else if (strcmp(token, "save") == 0) {
     save_config();
   } else if (strcmp(token, "load") == 0) {
@@ -197,6 +233,7 @@ static void print_help(void) {
   cdc_write_string_chunked("  set <param> <value>     - Set configuration parameter\r\n");
   cdc_write_string_chunked("  keymap <layer>          - Show keymap for layer\r\n");
   cdc_write_string_chunked("  setkey <L> <R> <C> <V>  - Set key value (Layer/Row/Col/Value)\r\n");
+  cdc_write_string_chunked("  setmacro <L> <R> <C> <V1> [V2] [V3] [V4]  - Set macro key value (Layer/Row/Col/Value1 [Value2] [Value3] [Value4])\r\n");
   cdc_write_string_chunked("  save                    - Save configuration to flash\r\n");
   cdc_write_string_chunked("  load                    - Load configuration from flash\r\n");
   cdc_write_string_chunked("  reset                   - Reset to default values\r\n");
@@ -269,14 +306,35 @@ static void print_keymap(uint8_t layer) {
   // Print keymap row by row with proper chunking
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     // Build the row string first
-    char row_buffer[256]; // Large enough for a full row
+    char row_buffer[512]; // Larger buffer for macro display
     int pos = 0;
 
     pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "Row %u: ", row);
 
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-      pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "%4u ",
-                      keyboard_user_config.keymaps[layer][row][col][0]);
+      // Check if this is a macro (multiple non-zero values)
+      uint8_t macro_count = 0;
+      for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
+        if (keyboard_user_config.keymaps[layer][row][col][i] != ____) {
+          macro_count++;
+        }
+      }
+
+      if (macro_count > 1) {
+        // This is a macro - show all values in brackets
+        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "[");
+        for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
+          if (i > 0)
+            pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, ",");
+          pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "%u",
+                          keyboard_user_config.keymaps[layer][row][col][i]);
+        }
+        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "] ");
+      } else {
+        // Single key - show just the first value
+        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "%4u ",
+                        keyboard_user_config.keymaps[layer][row][col][0]);
+      }
     }
 
     pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "\r\n");
@@ -290,10 +348,35 @@ static void set_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t v
   char buffer[64];
 
   keyboard_user_config.keymaps[layer][row][col][0] = value;
+  // Clear remaining macro slots
+  for (uint8_t i = 1; i < MAX_MACRO_LEN; i++) {
+    keyboard_user_config.keymaps[layer][row][col][i] = ____;
+  }
   keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
   keyboard_init_keys();
 
   snprintf(buffer, sizeof(buffer), "Set keymap[%u][%u][%u] to %u\r\n", layer, row, col, value);
+  cdc_write_string_chunked(buffer);
+}
+
+static void set_macro_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t values[MAX_MACRO_LEN]) {
+  char buffer[128];
+
+  // Copy all macro values
+  for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
+    keyboard_user_config.keymaps[layer][row][col][i] = values[i];
+  }
+  keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
+  keyboard_init_keys();
+
+  // Build response message showing all macro values
+  int pos = snprintf(buffer, sizeof(buffer), "Set macro keymap[%u][%u][%u] to [", layer, row, col);
+  for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
+    if (i > 0)
+      pos += snprintf(buffer + pos, sizeof(buffer) - pos, ", ");
+    pos += snprintf(buffer + pos, sizeof(buffer) - pos, "%u", values[i]);
+  }
+  pos += snprintf(buffer + pos, sizeof(buffer) - pos, "]\r\n");
   cdc_write_string_chunked(buffer);
 }
 
