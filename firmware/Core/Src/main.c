@@ -24,11 +24,9 @@
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "tusb.h"
 #include <ctype.h>
+#include <cdc.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -76,33 +74,7 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-static uint32_t last_output_time = 0;
-static uint32_t second_counter = 0;
 
-static void cdc_task(void) {
-    tud_task();
-
-    // Get current time in milliseconds (implementation depends on your system)
-    uint32_t current_time = board_millis(); // or your system's millisecond function
-
-    // Check if one second has passed
-    if (current_time - last_output_time >= 1000) {
-        char output_string[32];
-        snprintf(output_string, sizeof(output_string), "Hello %lu\r\n", second_counter);
-
-        // Output to all connected CDC interfaces
-        uint8_t itf;
-        for (itf = 0; itf < CFG_TUD_CDC; itf++) {
-            if (tud_cdc_n_connected(itf)) {
-                tud_cdc_n_write_str(itf, output_string);
-                tud_cdc_n_write_flush(itf);
-            }
-        }
-        second_counter++;
-        last_output_time = current_time;
-    }
-
-}
 /* USER CODE END 0 */
 
 /**
@@ -141,9 +113,12 @@ int main(void)
 
   ADC_channel_Config.Rank = 1;
   ADC_channel_Config.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  keyboard_init_keys();
 
-  hid_init();
+  keyboard_init_keys();
+  tusb_rhport_init_t dev_init = {
+      .role = TUSB_ROLE_DEVICE,
+      .speed = TUSB_SPEED_AUTO};
+  tusb_init(0, &dev_init); // initialize device stack on roothub port 0
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,6 +129,7 @@ int main(void)
     keyboard_task();
     hid_task();
     cdc_task();
+
 
     /* USER CODE END WHILE */
 

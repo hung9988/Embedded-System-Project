@@ -1,9 +1,4 @@
 ../Core/Src/usb_descriptors.c:34:17:tud_descriptor_device_cb	1
-../Core/Src/usb_descriptors.c:63:17:tud_hid_descriptor_report_cb	1
-../Core/Src/usb_descriptors.c:96:17:tud_descriptor_configuration_cb	1
-../Core/Src/usb_descriptors.c:121:17:tud_descriptor_string_cb	5
-../Core/Src/usb_descriptors.c:168:6:tud_cdc_line_state_cb	2
-../Core/Src/usb_descriptors.c:182:6:tud_cdc_rx_cb	2
-../Core/Src/usb_descriptors.c:200:6:tud_cdc_line_coding_cb	1
-../Core/Src/usb_descriptors.c:215:10:tud_hid_get_report_cb	3
-../Core/Src/usb_descriptors.c:241:6:tud_hid_set_report_cb	3
+../Core/Src/usb_descriptors.c:55:17:tud_hid_descriptor_report_cb	1
+../Core/Src/usb_descriptors.c:88:17:tud_descriptor_configuration_cb	1
+../Core/Src/usb_descriptors.c:113:17:tud_descriptor_string_cb	5

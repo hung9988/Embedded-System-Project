@@ -1,9 +1,7 @@
-../Core/Src/hid.c:21:6:hid_init	16	static
-../Core/Src/hid.c:29:6:hid_task	24	static
-../Core/Src/hid.c:46:6:hid_press_key	24	static
-../Core/Src/hid.c:81:6:hid_release_key	24	static
-../Core/Src/hid.c:114:6:echo_all	32	static
-../Core/Src/hid.c:133:6:tud_hid_set_protocol_cb	16	static
-../Core/Src/hid.c:193:6:tud_hid_report_complete_cb	24	static
-../Core/Src/hid.c:218:6:tud_cdc_line_state_cb	32	static
-../Core/Src/hid.c:231:6:tud_cdc_rx_cb	16	static
+../Core/Src/hid.c:21:6:hid_task	24	static
+../Core/Src/hid.c:38:6:hid_press_key	24	static
+../Core/Src/hid.c:73:6:hid_release_key	24	static
+../Core/Src/hid.c:109:6:tud_hid_set_protocol_cb	16	static
+../Core/Src/hid.c:115:6:tud_hid_report_complete_cb	16	static
+../Core/Src/hid.c:120:10:tud_hid_get_report_cb	16	static
+../Core/Src/hid.c:132:6:tud_hid_set_report_cb	16	static
