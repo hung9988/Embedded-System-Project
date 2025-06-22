@@ -61,11 +61,12 @@ enum key_type {
   KEY_TYPE_NORMAL,
   KEY_TYPE_MODIFIER,
   KEY_TYPE_CONSUMER_CONTROL,
+  KEY_TYPE_MACRO,
 };
 
 struct __attribute__((__packed__)) layer {
   enum key_type type;
-  uint16_t value;
+  uint16_t value[MAX_MACRO_LEN];
 };
 
 enum {
@@ -93,7 +94,7 @@ struct user_config {
   uint8_t rapid_trigger_offset;
   uint8_t screaming_velocity_trigger;
   uint16_t tap_timeout;
-  uint16_t keymaps[LAYERS_COUNT][MATRIX_ROWS][MATRIX_COLS];
+  uint16_t keymaps[LAYERS_COUNT][MATRIX_ROWS][MATRIX_COLS][MAX_MACRO_LEN];
 };
 
 void keyboard_task();

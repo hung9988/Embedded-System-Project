@@ -1,39 +1,51 @@
 #include "keyboard.h"
 #include "hid.h"
 #include <class/hid/hid.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
-	    .reverse_magnet_pole = 0,
-	    .trigger_offset = 64,
-	    .reset_threshold = 3,
-	    .rapid_trigger_offset = 40,
-	    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
-	    .tap_timeout = 200,
-	    .keymaps = {
-	        // clang-format off
+    .reverse_magnet_pole = 0,
+    .trigger_offset = 64,
+    .reset_threshold = 3,
+    .rapid_trigger_offset = 40,
+    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
+    .tap_timeout = 200,
+    .keymaps = {
+        // clang-format off
 	            [_BASE_LAYER] = {
-	                {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+	                {{HID_KEY_CONTROL_LEFT, HID_KEY_SHIFT_LEFT, HID_KEY_P, ____ },
+	                {HID_KEY_4},
+	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
+	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F}},
+                  {{HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
 	                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
 	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
-	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F},
+	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F}},
+                  {{HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+	                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
+	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
+	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F}},
+                  {{HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+	                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
+	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
+	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_F}},
 	            },
 	            [_TAP_LAYER] = {
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
+	                {{____}, {____}, {____}, {____}},
+	                {{____}, {____}, {____}, {____}},
+	                {{____}, {____}, {____}, {____}},
+	                {{____}, {____}, {____}, {____}},
 	            },
-	        // clang-format on
-	    }};
+        // clang-format on
+    }};
 
 uint32_t keyboard_last_cycle_duration = 0;
 
 static uint8_t key_triggered = 0;
 
-struct key* current_pressed_key = NULL;
+struct key *current_pressed_key = NULL;
 
 uint8_t get_bitmask_for_modifier(uint8_t keycode) {
   switch (keycode) {
@@ -86,19 +98,39 @@ void init_key(uint8_t adc_channel, uint8_t amux_channel, uint8_t row, uint8_t co
   key->actuation.is_continuous_rapid_trigger_enabled = 0;
 
   for (uint8_t i = 0; i < LAYERS_COUNT; i++) {
-    if (keyboard_user_config.keymaps[i][row][column] != ____) {
-      uint16_t usage_consumer_control = get_usage_consumer_control(keyboard_user_config.keymaps[i][row][column]);
-      if (usage_consumer_control) {
-        key->layers[i].type = KEY_TYPE_CONSUMER_CONTROL;
-        key->layers[i].value = usage_consumer_control;
+    if (keyboard_user_config.keymaps[i][row][column][0] != ____) {
+      // Check if this is a macro (multiple non-zero elements)
+      uint8_t macro_count = 0;
+      for (uint8_t j = 0; j < MAX_MACRO_LEN; j++) {
+        if (keyboard_user_config.keymaps[i][row][column][j] != ____) {
+          macro_count++;
+        }
+      }
+
+      if (macro_count > 1) {
+        // This is a macro - copy all values
+        key->layers[i].type = KEY_TYPE_MACRO;
+        for (uint8_t j = 0; j < MAX_MACRO_LEN; j++) {
+          key->layers[i].value[j] = keyboard_user_config.keymaps[i][row][column][j];
+        }
       } else {
-        uint8_t bitmask = get_bitmask_for_modifier(keyboard_user_config.keymaps[i][row][column]);
-        if (bitmask) {
-          key->layers[i].type = KEY_TYPE_MODIFIER;
-          key->layers[i].value = bitmask;
+        // Single key - check type
+        uint16_t usage_consumer_control = get_usage_consumer_control(
+            keyboard_user_config.keymaps[i][row][column][0]);
+        if (usage_consumer_control) {
+          key->layers[i].type = KEY_TYPE_CONSUMER_CONTROL;
+          key->layers[i].value[0] = usage_consumer_control;
         } else {
-          key->layers[i].type = KEY_TYPE_NORMAL;
-          key->layers[i].value = keyboard_user_config.keymaps[i][row][column];
+          uint8_t bitmask = get_bitmask_for_modifier(
+              keyboard_user_config.keymaps[i][row][column][0]);
+          if (bitmask) {
+            key->layers[i].type = KEY_TYPE_MODIFIER;
+            key->layers[i].value[0] = bitmask;
+          } else {
+            key->layers[i].type = KEY_TYPE_NORMAL;
+            key->layers[i].value[0] =
+                keyboard_user_config.keymaps[i][row][column][0];
+          }
         }
       }
     }
@@ -218,7 +250,7 @@ void update_key_actuation(struct key *key) {
   case STATUS_RESET:
     // if reset, can be triggered or tap
     if (is_after_trigger_offset) {
-      if (key->layers[_TAP_LAYER].value) {
+      if (key->layers[_TAP_LAYER].value[0]) {
         key->actuation.status = STATUS_MIGHT_BE_TAP;
         // key_triggered = 1;
       } else {
@@ -237,7 +269,7 @@ void update_key_actuation(struct key *key) {
     }
     // if reset, can be triggered or tap
     if (is_after_trigger_offset && key->actuation.direction == GOING_DOWN && is_after_rapid_trigger_offset) {
-      if (key->layers[_TAP_LAYER].value) {
+      if (key->layers[_TAP_LAYER].value[0]) {
         key->actuation.status = STATUS_MIGHT_BE_TAP;
         key_triggered = 1;
       } else {
@@ -282,7 +314,7 @@ void update_key(struct key *key) {
 }
 
 void keyboard_init_keys() {
-//	keyboard_read_config();
+  //	keyboard_read_config();
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
       if (channels_by_row_col[row][col][0] != XXXX) {
@@ -336,61 +368,62 @@ void keyboard_task() {
   keyboard_last_cycle_duration = keyboard_get_time() - started_at;
 }
 
-
 void snaptap_task() {
-    static struct key* current_pressed_key = NULL;
-    struct key* new_pressed_key = NULL;
+  static struct key *current_pressed_key = NULL;
+  struct key *new_pressed_key = NULL;
 
-    // Tìm phím đang được giữ (trạng thái TRIGGERED)
-    for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-        for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-            struct key* key = &keyboard_keys[adc_channel][amux_channel];
-            if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-                new_pressed_key = key;
-                break;
-            }
-        }
-        if (new_pressed_key) break;
+  // Tìm phím đang được giữ (trạng thái TRIGGERED)
+  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
+    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
+      struct key *key = &keyboard_keys[adc_channel][amux_channel];
+      if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
+        new_pressed_key = key;
+        break;
+      }
     }
+    if (new_pressed_key)
+      break;
+  }
 
-    // Nếu phím mới khác phím cũ
-    if (new_pressed_key != current_pressed_key) {
-        if (current_pressed_key) {
-            // Release phím cũ ngay khi phím mới được nhấn
-            hid_release_key(current_pressed_key, _BASE_LAYER);
-        }
-        if (new_pressed_key) {
-            // Press phím mới đúng 1 lần
-            hid_press_key(new_pressed_key, _BASE_LAYER);
-        }
-        current_pressed_key = new_pressed_key;
+  // Nếu phím mới khác phím cũ
+  if (new_pressed_key != current_pressed_key) {
+    if (current_pressed_key) {
+      // Release phím cũ ngay khi phím mới được nhấn
+      hid_release_key(current_pressed_key, _BASE_LAYER);
     }
+    if (new_pressed_key) {
+      // Press phím mới đúng 1 lần
+      hid_press_key(new_pressed_key, _BASE_LAYER);
+    }
+    current_pressed_key = new_pressed_key;
+  }
 }
 
 void check_snaptap_debug() {
-    static struct key* last_pressed_key = NULL;
-    struct key* current_pressed_key = NULL;
+  static struct key *last_pressed_key = NULL;
+  struct key *current_pressed_key = NULL;
 
-    // Tìm phím đang được giữ (trạng thái TRIGGERED)
-    for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-        for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-            struct key* key = &keyboard_keys[adc_channel][amux_channel];
-            if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-                current_pressed_key = key;
-                break;
-            }
-        }
-        if (current_pressed_key) break;
+  // Tìm phím đang được giữ (trạng thái TRIGGERED)
+  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
+    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
+      struct key *key = &keyboard_keys[adc_channel][amux_channel];
+      if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
+        current_pressed_key = key;
+        break;
+      }
     }
+    if (current_pressed_key)
+      break;
+  }
 
-    // Nếu phím mới khác phím cũ, in log
-    if (current_pressed_key != last_pressed_key) {
-        if (last_pressed_key) {
-            printf("Release key: row=%d, col=%d\n", last_pressed_key->row, last_pressed_key->column);
-        }
-        if (current_pressed_key) {
-            printf("Press key: row=%d, col=%d\n", current_pressed_key->row, current_pressed_key->column);
-        }
-        last_pressed_key = current_pressed_key;
+  // Nếu phím mới khác phím cũ, in log
+  if (current_pressed_key != last_pressed_key) {
+    if (last_pressed_key) {
+      printf("Release key: row=%d, col=%d\n", last_pressed_key->row, last_pressed_key->column);
     }
+    if (current_pressed_key) {
+      printf("Press key: row=%d, col=%d\n", current_pressed_key->row, current_pressed_key->column);
+    }
+    last_pressed_key = current_pressed_key;
+  }
 }
