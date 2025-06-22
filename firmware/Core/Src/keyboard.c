@@ -1,5 +1,4 @@
 #include "keyboard.h"
-#include "DRV2605L.h"
 #include "hid.h"
 #include <class/hid/hid.h>
 #include <stdlib.h>
@@ -68,6 +67,7 @@ uint16_t get_usage_consumer_control(uint16_t value) {
 }
 
 void init_key(uint8_t adc_channel, uint8_t amux_channel, uint8_t row, uint8_t column) {
+
   struct key *key = &keyboard_keys[adc_channel][amux_channel];
 
   key->is_enabled = 1;
@@ -282,7 +282,7 @@ void update_key(struct key *key) {
 }
 
 void keyboard_init_keys() {
-
+//	keyboard_read_config();
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
       if (channels_by_row_col[row][col][0] != XXXX) {
@@ -335,6 +335,7 @@ void keyboard_task() {
 
   keyboard_last_cycle_duration = keyboard_get_time() - started_at;
 }
+
 
 void snaptap_task() {
     static struct key* current_pressed_key = NULL;
@@ -393,4 +394,3 @@ void check_snaptap_debug() {
         last_pressed_key = current_pressed_key;
     }
 }
-// push 2

@@ -28,8 +28,9 @@
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
-#include <string.h>
-
+#include "tusb.h"
+#include <ctype.h>
+#include <cdc.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,10 +41,11 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define IS_DRV2605_ENABLED false
+
 #define MOD_WIDTH 38
 #define KEY_WIDTH ((SSD1306_WIDTH - MOD_WIDTH) / 3)
 #define DIVIDER 32
+
 
 /* USER CODE END PD */
 
@@ -83,49 +85,7 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint8_t readRegister8(uint8_t reg) {
-  uint8_t buffer[1] = {reg};
-  HAL_I2C_Master_Transmit(&hi2c1, DRV2605_ADDR << 1, buffer, 1, 1000);
-  HAL_I2C_Master_Receive(&hi2c1, DRV2605_ADDR << 1, buffer, 1, 1000);
-  return buffer[0];
-}
 
-void writeRegister8(uint8_t reg, uint8_t val) {
-  uint8_t buffer[2] = {reg, val};
-  HAL_I2C_Master_Transmit(&hi2c1, DRV2605_ADDR << 1, buffer, sizeof(buffer), 1);
-}
-
-void DRV2605_init() {
-  writeRegister8(DRV2605_REG_MODE, 0x00); // out of standby
-
-  writeRegister8(DRV2605_REG_RTPIN, 0x00); // no real-time-playback
-
-  writeRegister8(DRV2605_REG_WAVESEQ1, 1); // strong click
-  writeRegister8(DRV2605_REG_WAVESEQ2, 0); // end sequence
-
-  writeRegister8(DRV2605_REG_OVERDRIVE, 1); // no overdrive
-
-  writeRegister8(DRV2605_REG_SUSTAINPOS, 0);
-  writeRegister8(DRV2605_REG_SUSTAINNEG, 0);
-  writeRegister8(DRV2605_REG_BREAK, 0);
-  writeRegister8(DRV2605_REG_AUDIOMAX, 0x64);
-
-  // ERM open loop
-
-  // turn on N_ERM_LRA
-  writeRegister8(DRV2605_REG_FEEDBACK,
-                 readRegister8(DRV2605_REG_FEEDBACK) | 0x80);
-
-  // // turn off N_ERM_LRA
-  // writeRegister8(DRV2605_REG_FEEDBACK,
-  //                readRegister8(DRV2605_REG_FEEDBACK) & 0x7F);
-  // // turn on ERM_OPEN_LOOP
-  // writeRegister8(DRV2605_REG_CONTROL3,
-  //                readRegister8(DRV2605_REG_CONTROL3) | 0x20);
-
-  writeRegister8(DRV2605_REG_LIBRARY, 1);
-  writeRegister8(DRV2605_REG_MODE, DRV2605_MODE_INTTRIG);
-}
 /* USER CODE END 0 */
 
 /**
@@ -164,22 +124,23 @@ int main(void)
 
   ADC_channel_Config.Rank = 1;
   ADC_channel_Config.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+
   keyboard_init_keys();
-
   ssd1306_Init();
-
-  hid_init();
-#if IS_DRV2605_ENABLED
-  drv2605l_init();
-#endif
-
+  tusb_rhport_init_t dev_init = {
+      .role = TUSB_ROLE_DEVICE,
+      .speed = TUSB_SPEED_AUTO};
+  tusb_init(0, &dev_init); // initialize device stack on roothub port 0
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
     // MARK: Main loop
+	tud_task();
     keyboard_task();
+        hid_task();
+    cdc_task();
 
     ssd1306_Fill(White);
     ssd1306_FlipScreen(1, 1);
@@ -271,15 +232,9 @@ int main(void)
 
     ssd1306_UpdateScreen();
 
-    hid_task();
 
-#if IS_DRV2605_ENABLED
-    if (key_triggered) {
-      writeRegister8(DRV2605_REG_WAVESEQ1 + 0, 1);
-      writeRegister8(DRV2605_REG_WAVESEQ1 + 1, 0);
-      writeRegister8(DRV2605_REG_GO, 1);
-    }
-#endif
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -308,8 +263,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 25;
-  RCC_OscInitStruct.PLL.PLLN = 336;
+  RCC_OscInitStruct.PLL.PLLM = 13;
+  RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -535,6 +490,8 @@ void keyboard_close_adc() {
 uint32_t keyboard_get_time() {
   return HAL_GetTick();
 }
+
+
 
 /* USER CODE END 4 */
 
