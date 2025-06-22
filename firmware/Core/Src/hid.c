@@ -4,6 +4,8 @@
 #include <keyboard.h>
 #include <stdlib.h>
 
+#define MACRO_CTRL_A 0xF0 // Giá trị đặc biệt cho macro CTRL+A
+
 extern uint8_t const desc_ms_os_20[];
 extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 extern struct user_config keyboard_user_config;
@@ -73,6 +75,16 @@ void hid_press_key(struct key *key, uint8_t layer) {
     should_send_consumer_report = 1;
     break;
 
+  case KEY_TYPE_MACRO:
+    // Xử lý macro CTRL+A
+    if (key->layers[layer].value == MACRO_CTRL_A) {
+      // Nhấn CTRL + A
+      modifiers |= get_bitmask_for_modifier(HID_KEY_CONTROL_LEFT);
+      keycodes[0] = HID_KEY_A;
+      should_send_keyboard_report = 1;
+    }
+    break;
+
   default:
     break;
   }
@@ -104,9 +116,37 @@ void hid_release_key(struct key *key, uint8_t layer) {
     should_send_consumer_report = 1;
     break;
 
+  case KEY_TYPE_MACRO:
+    // Xử lý thả macro CTRL+A
+    if (key->layers[layer].value == MACRO_CTRL_A) {
+      // Thả CTRL + A
+      modifiers &= ~get_bitmask_for_modifier(HID_KEY_CONTROL_LEFT);
+      keycodes[0] = 0;
+      should_send_keyboard_report = 1;
+    }
+    break;
+
   default:
     break;
   }
+}
+
+// Gửi tổ hợp CTRL + A (Left Control + 'A')
+void hid_send_ctrl_a_macro(void) {
+    // Nhấn CTRL + A
+    modifiers |= get_bitmask_for_modifier(HID_KEY_CONTROL_LEFT);
+    keycodes[0] = HID_KEY_A;
+    should_send_keyboard_report = 1;
+    if (tud_hid_ready()) {
+        tud_hid_keyboard_report(REPORT_ID_KEYBOARD, modifiers, keycodes);
+    }
+    // Nhả CTRL + A
+    modifiers &= ~get_bitmask_for_modifier(HID_KEY_CONTROL_LEFT);
+    keycodes[0] = 0;
+    should_send_keyboard_report = 1;
+    if (tud_hid_ready()) {
+        tud_hid_keyboard_report(REPORT_ID_KEYBOARD, modifiers, keycodes);
+    }
 }
 
 // Invoked when received SET_PROTOCOL request

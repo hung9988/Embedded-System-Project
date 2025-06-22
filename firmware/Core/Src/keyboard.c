@@ -5,30 +5,32 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define MACRO_CTRL_A 0xF0 // Giá trị đặc biệt cho macro CTRL+A
+
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
-	    .reverse_magnet_pole = 0,
-	    .trigger_offset = 64,
-	    .reset_threshold = 3,
-	    .rapid_trigger_offset = 40,
-	    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
-	    .tap_timeout = 200,
-	    .keymaps = {
-	        // clang-format off
-	            [_BASE_LAYER] = {
-	                {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
-	                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
-	                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
-	                {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_CONTROL_LEFT},
-	            },
-	            [_TAP_LAYER] = {
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
-	                {____, ____, ____, ____},
-	            },
-	        // clang-format on
-	    }};
+    .reverse_magnet_pole = 0,
+    .trigger_offset = 64,
+    .reset_threshold = 3,
+    .rapid_trigger_offset = 40,
+    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
+    .tap_timeout = 200,
+    .keymaps = {
+        // clang-format off
+            [_BASE_LAYER] = {
+                {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
+                {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
+                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
+                {HID_KEY_C, HID_KEY_D, HID_KEY_E, MACRO_CTRL_A}, // Phím thứ 16
+            },
+            [_TAP_LAYER] = {
+                {____, ____, ____, ____},
+                {____, ____, ____, ____},
+                {____, ____, ____, ____},
+                {____, ____, ____, ____},
+            },
+        // clang-format on
+    }};
 
 uint32_t keyboard_last_cycle_duration = 0;
 
@@ -87,18 +89,24 @@ void init_key(uint8_t adc_channel, uint8_t amux_channel, uint8_t row, uint8_t co
 
   for (uint8_t i = 0; i < LAYERS_COUNT; i++) {
     if (keyboard_user_config.keymaps[i][row][column] != ____) {
-      uint16_t usage_consumer_control = get_usage_consumer_control(keyboard_user_config.keymaps[i][row][column]);
-      if (usage_consumer_control) {
-        key->layers[i].type = KEY_TYPE_CONSUMER_CONTROL;
-        key->layers[i].value = usage_consumer_control;
+      // Kiểm tra macro trước
+      if (keyboard_user_config.keymaps[i][row][column] == MACRO_CTRL_A) {
+        key->layers[i].type = KEY_TYPE_MACRO;
+        key->layers[i].value = MACRO_CTRL_A;
       } else {
-        uint8_t bitmask = get_bitmask_for_modifier(keyboard_user_config.keymaps[i][row][column]);
-        if (bitmask) {
-          key->layers[i].type = KEY_TYPE_MODIFIER;
-          key->layers[i].value = bitmask;
+        uint16_t usage_consumer_control = get_usage_consumer_control(keyboard_user_config.keymaps[i][row][column]);
+        if (usage_consumer_control) {
+          key->layers[i].type = KEY_TYPE_CONSUMER_CONTROL;
+          key->layers[i].value = usage_consumer_control;
         } else {
-          key->layers[i].type = KEY_TYPE_NORMAL;
-          key->layers[i].value = keyboard_user_config.keymaps[i][row][column];
+          uint8_t bitmask = get_bitmask_for_modifier(keyboard_user_config.keymaps[i][row][column]);
+          if (bitmask) {
+            key->layers[i].type = KEY_TYPE_MODIFIER;
+            key->layers[i].value = bitmask;
+          } else {
+            key->layers[i].type = KEY_TYPE_NORMAL;
+            key->layers[i].value = keyboard_user_config.keymaps[i][row][column];
+          }
         }
       }
     }
@@ -429,4 +437,3 @@ void check_snaptap_debug() {
         last_pressed_key = current_pressed_key;
     }
 }
-// push 2

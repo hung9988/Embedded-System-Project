@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include <class/hid/hid.h>
 
+#define MACRO_CTRL_A 0xF0 // Giá trị đặc biệt cho macro CTRL+A
+
 const struct user_config keyboard_default_user_config = {
     .reverse_magnet_pole = DEFAULT_REVERSE_MAGNET_POLE,
     .trigger_offset = DEFAULT_TRIGGER_OFFSET,
@@ -16,7 +18,7 @@ const struct user_config keyboard_default_user_config = {
             {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
             {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
             {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
-            {HID_KEY_C, HID_KEY_D, HID_KEY_E, HID_KEY_CONTROL_LEFT},
+            {HID_KEY_C, HID_KEY_D, HID_KEY_E, MACRO_CTRL_A},
         },
         [_TAP_LAYER] = {
                 {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},

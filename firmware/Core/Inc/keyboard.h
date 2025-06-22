@@ -62,6 +62,7 @@ enum key_type {
   KEY_TYPE_NORMAL,
   KEY_TYPE_MODIFIER,
   KEY_TYPE_CONSUMER_CONTROL,
+  KEY_TYPE_MACRO,
 };
 
 struct __attribute__((__packed__)) layer {
