@@ -1,5 +1,5 @@
 ../tinyusb/src/tusb.c:48:19:tusb_time_delay_ms_api	24	static
-../tinyusb/src/tusb.c:61:6:tusb_rhport_init	24	static,ignoring_inline_asm
+../tinyusb/src/tusb.c:61:6:tusb_rhport_init	32	static,ignoring_inline_asm
 ../tinyusb/src/tusb.c:108:6:tusb_inited	16	static
 ../tinyusb/src/tusb.c:122:6:tusb_int_handler	16	static
 ../tinyusb/src/tusb.c:143:16:tu_desc_find	24	static

@@ -1,6 +1,6 @@
-../Core/Src/keyboard.c:36:9:get_bitmask_for_modifier	16	static
-../Core/Src/keyboard.c:59:10:get_usage_consumer_control	16	static
-../Core/Src/keyboard.c:67:6:init_key	40	static
+../Core/Src/keyboard.c:35:9:get_bitmask_for_modifier	16	static
+../Core/Src/keyboard.c:58:10:get_usage_consumer_control	16	static
+../Core/Src/keyboard.c:66:6:init_key	40	static
 ../Core/Src/keyboard.c:105:9:update_key_state	40	static
 ../Core/Src/keyboard.c:184:6:update_key_actuation	32	static
 ../Core/Src/keyboard.c:273:6:update_key	16	static

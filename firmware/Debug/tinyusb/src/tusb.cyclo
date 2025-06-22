@@ -1,5 +1,5 @@
 ../tinyusb/src/tusb.c:48:19:tusb_time_delay_ms_api	2
-../tinyusb/src/tusb.c:61:6:tusb_rhport_init	7
+../tinyusb/src/tusb.c:61:6:tusb_rhport_init	10
 ../tinyusb/src/tusb.c:108:6:tusb_inited	3
 ../tinyusb/src/tusb.c:122:6:tusb_int_handler	3
 ../tinyusb/src/tusb.c:143:16:tu_desc_find	3
