@@ -46,6 +46,15 @@ void hid_task() {
 }
 
 void hid_press_key(struct key *key, uint8_t layer) {
+  // Kiểm tra xem có phải phím chuyển đổi chế độ không (phím thứ 16 - MACRO_CTRL_A)
+  if (key->layers[layer].type == KEY_TYPE_MACRO && key->layers[layer].value == MACRO_CTRL_A) {
+    // Kiểm tra xem có phải phím thứ 16 không (row=3, col=3)
+    if (key->row == 3 && key->column == 3) {
+      // Đây là phím chuyển đổi chế độ, không thực hiện macro
+      return;
+    }
+  }
+
   switch (key->layers[layer].type) {
   case KEY_TYPE_MODIFIER:
     modifiers |= key->layers[layer].value;
@@ -91,6 +100,15 @@ void hid_press_key(struct key *key, uint8_t layer) {
 }
 
 void hid_release_key(struct key *key, uint8_t layer) {
+  // Kiểm tra xem có phải phím chuyển đổi chế độ không (phím thứ 16 - MACRO_CTRL_A)
+  if (key->layers[layer].type == KEY_TYPE_MACRO && key->layers[layer].value == MACRO_CTRL_A) {
+    // Kiểm tra xem có phải phím thứ 16 không (row=3, col=3)
+    if (key->row == 3 && key->column == 3) {
+      // Đây là phím chuyển đổi chế độ, không thực hiện macro
+      return;
+    }
+  }
+
   switch (key->layers[layer].type) {
   case KEY_TYPE_MODIFIER:
     modifiers &= ~key->layers[layer].value;

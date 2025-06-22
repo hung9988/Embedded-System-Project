@@ -7,6 +7,10 @@
 
 #define MACRO_CTRL_A 0xF0 // Giá trị đặc biệt cho macro CTRL+A
 
+// Thêm biến global để theo dõi chế độ hiện tại
+static enum keyboard_mode current_mode = MODE_COMBO_KEY;
+static uint8_t mode_toggle_key_pressed = 0; // Để tránh toggle nhiều lần khi giữ phím
+
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
     .reverse_magnet_pole = 0,
@@ -20,8 +24,8 @@ struct user_config keyboard_user_config = {
             [_BASE_LAYER] = {
                 {HID_KEY_0, HID_KEY_1, HID_KEY_2, HID_KEY_3},
                 {HID_KEY_4, HID_KEY_5, HID_KEY_6, HID_KEY_7},
-                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_B},
-                {HID_KEY_C, HID_KEY_D, HID_KEY_E, MACRO_CTRL_A}, // Phím thứ 16
+                {HID_KEY_8, HID_KEY_9, HID_KEY_A, HID_KEY_Z},
+                {HID_KEY_CONTROL_LEFT, MACRO_CTRL_A, HID_KEY_V, ____}, // Phím thứ 16
             },
             [_TAP_LAYER] = {
                 {____, ____, ____, ____},
@@ -435,5 +439,35 @@ void check_snaptap_debug() {
             printf("Press key: row=%d, col=%d\n", current_pressed_key->row, current_pressed_key->column);
         }
         last_pressed_key = current_pressed_key;
+    }
+}
+
+// Thêm các hàm quản lý chế độ
+enum keyboard_mode keyboard_get_current_mode() {
+    return current_mode;
+}
+
+void keyboard_check_and_toggle_mode() {
+    // Kiểm tra phím thứ 16 (row=3, col=3) - phím MACRO_CTRL_A
+    struct key* mode_key = &keyboard_keys[0][15]; // adc_channel=0, amux_channel=15
+    
+    if (mode_key->is_enabled && mode_key->actuation.status == STATUS_TRIGGERED) {
+        if (!mode_toggle_key_pressed) {
+            // Chuyển đổi chế độ
+            if (current_mode == MODE_COMBO_KEY) {
+                current_mode = MODE_SNAPTAP;
+                printf("Switched to SNAPTAP mode\n");
+            } else {
+                current_mode = MODE_COMBO_KEY;
+                printf("Switched to COMBO_KEY mode\n");
+            }
+            mode_toggle_key_pressed = 1;
+            
+            // Đặt trạng thái phím về RESET để tránh thực hiện macro
+            mode_key->actuation.status = STATUS_RESET;
+        }
+    } else {
+        // Reset flag khi phím được thả
+        mode_toggle_key_pressed = 0;
     }
 }

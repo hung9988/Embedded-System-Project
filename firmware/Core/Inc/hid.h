@@ -10,5 +10,6 @@ void hid_init();
 void hid_task();
 void hid_press_key(struct key *key, uint8_t layer);
 void hid_release_key(struct key *key, uint8_t layer);
+void hid_send_ctrl_a_macro(void);
 
 #endif /* __HID_H */

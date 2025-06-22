@@ -150,9 +150,18 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1) {
     // MARK: Main loop
-	  tud_task();
-    keyboard_task();
-    //keyboard_task_snaptap();
+    tud_task();
+    
+    // Kiểm tra và chuyển đổi chế độ nếu cần
+    keyboard_check_and_toggle_mode();
+    
+    // Chạy task tương ứng với chế độ hiện tại
+    if (keyboard_get_current_mode() == MODE_COMBO_KEY) {
+        keyboard_task();
+    } else {
+        keyboard_task_snaptap();
+    }
+    
     hid_task();
     //cdc_task();
     /* USER CODE END WHILE */

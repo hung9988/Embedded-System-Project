@@ -76,6 +76,12 @@ enum {
   LAYERS_COUNT
 };
 
+// Thêm enum cho các chế độ
+enum keyboard_mode {
+  MODE_COMBO_KEY,
+  MODE_SNAPTAP
+};
+
 struct __attribute__((__packed__)) key {
   uint8_t is_enabled;
   uint8_t row;
@@ -99,7 +105,10 @@ struct user_config {
 };
 
 void keyboard_task();
+void keyboard_task_snaptap();
 void keyboard_init_keys();
+void keyboard_check_and_toggle_mode();
+enum keyboard_mode keyboard_get_current_mode();
 extern void keyboard_read_config();
 extern uint8_t keyboard_write_config(uint8_t *buffer, uint16_t offset, uint16_t size);
 extern void keyboard_select_amux(uint8_t amux_channel);

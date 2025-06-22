@@ -1,20 +1,20 @@
 tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o: \
  ../tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.c \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
  ../Core/Inc/tusb_config.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/device/dcd.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/device/usbd_pvt.h \
- D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_private.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/device/dcd.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/device/usbd_pvt.h \
+ D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_private.h \
  ../tinyusb/src/portable/synopsys/dwc2/dwc2_common.h \
  ../tinyusb/src/portable/synopsys/dwc2/dwc2_type.h \
  ../tinyusb/src/portable/synopsys/dwc2/dwc2_stm32.h \
@@ -51,21 +51,21 @@ tinyusb/src/portable/synopsys/dwc2/dcd_dwc2.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
 ../Core/Inc/tusb_config.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/device/dcd.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/device/usbd_pvt.h:
-D:/Macro/Embedded-System-Project/firmware/tinyusb/src/common/tusb_private.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/device/dcd.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/device/usbd_pvt.h:
+D:/Macros/Embedded-System-Project/firmware/tinyusb/src/common/tusb_private.h:
 ../tinyusb/src/portable/synopsys/dwc2/dwc2_common.h:
 ../tinyusb/src/portable/synopsys/dwc2/dwc2_type.h:
 ../tinyusb/src/portable/synopsys/dwc2/dwc2_stm32.h:
