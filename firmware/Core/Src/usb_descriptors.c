@@ -1,10 +1,10 @@
 #include "tusb.h"
-
+#include "usb_descriptors.h"
 // STM32F411 specific includes
-#if defined(STM32F411xE)
-  #include "stm32f4xx.h"
-#endif
 
+#define _PID_MAP(itf, n) ((CFG_TUD_##itf) << (n))
+#define USB_PID (0x4000 | _PID_MAP(CDC, 0) | _PID_MAP(MSC, 1) | _PID_MAP(HID, 2) | \
+                 _PID_MAP(MIDI, 3) | _PID_MAP(VENDOR, 4))
 //--------------------------------------------------------------------+
 // Device Descriptors
 //--------------------------------------------------------------------+
@@ -19,7 +19,7 @@ tusb_desc_device_t const desc_device =
     .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
 
     .idVendor           = 0xCafe,
-    .idProduct          = 0x4000,
+    .idProduct          = USB_PID,
     .bcdDevice          = 0x0100,
 
     .iManufacturer      = 0x01,
@@ -41,15 +41,7 @@ uint8_t const * tud_descriptor_device_cb(void)
 //--------------------------------------------------------------------+
 
 // HID Instance and Report ID definitions
-enum
-{
-  HID_INSTANCE_KEYBOARD = 0,
-};
 
-enum {
-  REPORT_ID_KEYBOARD = 1,
-  REPORT_ID_CONSUMER_CONTROL,
-};
 
 uint8_t const desc_hid_report[] =
 {
@@ -154,108 +146,3 @@ uint16_t const* tud_descriptor_string_cb(uint8_t index, uint16_t langid)
   return _desc_str;
 }
 
-//--------------------------------------------------------------------+
-// Device callbacks
-//--------------------------------------------------------------------+
-
-// Invoked when device is mounted
-
-//--------------------------------------------------------------------+
-// CDC callbacks
-//--------------------------------------------------------------------+
-
-// Invoked when cdc when line state changed e.g connected/disconnected
-void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
-{
-  (void) itf;
-  (void) rts;
-
-  if ( dtr )
-  {
-    // Terminal connected, send welcome message
-    tud_cdc_write_str("Connected to TinyUSB CDC\r\n");
-    tud_cdc_write_flush();
-  }
-}
-
-// Invoked when CDC interface received data from host
-void tud_cdc_rx_cb(uint8_t itf)
-{
-  (void) itf;
-
-  // Read received data
-  char buf[64];
-  uint32_t count = tud_cdc_read(buf, sizeof(buf));
-
-  // Echo back
-  if ( count )
-  {
-    tud_cdc_write("Echo: ", 6);
-    tud_cdc_write(buf, count);
-    tud_cdc_write_flush();
-  }
-}
-
-// Invoked when line coding is change via SET_LINE_CODING
-void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
-{
-  (void) itf;
-  (void) p_line_coding;
-  // Handle line coding change if needed
-  // The baud rate is already set to 115200 by default
-}
-
-//--------------------------------------------------------------------+
-// HID callbacks
-//--------------------------------------------------------------------+
-
-// Invoked when received GET_REPORT control request
-// Application must fill buffer report's content and return its length.
-// Return zero will cause the stack to STALL request
-uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t* buffer, uint16_t reqlen)
-{
-  (void) instance;
-  (void) report_type;
-  (void) buffer;
-  (void) reqlen;
-
-  switch (report_id)
-  {
-    case REPORT_ID_KEYBOARD:
-      // TODO: Fill keyboard report if needed
-      break;
-
-    case REPORT_ID_CONSUMER_CONTROL:
-      // TODO: Fill consumer control report if needed
-      break;
-
-    default:
-      break;
-  }
-
-  return 0;
-}
-
-// Invoked when received SET_REPORT control request or
-// received data on OUT endpoint ( Report ID = 0, Type = 0 )
-void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type, uint8_t const* buffer, uint16_t bufsize)
-{
-  (void) instance;
-  (void) report_type;
-  (void) buffer;
-  (void) bufsize;
-
-  switch (report_id)
-  {
-    case REPORT_ID_KEYBOARD:
-      // Handle keyboard LED status (Caps Lock, Num Lock, etc.)
-      break;
-
-    case REPORT_ID_CONSUMER_CONTROL:
-      // Handle consumer control feedback if needed
-      break;
-
-    default:
-      break;
-  }
-}

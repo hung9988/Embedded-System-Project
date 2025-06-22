@@ -1,0 +1,6 @@
+../Core/Src/cdc.c:98:13:cdc_write_flush_wait	3
+../Core/Src/cdc.c:72:13:cdc_write_string_chunked	5
+../Core/Src/cdc.c:28:6:cdc_task	41
+../Core/Src/cdc.c:321:21:get_user_config	1
+../Core/Src/cdc.c:325:6:tud_cdc_line_state_cb	3
+../Core/Src/cdc.c:341:6:tud_cdc_rx_cb	1
