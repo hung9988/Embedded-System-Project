@@ -21,16 +21,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "ssd1306.h"
-#include "ssd1306_conf.h"
-#include "ssd1306_fonts.h"
-#include "DRV2605L.h"
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
+#include "ssd1306.h"
+#include "ssd1306_conf.h"
+#include "ssd1306_fonts.h"
 #include "tusb.h"
-#include <ctype.h>
 #include <cdc.h>
+#include <ctype.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,11 +40,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-
 #define MOD_WIDTH 38
 #define KEY_WIDTH ((SSD1306_WIDTH - MOD_WIDTH) / 3)
 #define DIVIDER 32
-
 
 /* USER CODE END PD */
 
@@ -85,15 +82,13 @@ static void MX_I2C1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
+ * @brief  The application entry point.
+ * @retval int
+ */
+int main(void) {
 
   /* USER CODE BEGIN 1 */
 
@@ -137,9 +132,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1) {
     // MARK: Main loop
-	tud_task();
+    tud_task();
     keyboard_task();
-        hid_task();
+    hid_task();
     cdc_task();
 
     ssd1306_Fill(White);
@@ -149,35 +144,43 @@ int main(void)
     ssd1306_Line(MOD_WIDTH, DIVIDER, SSD1306_WIDTH - 1, DIVIDER, Black);
     ssd1306_Line(MOD_WIDTH, 0, MOD_WIDTH, SSD1306_HEIGHT - 1, Black);
     for (int i = 1; i < 3; i++) {
-        int x = MOD_WIDTH + i * KEY_WIDTH;
-        ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
+      int x = MOD_WIDTH + i * KEY_WIDTH;
+      ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
     }
 
     int mod_y = 2;
     const int mod_line_height = 10;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-        struct key* k = &keyboard_keys[0][amux];
+      struct key *k = &keyboard_keys[0][amux];
 
-        if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-            uint8_t bitmask = k->layers[_BASE_LAYER].value;
-            const char* label = NULL;
+      if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+        uint8_t bitmask = k->layers[_BASE_LAYER].value;
+        const char *label = NULL;
 
-            if (bitmask == 0b00000001) label = "LCtrl";
-            else if (bitmask == 0b00000010) label = "LShift";
-            else if (bitmask == 0b00000100) label = "LAlt";
-            else if (bitmask == 0b00001000) label = "LGUI";
-            else if (bitmask == 0b00010000) label = "RCtrl";
-            else if (bitmask == 0b00100000) label = "RShift";
-            else if (bitmask == 0b01000000) label = "RAlt";
-            else if (bitmask == 0b10000000) label = "RGUI";
+        if (bitmask == 0b00000001)
+          label = "LCtrl";
+        else if (bitmask == 0b00000010)
+          label = "LShift";
+        else if (bitmask == 0b00000100)
+          label = "LAlt";
+        else if (bitmask == 0b00001000)
+          label = "LGUI";
+        else if (bitmask == 0b00010000)
+          label = "RCtrl";
+        else if (bitmask == 0b00100000)
+          label = "RShift";
+        else if (bitmask == 0b01000000)
+          label = "RAlt";
+        else if (bitmask == 0b10000000)
+          label = "RGUI";
 
-            if (label) {
-                ssd1306_SetCursor(2, mod_y);
-                ssd1306_WriteString(label, Font_6x8, Black);
-                mod_y += mod_line_height;
-            }
+        if (label) {
+          ssd1306_SetCursor(2, mod_y);
+          ssd1306_WriteString(label, Font_6x8, Black);
+          mod_y += mod_line_height;
         }
+      }
     }
 
     int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
@@ -191,49 +194,46 @@ int main(void)
     int tracker = 0;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-    	struct key* k = &keyboard_keys[0][amux];
+      struct key *k = &keyboard_keys[0][amux];
 
-        if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
-        	keycodes[tracker][0] = '0';
-        	keycodes[tracker][1] = 'x';
-        	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
-        	keycodes[tracker][3] = '\0';
+      if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+        keycodes[tracker][0] = '0';
+        keycodes[tracker][1] = 'x';
+        keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
+        keycodes[tracker][3] = '\0';
 
-            key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
-            tracker++;
-        }
+        key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
+        tracker++;
+      }
     }
 
     for (int i = 1; i <= 3; i++) {
-    	if (keycodes[i - 1][0] != '\0') {
-    		int x = MOD_WIDTH + (i - 1) * KEY_WIDTH + 4;
-    		ssd1306_SetCursor(x, label_row_top);
-         	ssd1306_WriteString((char*)keycodes[i - 1], Font_6x8, Black);
+      if (keycodes[i - 1][0] != '\0') {
+        int x = MOD_WIDTH + (i - 1) * KEY_WIDTH + 4;
+        ssd1306_SetCursor(x, label_row_top);
+        ssd1306_WriteString((char *)keycodes[i - 1], Font_6x8, Black);
 
-    		char buf[6];
-         	sprintf(buf, "%d%%", key_percents[i - 1]);
-         	ssd1306_SetCursor(x, percent_row_top);
-    		ssd1306_WriteString(buf, Font_6x8, Black);
-    	}
+        char buf[6];
+        sprintf(buf, "%d%%", key_percents[i - 1]);
+        ssd1306_SetCursor(x, percent_row_top);
+        ssd1306_WriteString(buf, Font_6x8, Black);
+      }
     }
 
     for (int i = 4; i <= 6; i++) {
-    	if (keycodes[i - 1][0] != '\0') {
-        	int x = MOD_WIDTH + (i - 4) * KEY_WIDTH + 4;
-            ssd1306_SetCursor(x, label_row_bot);
-           	ssd1306_WriteString((char*)keycodes[i - 1], Font_6x8, Black);
+      if (keycodes[i - 1][0] != '\0') {
+        int x = MOD_WIDTH + (i - 4) * KEY_WIDTH + 4;
+        ssd1306_SetCursor(x, label_row_bot);
+        ssd1306_WriteString((char *)keycodes[i - 1], Font_6x8, Black);
 
-        	char buf[6];
-           	sprintf(buf, "%d%%", key_percents[i - 1]);
-           	ssd1306_SetCursor(x, percent_row_bot);
-           	ssd1306_WriteString(buf, Font_6x8, Black);
-    	}
+        char buf[6];
+        sprintf(buf, "%d%%", key_percents[i - 1]);
+        ssd1306_SetCursor(x, percent_row_bot);
+        ssd1306_WriteString(buf, Font_6x8, Black);
+      }
     }
 
     ssd1306_UpdateScreen();
-
-
-
 
     /* USER CODE END WHILE */
 
@@ -243,22 +243,21 @@ int main(void)
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
+ * @brief System Clock Configuration
+ * @retval None
+ */
+void SystemClock_Config(void) {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Configure the main internal regulator output voltage
-  */
+   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -267,33 +266,29 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = 7;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
     Error_Handler();
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
     Error_Handler();
   }
 }
 
 /**
-  * @brief ADC1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_ADC1_Init(void)
-{
+ * @brief ADC1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_ADC1_Init(void) {
 
   /* USER CODE BEGIN ADC1_Init 0 */
 
@@ -306,7 +301,7 @@ static void MX_ADC1_Init(void)
   /* USER CODE END ADC1_Init 1 */
 
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
-  */
+   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
@@ -319,18 +314,16 @@ static void MX_ADC1_Init(void)
   hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.DMAContinuousRequests = DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
-  if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
+  if (HAL_ADC_Init(&hadc1) != HAL_OK) {
     Error_Handler();
   }
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
-  */
+   */
   sConfig.Channel = ADC_CHANNEL_9;
   sConfig.Rank = 1;
   sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK) {
     Error_Handler();
   }
   /* USER CODE BEGIN ADC1_Init 2 */
@@ -338,16 +331,14 @@ static void MX_ADC1_Init(void)
   // memcpy(&ADC_channel_Config, &sConfig, sizeof(ADC_ChannelConfTypeDef));
 
   /* USER CODE END ADC1_Init 2 */
-
 }
 
 /**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_I2C1_Init(void)
-{
+ * @brief I2C1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_I2C1_Init(void) {
 
   /* USER CODE BEGIN I2C1_Init 0 */
 
@@ -365,23 +356,20 @@ static void MX_I2C1_Init(void)
   hi2c1.Init.OwnAddress2 = 0;
   hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
   hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
-  {
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK) {
     Error_Handler();
   }
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
-
 }
 
 /**
-  * @brief USB_OTG_FS Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_USB_OTG_FS_PCD_Init(void)
-{
+ * @brief USB_OTG_FS Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_USB_OTG_FS_PCD_Init(void) {
 
   /* USER CODE BEGIN USB_OTG_FS_Init 0 */
 
@@ -400,26 +388,23 @@ static void MX_USB_OTG_FS_PCD_Init(void)
   hpcd_USB_OTG_FS.Init.lpm_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.vbus_sensing_enable = DISABLE;
   hpcd_USB_OTG_FS.Init.use_dedicated_ep1 = DISABLE;
-  if (HAL_PCD_Init(&hpcd_USB_OTG_FS) != HAL_OK)
-  {
+  if (HAL_PCD_Init(&hpcd_USB_OTG_FS) != HAL_OK) {
     Error_Handler();
   }
   /* USER CODE BEGIN USB_OTG_FS_Init 2 */
 
   /* USER CODE END USB_OTG_FS_Init 2 */
-
 }
 
 /**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
+ * @brief GPIO Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_GPIO_Init(void) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOH_CLK_ENABLE();
@@ -427,17 +412,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PB12 PB13 PB14 PB15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -491,16 +476,13 @@ uint32_t keyboard_get_time() {
   return HAL_GetTick();
 }
 
-
-
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
-{
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
+void Error_Handler(void) {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
@@ -509,16 +491,15 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
-void assert_failed(uint8_t *file, uint32_t line)
-{
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
+void assert_failed(uint8_t *file, uint32_t line) {
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
