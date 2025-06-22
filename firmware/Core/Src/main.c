@@ -192,57 +192,32 @@ int main(void)
         ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
     }
 
-    /*
-    char modcode[8] = "";
-    uint8_t mod_percent = 0;
+    int mod_y = 2;
+    const int mod_line_height = 10;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
         struct key* k = &keyboard_keys[0][amux];
 
-        if (k->state.distance_8bits > 20) {
-            if (k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-                uint8_t bitmask = k->layers[_BASE_LAYER].value;
-                mod_percent = (k->state.distance_8bits * 100) / 255;
+        if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+            uint8_t bitmask = k->layers[_BASE_LAYER].value;
+            const char* label = NULL;
 
-                switch (bitmask) {
-                    case 0b00000001: strcpy(modcode, "Ctrl"); break;
-                    case 0b00000010: strcpy(modcode, "Shift"); break;
-                    case 0b00000100: strcpy(modcode, "Alt"); break;
-                    case 0b00001000: strcpy(modcode, "GUI"); break;
-                    case 0b00010000: strcpy(modcode, "RCtrl"); break;
-                    case 0b00100000: strcpy(modcode, "RShift"); break;
-                    case 0b01000000: strcpy(modcode, "RAlt"); break;
-                    case 0b10000000: strcpy(modcode, "RGUI"); break;
-                    default: strcpy(modcode, "MOD"); break;
-                }
+            if (bitmask == 0b00000001) label = "LCtrl";
+            else if (bitmask == 0b00000010) label = "LShift";
+            else if (bitmask == 0b00000100) label = "LAlt";
+            else if (bitmask == 0b00001000) label = "LGUI";
+            else if (bitmask == 0b00010000) label = "RCtrl";
+            else if (bitmask == 0b00100000) label = "RShift";
+            else if (bitmask == 0b01000000) label = "RAlt";
+            else if (bitmask == 0b10000000) label = "RGUI";
 
-                break;
+            if (label) {
+                ssd1306_SetCursor(2, mod_y);
+                ssd1306_WriteString(label, Font_6x8, Black);
+                mod_y += mod_line_height;
             }
         }
     }
-
-    if (modcode != "\0") {
-        int mod_text_width = strlen(modcode) * 6;
-        int mod_x = MOD_WIDTH / 2 - mod_text_width / 2;
-        int mod_y = SSD1306_HEIGHT / 2 - 14;
-
-        int mod_percent_width;
-        int mod_x_percent;
-        if (mod_percent % 100 == 0) {
-        	mod_percent_width = 6 * 6;
-        	mod_x_percent = MOD_WIDTH / 2 - mod_percent_width / 2 + 6;
-        } else {
-        	mod_percent_width = 5 * 6;
-        	mod_x_percent = MOD_WIDTH / 2 - mod_percent_width / 2 + 6;
-        }
-
-        ssd1306_SetCursor(mod_x, mod_y);
-        ssd1306_WriteString((char*)modcode, Font_6x8, Black);
-        char mod_buf[6];
-        sprintf(mod_buf, "%d%%", mod_percent);
-        ssd1306_SetCursor(mod_x_percent, mod_y + 12);
-        ssd1306_WriteString(mod_buf, Font_6x8, Black);
-    } */
 
     int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
     int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
@@ -257,7 +232,7 @@ int main(void)
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
     	struct key* k = &keyboard_keys[0][amux];
 
-        if (k->state.distance_8bits > 20 && tracker < 6) {
+        if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
         	keycodes[tracker][0] = '0';
         	keycodes[tracker][1] = 'x';
         	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
