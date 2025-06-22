@@ -13,6 +13,7 @@ static char cmd_buffer[CFG_TUD_CDC_RX_BUFSIZE];
 static uint8_t cmd_index = 0;
 
 // Function prototypes
+void cdc_performance_measure(uint32_t started_at);
 static void process_command(char* cmd);
 static void print_help(void);
 static void print_config(void);
@@ -25,6 +26,20 @@ static void reset_config(void);
 static void cdc_write_string_chunked(const char* str);
 static void cdc_write_flush_wait(void);
 
+extern uint32_t started_at;  // Define this somewhere in your code
+
+void cdc_performance_measure(uint32_t started_at) {
+    if (!tud_cdc_connected()) return;
+
+    uint32_t now = HAL_GetTick();
+    uint32_t difference = now - started_at;
+
+    char msg[64];
+    int len = snprintf(msg, sizeof(msg), "One cycle duration: %lu\r\n", difference);
+
+    tud_cdc_write(msg, len);
+    tud_cdc_write_flush();  // Make sure data is sent
+}
 void cdc_task(void) {
     if (tud_cdc_connected()) {
         if (tud_cdc_available()) {

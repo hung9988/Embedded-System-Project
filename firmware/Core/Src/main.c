@@ -130,10 +130,13 @@ int main(void) {
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t start_at;
   while (1) {
     // MARK: Main loop
+	start_at=HAL_GetTick();
     tud_task();
     keyboard_task();
+
     hid_task();
     cdc_task();
 
@@ -234,7 +237,7 @@ int main(void) {
     }
 
     ssd1306_UpdateScreen();
-
+    cdc_performance_measure(start_at);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
