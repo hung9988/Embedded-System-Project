@@ -394,4 +394,3 @@ void check_snaptap_debug() {
         last_pressed_key = current_pressed_key;
     }
 }
-

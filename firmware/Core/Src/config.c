@@ -1,6 +1,7 @@
 #include "config.h"
 #include "keyboard.h"
 #include "stdlib.h"
+#include "hid.h"
 #include <class/hid/hid.h>
 
 const struct user_config keyboard_default_user_config = {

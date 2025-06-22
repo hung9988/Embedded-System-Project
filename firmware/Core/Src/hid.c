@@ -1,6 +1,6 @@
 #include "tusb.h"
 #include "usb_descriptors.h"
-#include <hid.h>
+#include "hid.h"
 #include <keyboard.h>
 #include <stdlib.h>
 

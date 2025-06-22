@@ -21,6 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ssd1306.h"
+#include "ssd1306_conf.h"
+#include "ssd1306_fonts.h"
+#include "DRV2605L.h"
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
@@ -36,6 +40,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+
+#define MOD_WIDTH 38
+#define KEY_WIDTH ((SSD1306_WIDTH - MOD_WIDTH) / 3)
+#define DIVIDER 32
+
 
 /* USER CODE END PD */
 
@@ -59,6 +69,7 @@ extern struct user_config keyboard_user_config;
 const uint32_t adc_channels[ADC_CHANNEL_COUNT] = {ADC_CHANNEL_9};
 const uint32_t amux_select_pins[AMUX_SELECT_PINS_COUNT] = {GPIO_PIN_15, GPIO_PIN_14, GPIO_PIN_12, GPIO_PIN_13};
 
+extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -115,6 +126,7 @@ int main(void)
   ADC_channel_Config.SamplingTime = ADC_SAMPLETIME_3CYCLES;
 
   keyboard_init_keys();
+  ssd1306_Init();
   tusb_rhport_init_t dev_init = {
       .role = TUSB_ROLE_DEVICE,
       .speed = TUSB_SPEED_AUTO};
@@ -127,8 +139,100 @@ int main(void)
     // MARK: Main loop
 	tud_task();
     keyboard_task();
-    hid_task();
+        hid_task();
     cdc_task();
+
+    ssd1306_Fill(White);
+    ssd1306_FlipScreen(1, 1);
+
+    ssd1306_DrawRectangle(0, 0, SSD1306_WIDTH - 1, SSD1306_HEIGHT - 1, Black);
+    ssd1306_Line(MOD_WIDTH, DIVIDER, SSD1306_WIDTH - 1, DIVIDER, Black);
+    ssd1306_Line(MOD_WIDTH, 0, MOD_WIDTH, SSD1306_HEIGHT - 1, Black);
+    for (int i = 1; i < 3; i++) {
+        int x = MOD_WIDTH + i * KEY_WIDTH;
+        ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
+    }
+
+    int mod_y = 2;
+    const int mod_line_height = 10;
+
+    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
+        struct key* k = &keyboard_keys[0][amux];
+
+        if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+            uint8_t bitmask = k->layers[_BASE_LAYER].value;
+            const char* label = NULL;
+
+            if (bitmask == 0b00000001) label = "LCtrl";
+            else if (bitmask == 0b00000010) label = "LShift";
+            else if (bitmask == 0b00000100) label = "LAlt";
+            else if (bitmask == 0b00001000) label = "LGUI";
+            else if (bitmask == 0b00010000) label = "RCtrl";
+            else if (bitmask == 0b00100000) label = "RShift";
+            else if (bitmask == 0b01000000) label = "RAlt";
+            else if (bitmask == 0b10000000) label = "RGUI";
+
+            if (label) {
+                ssd1306_SetCursor(2, mod_y);
+                ssd1306_WriteString(label, Font_6x8, Black);
+                mod_y += mod_line_height;
+            }
+        }
+    }
+
+    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
+    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
+
+    int label_row_top = 2;
+    int percent_row_top = label_row_bot - 11;
+
+    char keycodes[6][4] = {0};
+    uint8_t key_percents[6] = {0};
+    int tracker = 0;
+
+    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
+    	struct key* k = &keyboard_keys[0][amux];
+
+        if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+        	keycodes[tracker][0] = '0';
+        	keycodes[tracker][1] = 'x';
+        	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
+        	keycodes[tracker][3] = '\0';
+
+            key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
+            tracker++;
+        }
+    }
+
+    for (int i = 1; i <= 3; i++) {
+    	if (keycodes[i - 1][0] != '\0') {
+    		int x = MOD_WIDTH + (i - 1) * KEY_WIDTH + 4;
+    		ssd1306_SetCursor(x, label_row_top);
+         	ssd1306_WriteString((char*)keycodes[i - 1], Font_6x8, Black);
+
+    		char buf[6];
+         	sprintf(buf, "%d%%", key_percents[i - 1]);
+         	ssd1306_SetCursor(x, percent_row_top);
+    		ssd1306_WriteString(buf, Font_6x8, Black);
+    	}
+    }
+
+    for (int i = 4; i <= 6; i++) {
+    	if (keycodes[i - 1][0] != '\0') {
+        	int x = MOD_WIDTH + (i - 4) * KEY_WIDTH + 4;
+            ssd1306_SetCursor(x, label_row_bot);
+           	ssd1306_WriteString((char*)keycodes[i - 1], Font_6x8, Black);
+
+        	char buf[6];
+           	sprintf(buf, "%d%%", key_percents[i - 1]);
+           	ssd1306_SetCursor(x, percent_row_bot);
+           	ssd1306_WriteString(buf, Font_6x8, Black);
+    	}
+    }
+
+    ssd1306_UpdateScreen();
+
+
 
 
     /* USER CODE END WHILE */
