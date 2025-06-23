@@ -6041,7 +6041,7 @@ static void MX_I2C1_Init(void) {
  8002d3c:	4b12      	ldr	r3, [pc, #72]	@ (8002d88 <MX_I2C1_Init+0x50>)
  8002d3e:	4a13      	ldr	r2, [pc, #76]	@ (8002d8c <MX_I2C1_Init+0x54>)
  8002d40:	601a      	str	r2, [r3, #0]
-  hi2c1.Init.ClockSpeed = 100000;
+  hi2c1.Init.ClockSpeed = 400000;
  8002d42:	4b11      	ldr	r3, [pc, #68]	@ (8002d88 <MX_I2C1_Init+0x50>)
  8002d44:	4a12      	ldr	r2, [pc, #72]	@ (8002d90 <MX_I2C1_Init+0x58>)
  8002d46:	605a      	str	r2, [r3, #4]
@@ -6090,7 +6090,7 @@ static void MX_I2C1_Init(void) {
  8002d86:	bd80      	pop	{r7, pc}
  8002d88:	200007ac 	.word	0x200007ac
  8002d8c:	40005400 	.word	0x40005400
- 8002d90:	000186a0 	.word	0x000186a0
+ 8002d90:	00061a80 	.word	0x00061a80
 
 08002d94 <MX_USB_OTG_FS_PCD_Init>:
 /**
