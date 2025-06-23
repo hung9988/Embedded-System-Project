@@ -5349,7 +5349,7 @@ int main(void) {
  8002802:	2300      	movs	r3, #0
  8002804:	f8c7 30b4 	str.w	r3, [r7, #180]	@ 0xb4
 
-        for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
+    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
  8002808:	2300      	movs	r3, #0
  800280a:	f8c7 30b0 	str.w	r3, [r7, #176]	@ 0xb0
  800280e:	e0eb      	b.n	80029e8 <main+0x4ec>
@@ -5556,7 +5556,7 @@ int main(void) {
  80029da:	e000      	b.n	80029de <main+0x4e2>
             if (k->state.distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
  80029dc:	bf00      	nop
-        for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
+    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
  80029de:	f8d7 30b0 	ldr.w	r3, [r7, #176]	@ 0xb0
  80029e2:	3301      	adds	r3, #1
  80029e4:	f8c7 30b0 	str.w	r3, [r7, #176]	@ 0xb0
