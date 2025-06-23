@@ -14,18 +14,30 @@ struct user_config keyboard_user_config = {
     .tap_timeout = 200,
     .keymaps = {
         // clang-format off
-	            [_BASE_LAYER] = {
-	      	                {{HID_KEY_0}, {HID_KEY_1}, {HID_KEY_2}, {HID_KEY_3}},
+		        [_BASE_LAYER] = {
+								{{HID_KEY_0}, {HID_KEY_1}, {HID_KEY_2}, {HID_KEY_3}},
     			                {{HID_KEY_4}, {HID_KEY_5}, {HID_KEY_6}, {HID_KEY_7}},
     			                {{HID_KEY_8}, {HID_KEY_9}, {HID_KEY_A}, {HID_KEY_D}},
-    			                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_KEY_ALT_LEFT}, {____}},
-	            },
-	            [_TAP_LAYER] = {
-	                {{____}, {____}, {____}, {____}},
-	                {{____}, {____}, {____}, {____}},
-	                {{____}, {____}, {____}, {____}},
-	                {{____}, {____}, {____}, {____}},
-	            },
+    			                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE}},
+    			            },
+            [_TAP_LAYER] = {
+							  {{____}, {____}, {____}, {____}},
+                {{____}, {____}, {____}, {____}},
+                {{____}, {____}, {____}, {____}},
+                {{____}, {____}, {____}, {____}},
+            },
+            [_ALT_LAYER] = {
+                {{HID_KEY_A}, {HID_KEY_B}, {HID_KEY_C}, {HID_KEY_D}},
+                {{HID_KEY_E}, {HID_KEY_F}, {HID_KEY_G}, {HID_KEY_H}},
+                {{HID_KEY_J}, {HID_KEY_K}, {HID_KEY_L}, {HID_KEY_M}},
+                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE}},
+            },
+            [_ALT_LAYER_2] = {
+                { {HID_KEY_N}, {HID_KEY_O}, {HID_KEY_P}, {HID_KEY_Q} },
+                { {HID_KEY_R}, {HID_KEY_S}, {HID_KEY_T}, {HID_KEY_U} },
+                { {HID_KEY_V}, {HID_KEY_W}, {HID_KEY_X}, {HID_KEY_Y} },
+                { {HID_KEY_Z}, {HID_KEY_CONTROL_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE} },
+            },
         // clang-format on
     }};
 
@@ -204,7 +216,7 @@ uint8_t update_key_state(struct key *key) {
   return 1;
 }
 
-void update_key_actuation(struct key *key) {
+void update_key_actuation(struct key *key, uint8_t layer) {
   /**
    * https://www.youtube.com/watch?v=_Sl-T6iQr8U&t
    *
@@ -244,7 +256,7 @@ void update_key_actuation(struct key *key) {
       } else {
         key->actuation.status = STATUS_TRIGGERED;
         key_triggered = 1;
-        hid_press_key(key, _BASE_LAYER);
+        hid_press_key(key, layer);
       }
       key->actuation.triggered_at = now;
     }
@@ -263,7 +275,7 @@ void update_key_actuation(struct key *key) {
       } else {
         key->actuation.status = STATUS_TRIGGERED;
         key_triggered = 1;
-        hid_press_key(key, _BASE_LAYER);
+        hid_press_key(key, layer);
       }
       key->actuation.triggered_at = now;
     } else if (is_before_reset_offset) {
@@ -281,10 +293,10 @@ void update_key_actuation(struct key *key) {
     // if triggered, can be reset
     if (is_before_reset_offset) {
       key->actuation.status = STATUS_RESET;
-      hid_release_key(key, _BASE_LAYER);
+      hid_release_key(key, layer);
     } else if (has_rapid_trigger && key->actuation.direction == GOING_UP && is_before_rapid_reset_offset) {
       key->actuation.status = STATUS_RAPID_TRIGGER_RESET;
-      hid_release_key(key, _BASE_LAYER);
+      hid_release_key(key, layer);
     }
     break;
 
@@ -298,7 +310,8 @@ void update_key(struct key *key) {
     return;
   }
 
-  update_key_actuation(key);
+  extern int current_layer;
+  update_key_actuation(key, current_layer);
 }
 
 void keyboard_init_keys() {

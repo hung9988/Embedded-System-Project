@@ -71,6 +71,9 @@ extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 // Add global mode variable
 keyboard_mode_t g_keyboard_mode = MODE_COMBO_KEY;
 uint8_t last_mode_key_pressed = 0;
+uint8_t last_layer_key_pressed = 0;
+// Thêm biến toàn cục lưu layer hiện tại
+int current_layer = _BASE_LAYER;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -140,13 +143,24 @@ int main(void) {
     start_at=HAL_GetTick();
     tud_task();
     
-    // Detect 16th key (row 3, col 3, i.e., keyboard_keys[0][15])
-    struct key *mode_key = &keyboard_keys[0][12];
-    uint8_t mode_key_pressed = (mode_key->actuation.status == STATUS_TRIGGERED);
+    // Detect mode key by HID code
+    struct key *mode_key = NULL;
+    struct key *layer_key = NULL;
+    for (int adc = 0; adc < ADC_CHANNEL_COUNT; ++adc) {
+        for (int amux = 0; amux < AMUX_CHANNEL_COUNT; ++amux) {
+            struct key *k = &keyboard_keys[adc][amux];
+            if (k->layers[_BASE_LAYER].value[0] == HID_MODE_CHANGE) {
+                mode_key = k;
+            }
+            if (k->layers[_BASE_LAYER].value[0] == HID_LAYER_CHANGE) {
+                layer_key = k;
+            }
+        }
+    }
+    uint8_t mode_key_pressed = (mode_key && mode_key->actuation.status == STATUS_TRIGGERED);
+    uint8_t layer_key_pressed = (layer_key && layer_key->actuation.status == STATUS_TRIGGERED);
     if (mode_key_pressed && !last_mode_key_pressed) {
-        // Toggle mode
         g_keyboard_mode = (g_keyboard_mode == MODE_COMBO_KEY) ? MODE_SNAP_TAP : MODE_COMBO_KEY;
-        // Print mode name to CDC (Hercules)
         if (g_keyboard_mode == MODE_COMBO_KEY) {
             tud_cdc_write_str("Mode: COMBO_KEY\r\n");
         } else {
@@ -154,7 +168,22 @@ int main(void) {
         }
         tud_cdc_write_flush();
     }
+    if (layer_key_pressed && !last_layer_key_pressed) {
+        // Toggle tuần tự giữa BASE, ALT, ALT2
+        if (current_layer == _BASE_LAYER) {
+            current_layer = _ALT_LAYER;
+            tud_cdc_write_str("Layer: ALT\r\n");
+        } else if (current_layer == _ALT_LAYER) {
+            current_layer = _ALT_LAYER_2;
+            tud_cdc_write_str("Layer: ALT2\r\n");
+        } else {
+            current_layer = _BASE_LAYER;
+            tud_cdc_write_str("Layer: BASE\r\n");
+        }
+        tud_cdc_write_flush();
+    }
     last_mode_key_pressed = mode_key_pressed;
+    last_layer_key_pressed = layer_key_pressed;
 
     // Call the appropriate task based on mode
     if (g_keyboard_mode == MODE_COMBO_KEY) {
@@ -166,7 +195,7 @@ int main(void) {
     //keyboard_task();
     hid_task();
     cdc_task();
-
+    cdc_performance_measure(start_at);
     ssd1306_Fill(White);
     ssd1306_FlipScreen(1, 1);
 
