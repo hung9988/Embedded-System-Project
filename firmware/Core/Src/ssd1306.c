@@ -54,7 +54,6 @@ void ssd1306_WriteData(uint8_t* buffer, size_t buff_size) {
 
 
 // Screenbuffer
-static uint8_t SSD1306_Buffer[SSD1306_BUFFER_SIZE];
 
 // Screen object
 static SSD1306_t SSD1306;
@@ -177,7 +176,39 @@ void ssd1306_Fill(SSD1306_COLOR color) {
 }
 
 /* Write the screenbuffer with changed to the screen */
+uint8_t SSD1306_Buffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)] = {0};
+uint8_t SSD1306_LastBuffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)] = {0};
+
 void ssd1306_UpdateScreen(void) {
+    for (uint8_t page = 0; page < (SSD1306_HEIGHT / 8); page++) {
+        uint16_t base = page * SSD1306_WIDTH;
+        int pageChanged = 0;
+
+        // First check if anything on this page changed
+        for (uint16_t col = 0; col < SSD1306_WIDTH; col++) {
+            uint16_t index = base + col;
+            if (SSD1306_Buffer[index] != SSD1306_LastBuffer[index]) {
+                pageChanged = 1;
+                break;
+            }
+        }
+
+        if (!pageChanged)
+            continue;
+
+        // Write only changed page
+        ssd1306_WriteCommand(0xB0 + page);
+        ssd1306_WriteCommand(0x00 + SSD1306_X_OFFSET_LOWER);
+        ssd1306_WriteCommand(0x10 + SSD1306_X_OFFSET_UPPER);
+
+        ssd1306_WriteData(&SSD1306_Buffer[base], SSD1306_WIDTH);
+
+        // Copy new page to last buffer
+        memcpy(&SSD1306_LastBuffer[base], &SSD1306_Buffer[base], SSD1306_WIDTH);
+    }
+}
+
+/* void ssd1306_UpdateScreen(void) {
     // Write data to each page of RAM. Number of pages
     // depends on the screen height:
     //
@@ -190,8 +221,7 @@ void ssd1306_UpdateScreen(void) {
         ssd1306_WriteCommand(0x10 + SSD1306_X_OFFSET_UPPER);
         ssd1306_WriteData(&SSD1306_Buffer[SSD1306_WIDTH*i],SSD1306_WIDTH);
     }
-}
-
+} */
 /*
  * Draw one pixel in the screenbuffer
  * X => X Coordinate

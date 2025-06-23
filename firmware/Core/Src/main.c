@@ -96,7 +96,6 @@ static void MX_I2C1_Init(void);
  * @retval int
  */
 int main(void) {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -138,6 +137,15 @@ int main(void) {
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint32_t start_at;
+
+  int mod_y = 2;
+  const int mod_line_height = 10;
+  int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
+  int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
+
+  int label_row_top = 2;
+  int percent_row_top = label_row_bot - 11;
+
   while (1) {
     // MARK: Main loop
     start_at=HAL_GetTick();
@@ -195,7 +203,6 @@ int main(void) {
     //keyboard_task();
     hid_task();
     cdc_task();
-    cdc_performance_measure(start_at);
     ssd1306_Fill(White);
     ssd1306_FlipScreen(1, 1);
 
@@ -206,9 +213,6 @@ int main(void) {
       int x = MOD_WIDTH + i * KEY_WIDTH;
       ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
     }
-
-    int mod_y = 2;
-    const int mod_line_height = 10;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
       struct key *k = &keyboard_keys[0][amux];
@@ -242,15 +246,9 @@ int main(void) {
       }
     }
 
-    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
-    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
-
-    int label_row_top = 2;
-    int percent_row_top = label_row_bot - 11;
-
     char keycodes[6][4] = {0};
     uint8_t key_percents[6] = {0};
-    int tracker = 0;
+    int tracker = {0};
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
       struct key *k = &keyboard_keys[0][amux];
