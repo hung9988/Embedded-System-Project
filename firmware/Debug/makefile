@@ -110,8 +110,8 @@ all: main-build
 main-build: macrolev.elf secondary-outputs
 
 # Tool invocations
-macrolev.elf macrolev.map: $(OBJS) $(USER_OBJS) C:\Users\Le\ Hung\EmbeddedProject\firmware\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "macrolev.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Le Hung\EmbeddedProject\firmware\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="macrolev.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+macrolev.elf macrolev.map: $(OBJS) $(USER_OBJS) C:\Users\monik\OneDrive\Documents\Embedded-System-Project\firmware\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "macrolev.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\monik\OneDrive\Documents\Embedded-System-Project\firmware\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="macrolev.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

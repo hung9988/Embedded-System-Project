@@ -24,7 +24,6 @@
 #include "ssd1306.h"
 #include "ssd1306_conf.h"
 #include "ssd1306_fonts.h"
-#include "DRV2605L.h"
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
@@ -156,10 +155,20 @@ int main(void)
     int mod_y = 2;
     const int mod_line_height = 10;
 
+    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
+    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
+
+    int label_row_top = 2;
+    int percent_row_top = label_row_bot - 11;
+
+    char keycodes[6][4] = {0};
+    uint8_t key_percents[6] = {0};
+    int tracker = 0;
+
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
         struct key* k = &keyboard_keys[0][amux];
 
-        if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+        if (k->state.distance_8bits >= 8 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
             uint8_t bitmask = k->layers[_BASE_LAYER].value;
             const char* label = NULL;
 
@@ -174,30 +183,16 @@ int main(void)
 
             if (label) {
                 ssd1306_SetCursor(2, mod_y);
-                ssd1306_WriteString(label, Font_6x8, Black);
+                ssd1306_WriteString((char*)label, Font_6x8, Black);
                 mod_y += mod_line_height;
             }
         }
-    }
 
-    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
-    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
-
-    int label_row_top = 2;
-    int percent_row_top = label_row_bot - 11;
-
-    char keycodes[6][4] = {0};
-    uint8_t key_percents[6] = {0};
-    int tracker = 0;
-
-    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-    	struct key* k = &keyboard_keys[0][amux];
-
-        if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+        else if (k->state.distance_8bits >= 8 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
         	keycodes[tracker][0] = '0';
-        	keycodes[tracker][1] = 'x';
-        	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
-        	keycodes[tracker][3] = '\0';
+            keycodes[tracker][1] = 'x';
+           	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
+            keycodes[tracker][3] = '\0';
 
             key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
             tracker++;

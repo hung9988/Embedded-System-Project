@@ -16,6 +16,8 @@ _BEGIN_STD_C
 
 #include "ssd1306_conf.h"
 
+#define OLED_TIMEOUT_MS 20
+
 
 #if defined(STM32WB)
 #include "stm32wbxx_hal.h"
