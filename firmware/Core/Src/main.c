@@ -138,14 +138,6 @@ int main(void) {
   /* USER CODE BEGIN WHILE */
   uint32_t start_at;
 
-  int mod_y = 2;
-  const int mod_line_height = 10;
-  int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
-  int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
-
-  int label_row_top = 2;
-  int percent_row_top = label_row_bot - 11;
-
   while (1) {
     // MARK: Main loop
     start_at=HAL_GetTick();
@@ -201,6 +193,7 @@ int main(void) {
     }
     //snaptap_task();
     //keyboard_task();
+
     hid_task();
     cdc_task();
     ssd1306_Fill(White);
@@ -214,55 +207,52 @@ int main(void) {
       ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
     }
 
-    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-      struct key *k = &keyboard_keys[0][amux];
+    int mod_y = 2;
+    const int mod_line_height = 10;
 
-      if (k->state.distance_8bits > 20 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-        uint8_t bitmask = k->layers[_BASE_LAYER].value;
-        const char *label = NULL;
+    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
+    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
 
-        if (bitmask == 0b00000001)
-          label = "LCtrl";
-        else if (bitmask == 0b00000010)
-          label = "LShift";
-        else if (bitmask == 0b00000100)
-          label = "LAlt";
-        else if (bitmask == 0b00001000)
-          label = "LGUI";
-        else if (bitmask == 0b00010000)
-          label = "RCtrl";
-        else if (bitmask == 0b00100000)
-          label = "RShift";
-        else if (bitmask == 0b01000000)
-          label = "RAlt";
-        else if (bitmask == 0b10000000)
-          label = "RGUI";
-
-        if (label) {
-          ssd1306_SetCursor(2, mod_y);
-          ssd1306_WriteString(label, Font_6x8, Black);
-          mod_y += mod_line_height;
-        }
-      }
-    }
+    int label_row_top = 2;
+    int percent_row_top = label_row_bot - 11;
 
     char keycodes[6][4] = {0};
     uint8_t key_percents[6] = {0};
-    int tracker = {0};
+    int tracker = 0;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-      struct key *k = &keyboard_keys[0][amux];
+            struct key* k = &keyboard_keys[0][amux];
 
-      if (k->state.distance_8bits > 20 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
-        keycodes[tracker][0] = '0';
-        keycodes[tracker][1] = 'x';
-        keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
-        keycodes[tracker][3] = '\0';
+            if (k->state.distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+            	uint16_t bitmask = *(uint16_t *)k->layers[_BASE_LAYER].value;
+                const char* label = NULL;
 
-        key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
-        tracker++;
-      }
-    }
+                if (bitmask == 0b00000001) label = "LCtrl";
+                else if (bitmask == 0b00000010) label = "LShift";
+                else if (bitmask == 0b00000100) label = "LAlt";
+                else if (bitmask == 0b00001000) label = "LGUI";
+                else if (bitmask == 0b00010000) label = "RCtrl";
+                else if (bitmask == 0b00100000) label = "RShift";
+                else if (bitmask == 0b01000000) label = "RAlt";
+                else if (bitmask == 0b10000000) label = "RGUI";
+
+                if (label) {
+                    ssd1306_SetCursor(2, mod_y);
+                    ssd1306_WriteString(label, Font_6x8, Black);
+                    mod_y += mod_line_height;
+                }
+            }
+
+            else if (k->state.distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+            	keycodes[tracker][0] = '0';
+                keycodes[tracker][1] = 'x';
+               	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
+                keycodes[tracker][3] = '\0';
+
+                key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
+                tracker++;
+            }
+        }
 
     for (int i = 1; i <= 3; i++) {
       if (keycodes[i - 1][0] != '\0') {

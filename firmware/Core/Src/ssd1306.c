@@ -11,12 +11,12 @@ void ssd1306_Reset(void) {
 
 // Send a byte to the command register
 void ssd1306_WriteCommand(uint8_t byte) {
-    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x00, 1, &byte, 1, HAL_MAX_DELAY);
+    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x00, 1, &byte, 1, OLED_TIMEOUT_MS);
 }
 
 // Send data
 void ssd1306_WriteData(uint8_t* buffer, size_t buff_size) {
-    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x40, 1, buffer, buff_size, HAL_MAX_DELAY);
+    HAL_I2C_Mem_Write(&SSD1306_I2C_PORT, SSD1306_I2C_ADDR, 0x40, 1, buffer, buff_size, OLED_TIMEOUT_MS);
 }
 
 #elif defined(SSD1306_USE_SPI)
@@ -180,31 +180,38 @@ uint8_t SSD1306_Buffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)] = {0};
 uint8_t SSD1306_LastBuffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)] = {0};
 
 void ssd1306_UpdateScreen(void) {
+    int anyPageChanged = 0;
     for (uint8_t page = 0; page < (SSD1306_HEIGHT / 8); page++) {
         uint16_t base = page * SSD1306_WIDTH;
         int pageChanged = 0;
+        int firstChanged = -1, lastChanged = -1;
 
-        // First check if anything on this page changed
+        // Find the first and last changed column in this page
         for (uint16_t col = 0; col < SSD1306_WIDTH; col++) {
             uint16_t index = base + col;
             if (SSD1306_Buffer[index] != SSD1306_LastBuffer[index]) {
+                if (firstChanged == -1) firstChanged = col;
+                lastChanged = col;
                 pageChanged = 1;
-                break;
             }
         }
 
         if (!pageChanged)
             continue;
+        anyPageChanged = 1;
 
-        // Write only changed page
+        // Write only the changed columns in this page
         ssd1306_WriteCommand(0xB0 + page);
-        ssd1306_WriteCommand(0x00 + SSD1306_X_OFFSET_LOWER);
-        ssd1306_WriteCommand(0x10 + SSD1306_X_OFFSET_UPPER);
+        ssd1306_WriteCommand(0x00 + ((firstChanged + SSD1306_X_OFFSET_LOWER) & 0x0F));
+        ssd1306_WriteCommand(0x10 + (((firstChanged + SSD1306_X_OFFSET_LOWER) >> 4) & 0x07));
+        ssd1306_WriteData(&SSD1306_Buffer[base + firstChanged], lastChanged - firstChanged + 1);
 
-        ssd1306_WriteData(&SSD1306_Buffer[base], SSD1306_WIDTH);
-
-        // Copy new page to last buffer
-        memcpy(&SSD1306_LastBuffer[base], &SSD1306_Buffer[base], SSD1306_WIDTH);
+        // Copy new page data to last buffer for the changed range
+        memcpy(&SSD1306_LastBuffer[base + firstChanged], &SSD1306_Buffer[base + firstChanged], lastChanged - firstChanged + 1);
+    }
+    // If nothing changed, skip the update entirely
+    if (!anyPageChanged) {
+        return;
     }
 }
 

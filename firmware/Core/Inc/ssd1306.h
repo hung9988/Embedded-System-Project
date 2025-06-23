@@ -16,6 +16,8 @@ _BEGIN_STD_C
 
 #include "ssd1306_conf.h"
 
+#define OLED_TIMEOUT_MS 10
+
 extern uint8_t SSD1306_Buffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)];
 extern uint8_t SSD1306_LastBuffer[SSD1306_WIDTH * (SSD1306_HEIGHT / 8)];
 

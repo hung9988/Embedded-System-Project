@@ -36,12 +36,11 @@ void cdc_performance_measure(uint32_t started_at) {
   uint32_t now = HAL_GetTick();
   uint32_t difference = now - started_at;
 
-  if (difference > 10) {
   char msg[64];
   int len = snprintf(msg, sizeof(msg), "One cycle duration: %lu\r\n", difference);
 
   tud_cdc_write(msg, len);
-  tud_cdc_write_flush(); }// Make sure data is sent
+  tud_cdc_write_flush(); // Make sure data is sent
 }
 void cdc_task(void) {
   if (tud_cdc_connected()) {
@@ -64,7 +63,7 @@ void cdc_task(void) {
           cdc_write_string_chunked("\r\n");
           cmd_buffer[cmd_index] = '\0';
 
-          if (cmd_index > 0) {
+          if (cmd_index >= 5) {
             process_command(cmd_buffer);
             cmd_index = 0;
           }
