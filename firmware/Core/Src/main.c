@@ -67,6 +67,10 @@ const uint32_t adc_channels[ADC_CHANNEL_COUNT] = {ADC_CHANNEL_9};
 const uint32_t amux_select_pins[AMUX_SELECT_PINS_COUNT] = {GPIO_PIN_15, GPIO_PIN_14, GPIO_PIN_12, GPIO_PIN_13};
 
 extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
+
+// Add global mode variable
+keyboard_mode_t g_keyboard_mode = MODE_COMBO_KEY;
+uint8_t last_mode_key_pressed = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -133,10 +137,33 @@ int main(void) {
   uint32_t start_at;
   while (1) {
     // MARK: Main loop
-	start_at=HAL_GetTick();
+    start_at=HAL_GetTick();
     tud_task();
-    keyboard_task();
+    
+    // Detect 16th key (row 3, col 3, i.e., keyboard_keys[0][15])
+    struct key *mode_key = &keyboard_keys[0][12];
+    uint8_t mode_key_pressed = (mode_key->actuation.status == STATUS_TRIGGERED);
+    if (mode_key_pressed && !last_mode_key_pressed) {
+        // Toggle mode
+        g_keyboard_mode = (g_keyboard_mode == MODE_COMBO_KEY) ? MODE_SNAP_TAP : MODE_COMBO_KEY;
+        // Print mode name to CDC (Hercules)
+        if (g_keyboard_mode == MODE_COMBO_KEY) {
+            tud_cdc_write_str("Mode: COMBO_KEY\r\n");
+        } else {
+            tud_cdc_write_str("Mode: SNAP_TAP\r\n");
+        }
+        tud_cdc_write_flush();
+    }
+    last_mode_key_pressed = mode_key_pressed;
 
+    // Call the appropriate task based on mode
+    if (g_keyboard_mode == MODE_COMBO_KEY) {
+        keyboard_task();
+    } else {
+        snaptap_task();
+    }
+    //snaptap_task();
+    //keyboard_task();
     hid_task();
     cdc_task();
 

@@ -1,7 +1,7 @@
-../Core/Src/hid.c:21:6:hid_task	7
-../Core/Src/hid.c:38:6:hid_press_key	7
-../Core/Src/hid.c:73:6:hid_release_key	7
-../Core/Src/hid.c:109:6:tud_hid_set_protocol_cb	1
-../Core/Src/hid.c:115:6:tud_hid_report_complete_cb	1
-../Core/Src/hid.c:120:10:tud_hid_get_report_cb	1
-../Core/Src/hid.c:132:6:tud_hid_set_report_cb	1
+../Core/Src/hid.c:20:6:hid_task	7
+../Core/Src/hid.c:37:6:hid_press_key	19
+../Core/Src/hid.c:127:6:hid_release_key	12
+../Core/Src/hid.c:187:6:tud_hid_set_protocol_cb	1
+../Core/Src/hid.c:192:6:tud_hid_report_complete_cb	1
+../Core/Src/hid.c:196:10:tud_hid_get_report_cb	1
+../Core/Src/hid.c:207:6:tud_hid_set_report_cb	1
