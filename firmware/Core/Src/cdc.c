@@ -7,10 +7,15 @@
 #include <string.h>
 
 extern struct user_config keyboard_user_config;
-
+extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 // Command buffer for parsing
 static char cmd_buffer[CFG_TUD_CDC_RX_BUFSIZE];
 static uint8_t cmd_index = 0;
+
+// Streaming control variables
+static bool streaming_active = false;
+static uint32_t last_stream_time = 0;
+static const uint32_t STREAM_INTERVAL_MS = 1; // 1ms for ~1kHz
 
 // Function prototypes
 void cdc_performance_measure(uint32_t started_at);
@@ -26,6 +31,9 @@ static void load_config(void);
 static void reset_config(void);
 static void cdc_write_string_chunked(const char *str);
 static void cdc_write_flush_wait(void);
+static void start_streaming(void);
+static void stop_streaming(void);
+static void handle_streaming(void);
 
 extern uint32_t started_at; // Define this somewhere in your code
 
@@ -42,8 +50,12 @@ void cdc_performance_measure(uint32_t started_at) {
   tud_cdc_write(msg, len);
   tud_cdc_write_flush(); // Make sure data is sent
 }
+
 void cdc_task(void) {
   if (tud_cdc_connected()) {
+    // Handle streaming if active
+    handle_streaming();
+
     if (tud_cdc_available()) {
       uint8_t buf[CFG_TUD_CDC_RX_BUFSIZE];
       uint32_t count = tud_cdc_read(buf, sizeof(buf));
@@ -51,37 +63,54 @@ void cdc_task(void) {
       for (uint32_t i = 0; i < count; i++) {
         char c = buf[i];
 
+        // Handle Ctrl+C to stop streaming
+        if (c == 3) { // Ctrl+C ASCII code
+          if (streaming_active) {
+            stop_streaming();
+            cdc_write_string_chunked("\r\nStreaming stopped\r\n");
+            cdc_write_string_chunked("Ready> ");
+          }
+          continue;
+        }
+
         // Handle backspace
         if (c == '\b' || c == 127) {
-          if (cmd_index > 0) {
+          if (cmd_index > 0 && !streaming_active) {
             cmd_index--;
             cdc_write_string_chunked("\b \b"); // Erase character
           }
         }
         // Handle enter/newline
         else if (c == '\r' || c == '\n') {
-          cdc_write_string_chunked("\r\n");
-          cmd_buffer[cmd_index] = '\0';
+          if (!streaming_active) {
+            cdc_write_string_chunked("\r\n");
+            cmd_buffer[cmd_index] = '\0';
 
-          if (cmd_index > 0) {
-            process_command(cmd_buffer);
-            cmd_index = 0;
+            if (cmd_index > 0) {
+              process_command(cmd_buffer);
+              cmd_index = 0;
+            }
+
+            if (!streaming_active) {
+              cdc_write_string_chunked("Ready> ");
+            }
           }
-
-          cdc_write_string_chunked("Ready> ");
         }
         // Handle printable characters
-        else if (c >= 32 && c <= 126 && cmd_index < sizeof(cmd_buffer) - 1) {
+        else if (c >= 32 && c <= 126 && cmd_index < sizeof(cmd_buffer) - 1 && !streaming_active) {
           cmd_buffer[cmd_index++] = c;
           tud_cdc_write(&c, 1); // Echo character
         }
       }
 
-      cdc_write_flush_wait();
+      if (!streaming_active) {
+        cdc_write_flush_wait();
+      }
     }
   } else {
-    // Reset flag when disconnected
+    // Reset flags when disconnected
     cmd_index = 0;
+    streaming_active = false;
   }
 }
 
@@ -124,6 +153,65 @@ static void cdc_write_flush_wait(void) {
   }
 }
 
+static void start_streaming(void) {
+  streaming_active = true;
+  last_stream_time = HAL_GetTick();
+  cdc_write_string_chunked("Starting ADC stream (Press Ctrl+C to stop)...\r\n");
+}
+
+static void stop_streaming(void) {
+  streaming_active = false;
+}
+
+static void handle_streaming(void) {
+  if (!streaming_active || !tud_cdc_connected()) {
+    return;
+  }
+
+  uint32_t current_time = HAL_GetTick();
+
+  // Check if it's time to send data (1ms interval for ~1kHz)
+  if (current_time - last_stream_time >= STREAM_INTERVAL_MS) {
+    last_stream_time = current_time;
+
+    // Build CSV string with all keyboard_keys state.value data
+    char csv_buffer[512];
+    int pos = 0;
+
+    // Iterate through the keyboard_keys array and collect state.value for each key
+    bool first = true;
+    for (uint8_t adc_ch = 0; adc_ch < ADC_CHANNEL_COUNT; adc_ch++) {
+      for (uint8_t amux_ch = 0; amux_ch < AMUX_CHANNEL_COUNT; amux_ch++) {
+        if (!first) {
+          pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, ",");
+        }
+        first = false;
+
+        // Get the state.value from the current key
+        uint16_t value = keyboard_keys[adc_ch][amux_ch].state.value;
+        pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, "%u", value);
+
+        // Safety check to prevent buffer overflow
+        if (pos >= sizeof(csv_buffer) - 10) {
+          break;
+        }
+      }
+      if (pos >= sizeof(csv_buffer) - 10) {
+        break;
+      }
+    }
+
+    // Add newline
+    pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, "\r\n");
+
+    // Send the CSV data
+    if (tud_cdc_write_available() >= pos) {
+      tud_cdc_write(csv_buffer, pos);
+      tud_cdc_write_flush();
+    }
+  }
+}
+
 static void process_command(char *cmd) {
   // Convert to lowercase for case-insensitive commands
   for (int i = 0; cmd[i]; i++) {
@@ -140,6 +228,8 @@ static void process_command(char *cmd) {
     print_help();
   } else if (strcmp(token, "show") == 0) {
     print_config();
+  } else if (strcmp(token, "stream") == 0) {
+    start_streaming();
   } else if (strcmp(token, "set") == 0) {
     char *param = strtok(NULL, " ");
     char *value = strtok(NULL, " ");
@@ -230,6 +320,7 @@ static void print_help(void) {
   cdc_write_string_chunked("Available commands:\r\n");
   cdc_write_string_chunked("  help                    - Show this help\r\n");
   cdc_write_string_chunked("  show                    - Show current configuration\r\n");
+  cdc_write_string_chunked("  stream                  - Start streaming ADC values (Ctrl+C to stop)\r\n");
   cdc_write_string_chunked("  set <param> <value>     - Set configuration parameter\r\n");
   cdc_write_string_chunked("  keymap <layer>          - Show keymap for layer\r\n");
   cdc_write_string_chunked("  setkey <L> <R> <C> <V>  - Set key value (Layer/Row/Col/Value)\r\n");
@@ -239,7 +330,7 @@ static void print_help(void) {
   cdc_write_string_chunked("  reset                   - Reset to default values\r\n");
   cdc_write_string_chunked("\r\nParameters:\r\n");
   cdc_write_string_chunked("  reverse_magnet_pole, trigger_offset, reset_threshold,\r\n");
-  cdc_write_string_chunked("  rapid_trigger_offset, screaming_velocity_trigger, tap_timeout\r\n");
+  cdc_write_string_chunked("  rapid_trigger_offset, tap_timeout\r\n");
 }
 
 static void print_config(void) {
@@ -259,8 +350,6 @@ static void print_config(void) {
   snprintf(buffer, sizeof(buffer), "  rapid_trigger_offset: %u\r\n", keyboard_user_config.rapid_trigger_offset);
   cdc_write_string_chunked(buffer);
 
-  snprintf(buffer, sizeof(buffer), "  screaming_velocity_trigger: %u\r\n", keyboard_user_config.screaming_velocity_trigger);
-  cdc_write_string_chunked(buffer);
 
   snprintf(buffer, sizeof(buffer), "  tap_timeout: %u\r\n", keyboard_user_config.tap_timeout);
   cdc_write_string_chunked(buffer);
@@ -284,9 +373,6 @@ static void set_config_value(char *param, char *value) {
   } else if (strcmp(param, "rapid_trigger_offset") == 0) {
     keyboard_user_config.rapid_trigger_offset = (uint8_t)val;
     snprintf(buffer, sizeof(buffer), "Set rapid_trigger_offset to %u\r\n", keyboard_user_config.rapid_trigger_offset);
-  } else if (strcmp(param, "screaming_velocity_trigger") == 0) {
-    keyboard_user_config.screaming_velocity_trigger = (uint8_t)val;
-    snprintf(buffer, sizeof(buffer), "Set screaming_velocity_trigger to %u\r\n", keyboard_user_config.screaming_velocity_trigger);
   } else if (strcmp(param, "tap_timeout") == 0) {
     keyboard_user_config.tap_timeout = (uint16_t)val;
     snprintf(buffer, sizeof(buffer), "Set tap_timeout to %u\r\n", keyboard_user_config.tap_timeout);

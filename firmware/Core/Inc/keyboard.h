@@ -52,7 +52,6 @@ struct __attribute__((__packed__)) actuation {
   uint8_t reset_offset;
   uint8_t trigger_offset;
   uint8_t rapid_trigger_offset;
-  uint8_t is_continuous_rapid_trigger_enabled;
   uint32_t triggered_at;
 };
 

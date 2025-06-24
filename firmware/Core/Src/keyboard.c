@@ -10,7 +10,6 @@ struct user_config keyboard_user_config = {
     .trigger_offset = 64,
     .reset_threshold = 3,
     .rapid_trigger_offset = 40,
-    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
     .tap_timeout = 200,
     .keymaps = {
         // clang-format off
@@ -95,7 +94,6 @@ void init_key(uint8_t adc_channel, uint8_t amux_channel, uint8_t row, uint8_t co
   key->actuation.trigger_offset = keyboard_user_config.trigger_offset;
   key->actuation.reset_offset = keyboard_user_config.trigger_offset - keyboard_user_config.reset_threshold;
   key->actuation.rapid_trigger_offset = keyboard_user_config.rapid_trigger_offset;
-  key->actuation.is_continuous_rapid_trigger_enabled = 0;
 
   for (uint8_t i = 0; i < LAYERS_COUNT; i++) {
     if (keyboard_user_config.keymaps[i][row][column][0] != ____) {
