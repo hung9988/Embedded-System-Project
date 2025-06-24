@@ -1,4 +1,5 @@
-Core/Src/cdc.o: ../Core/Src/cdc.c \
+Core/Src/cdc.o: ../Core/Src/cdc.c ../Core/Inc/keyboard.h \
+ ../Core/Inc/config.h \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/tusb.h \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/common/tusb_common.h \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/tusb_option.h \
@@ -20,8 +21,9 @@ Core/Src/cdc.o: ../Core/Src/cdc.c \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/class/hid/hid.h \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/class/cdc/cdc_device.h \
  C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/class/cdc/cdc.h \
- ../Core/Inc/usb_descriptors.h ../Core/Inc/cdc.h ../Core/Inc/keyboard.h \
- ../Core/Inc/config.h ../Core/Inc/keyboard.h
+ ../Core/Inc/usb_descriptors.h ../Core/Inc/cdc.h ../Core/Inc/keyboard.h
+../Core/Inc/keyboard.h:
+../Core/Inc/config.h:
 C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/tusb.h:
 C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/common/tusb_common.h:
 C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/tusb_option.h:
@@ -45,6 +47,4 @@ C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/class/cdc/cdc_device.h:
 C:/Users/Le\ Hung/EmbeddedProject/firmware/tinyusb/src/class/cdc/cdc.h:
 ../Core/Inc/usb_descriptors.h:
 ../Core/Inc/cdc.h:
-../Core/Inc/keyboard.h:
-../Core/Inc/config.h:
 ../Core/Inc/keyboard.h:
