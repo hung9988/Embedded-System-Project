@@ -281,7 +281,7 @@ int main(void) {
     }
 
     ssd1306_UpdateScreen();
-    cdc_performance_measure(start_at);
+//    cdc_performance_measure(start_at);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

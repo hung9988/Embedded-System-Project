@@ -320,7 +320,7 @@ static void print_help(void) {
   cdc_write_string_chunked("Available commands:\r\n");
   cdc_write_string_chunked("  help                    - Show this help\r\n");
   cdc_write_string_chunked("  show                    - Show current configuration\r\n");
-  cdc_write_string_chunked("  stream                  - Start streaming ADC values (Ctrl+C to stop)\r\n");
+//  cdc_write_string_chunked("  stream                  - Start streaming ADC values (Ctrl+C to stop)\r\n");
   cdc_write_string_chunked("  set <param> <value>     - Set configuration parameter\r\n");
   cdc_write_string_chunked("  keymap <layer>          - Show keymap for layer\r\n");
   cdc_write_string_chunked("  setkey <L> <R> <C> <V>  - Set key value (Layer/Row/Col/Value)\r\n");
@@ -365,6 +365,7 @@ static void set_config_value(char *param, char *value) {
     snprintf(buffer, sizeof(buffer), "Set reverse_magnet_pole to %u\r\n", keyboard_user_config.reverse_magnet_pole);
   } else if (strcmp(param, "trigger_offset") == 0) {
     keyboard_user_config.trigger_offset = (uint8_t)val;
+    keyboard_init_keys();
     snprintf(buffer, sizeof(buffer), "Set trigger_offset to %u\r\n", keyboard_user_config.trigger_offset);
   } else if (strcmp(param, "reset_threshold") == 0) {
     keyboard_user_config.reset_threshold = (uint8_t)val;

@@ -7,7 +7,7 @@
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
 struct user_config keyboard_user_config = {
     .reverse_magnet_pole = 0,
-    .trigger_offset = 64,
+    .trigger_offset = 150,
     .reset_threshold = 3,
     .rapid_trigger_offset = 40,
     .tap_timeout = 200,
