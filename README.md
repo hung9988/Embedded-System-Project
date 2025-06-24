@@ -26,5 +26,5 @@ This project focus on the design of a analog macro pad using the Blackpill (STM3
 - [Macrolev](https://github.com/heiso/macrolev/tree/main)
 - [TinyUSB](https://github.com/hathach/tinyusb)
 - [USB in a Nutshell](https://www.beyondlogic.org/usbnutshell/usb1.shtml)
-
+- [SSD1306](https://github.com/afiskon/stm32-ssd1306/tree/master)
 
