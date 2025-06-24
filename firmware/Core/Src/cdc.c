@@ -350,7 +350,6 @@ static void print_config(void) {
   snprintf(buffer, sizeof(buffer), "  rapid_trigger_offset: %u\r\n", keyboard_user_config.rapid_trigger_offset);
   cdc_write_string_chunked(buffer);
 
-
   snprintf(buffer, sizeof(buffer), "  tap_timeout: %u\r\n", keyboard_user_config.tap_timeout);
   cdc_write_string_chunked(buffer);
 

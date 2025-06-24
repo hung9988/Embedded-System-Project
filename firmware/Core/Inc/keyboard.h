@@ -17,6 +17,15 @@
 
 #define SPECIAL(X) (0b1000000000000000 | X)
 
+#define HID_KEY_MODE 0xF0 // 16th key, custom code outside standard HID range
+#define HID_MODE_CHANGE 0xF0 // Custom code for mode change key
+#define HID_LAYER_CHANGE 0xF1 // Custom code for layer change key
+
+typedef enum {
+    MODE_COMBO_KEY = 0,
+    MODE_SNAP_TAP = 1
+} keyboard_mode_t;
+
 struct __attribute__((__packed__)) calibration {
   uint16_t cycles_count;
   uint16_t idle_value;
@@ -71,6 +80,8 @@ struct __attribute__((__packed__)) layer {
 enum {
   _BASE_LAYER,
   _TAP_LAYER,
+  _ALT_LAYER,
+  _ALT_LAYER_2,
   LAYERS_COUNT
 };
 
