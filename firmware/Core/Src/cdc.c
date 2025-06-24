@@ -63,7 +63,7 @@ void cdc_task(void) {
           cdc_write_string_chunked("\r\n");
           cmd_buffer[cmd_index] = '\0';
 
-          if (cmd_index > 0) {
+          if (cmd_index >= 5) {
             process_command(cmd_buffer);
             cmd_index = 0;
           }
