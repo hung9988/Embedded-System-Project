@@ -88,7 +88,7 @@ static void MX_I2C1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint8_t cycle_count_on=0;
 /* USER CODE END 0 */
 
 /**
@@ -143,7 +143,7 @@ int main(void) {
     start_at=HAL_GetTick();
     tud_task();
     
-    // Detect mode key by HID code
+
     struct key *mode_key = NULL;
     struct key *layer_key = NULL;
     for (int adc = 0; adc < ADC_CHANNEL_COUNT; ++adc) {
@@ -191,11 +191,14 @@ int main(void) {
     } else {
         snaptap_task();
     }
-    //snaptap_task();
-    //keyboard_task();
+//    snaptap_task();
+//    keyboard_task();
 
     hid_task();
     cdc_task();
+
+
+
     ssd1306_Fill(White);
     ssd1306_FlipScreen(1, 1);
 
@@ -223,7 +226,7 @@ int main(void) {
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
             struct key* k = &keyboard_keys[0][amux];
 
-            if (k->state.distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
+            if (k->state.filtered_distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
             	uint16_t bitmask = *(uint16_t *)k->layers[_BASE_LAYER].value;
                 const char* label = NULL;
 
@@ -243,13 +246,13 @@ int main(void) {
                 }
             }
 
-            else if (k->state.distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+            else if (k->state.filtered_distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
             	keycodes[tracker][0] = '0';
                 keycodes[tracker][1] = 'x';
                	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
                 keycodes[tracker][3] = '\0';
 
-                key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
+                key_percents[tracker] = (k->state.filtered_distance_8bits * 100) / 254;
                 tracker++;
             }
         }
@@ -281,7 +284,9 @@ int main(void) {
     }
 
     ssd1306_UpdateScreen();
-//    cdc_performance_measure(start_at);
+    if (cycle_count_on){
+    cdc_performance_measure(start_at);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -9,7 +9,6 @@ const struct user_config keyboard_default_user_config = {
     .trigger_offset = DEFAULT_TRIGGER_OFFSET,
     .reset_threshold = DEFAULT_RESET_THRESHOLD,
     .rapid_trigger_offset = DEFAULT_RAPID_TRIGGER_OFFSET,
-    .screaming_velocity_trigger = DEFAULT_SCREAMING_VELOCITY_TRIGGER,
     .tap_timeout = DEFAULT_TAP_TIMEOUT,
     .keymaps = {
         // clang-format off

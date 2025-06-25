@@ -313,7 +313,7 @@ void update_key(struct key *key) {
 }
 
 void keyboard_init_keys() {
-  //	keyboard_read_config();
+  	keyboard_read_config();
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
       if (channels_by_row_col[row][col][0] != XXXX) {
@@ -412,18 +412,18 @@ void snaptap_task() {
 
   // Snaptap logic - chỉ xử lý việc thả phím cũ, không nhấn phím mới
   static struct key* current_pressed_key = NULL;
-  struct key* new_pressed_key = NULL;
-  
-  // Tìm phím đang TRIGGERED
+  uint32_t latest_triggered_time = 0;
+  static struct key* new_pressed_key = NULL;
   for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
       for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
           struct key* key = &keyboard_keys[adc_channel][amux_channel];
           if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-              new_pressed_key = key;
-              break;
+              if (key->actuation.triggered_at >= latest_triggered_time) {
+                  latest_triggered_time = key->actuation.triggered_at;
+                  new_pressed_key = key;
+              }
           }
       }
-      if (new_pressed_key) break;
   }
   
   // Xử lý snaptap - chỉ thả phím cũ, không nhấn phím mới
