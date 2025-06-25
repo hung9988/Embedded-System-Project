@@ -223,8 +223,8 @@ int main(void) {
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
             struct key* k = &keyboard_keys[0][amux];
 
-            if (k->state.distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-            	uint16_t bitmask = *(uint16_t *)k->layers[_BASE_LAYER].value;
+            if (k->state.distance_8bits >= 15 && k->layers[current_layer].type == KEY_TYPE_MODIFIER) {
+            	uint16_t bitmask = *(uint16_t *)k->layers[current_layer].value;
                 const char* label = NULL;
 
                 if (bitmask == 0b00000001) label = "LCtrl";
@@ -243,15 +243,23 @@ int main(void) {
                 }
             }
 
-            else if (k->state.distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
-            	keycodes[tracker][0] = '0';
-                keycodes[tracker][1] = 'x';
-               	keycodes[tracker][2] = (amux < 10) ? ('0' + amux) : ('A' + (amux - 10));
-                keycodes[tracker][3] = '\0';
+            else if (k->state.distance_8bits >= 15 && tracker < 6 && k->layers[current_layer].type == KEY_TYPE_NORMAL) {
+                        	uint16_t keycode = k->layers[current_layer].value[0];
+                        	if (keycode >= 0x04 && keycode <= 0x1D) {
+                        	        keycodes[tracker][0] = '0';
+                        	        keycodes[tracker][1] = 'x';
+                        	        keycodes[tracker][2] = 'A' + (keycode - 0x04);
+                        	        keycodes[tracker][3] = '\0';
+                        	} else if (keycode >= 0x1E && keycode <= 0x27) {
+                        	        keycodes[tracker][0] = '0';
+                        	        keycodes[tracker][1] = 'x';
+                        	        keycodes[tracker][2] = (keycode == 0x27) ? '0' : ('1' + (keycode - 0x1E));
+                        	        keycodes[tracker][3] = '\0';
+                        	    }
 
-                key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
-                tracker++;
-            }
+                            key_percents[tracker] = (k->state.distance_8bits * 100) / 255;
+                            tracker++;
+                        }
         }
 
     for (int i = 1; i <= 3; i++) {

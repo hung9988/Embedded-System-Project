@@ -4,7 +4,7 @@
 ../Core/Src/keyboard.c:138:9:update_key_state	18
 ../Core/Src/keyboard.c:217:6:update_key_actuation	17
 ../Core/Src/keyboard.c:306:6:update_key	2
-../Core/Src/keyboard.c:314:6:keyboard_init_keys	4
-../Core/Src/keyboard.c:325:6:keyboard_task	12
-../Core/Src/keyboard.c:369:6:snaptap_task	9
-../Core/Src/keyboard.c:400:6:check_snaptap_debug	9
+../Core/Src/keyboard.c:315:6:keyboard_init_keys	4
+../Core/Src/keyboard.c:326:6:keyboard_task	12
+../Core/Src/keyboard.c:370:6:snaptap_task	19
+../Core/Src/keyboard.c:439:6:check_snaptap_debug	9

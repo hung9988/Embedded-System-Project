@@ -8,7 +8,7 @@
 ../Core/Src/cdc.c:215:13:process_command	35
 ../Core/Src/cdc.c:319:13:print_help	1
 ../Core/Src/cdc.c:336:13:print_config	1
-../Core/Src/cdc.c:360:13:set_config_value	6
+../Core/Src/cdc.c:359:13:set_config_value	6
 ../Core/Src/cdc.c:386:13:print_keymap	8
 ../Core/Src/cdc.c:433:13:set_keymap_value	2
 ../Core/Src/cdc.c:448:13:set_macro_keymap_value	4
