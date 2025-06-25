@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "tusb.h": "c",
+        "keyboard.h": "c"
+    }
+}
