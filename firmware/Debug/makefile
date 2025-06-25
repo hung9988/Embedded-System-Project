@@ -84,34 +84,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := HE16
+BUILD_ARTIFACT_NAME := macrolev
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-HE16.elf \
+macrolev.elf \
 
 MAP_FILES += \
-HE16.map \
+macrolev.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-HE16.list \
+macrolev.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: HE16.elf secondary-outputs
+main-build: macrolev.elf secondary-outputs
 
 # Tool invocations
-HE16.elf HE16.map: $(OBJS) $(USER_OBJS) C:\Users\Le\ Hung\EmbeddedProject\firmware\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "HE16.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Le Hung\EmbeddedProject\firmware\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="HE16.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+macrolev.elf macrolev.map: $(OBJS) $(USER_OBJS) C:\Users\monik\OneDrive\Documents\Embedded-System-Project\firmware\STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "macrolev.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\monik\OneDrive\Documents\Embedded-System-Project\firmware\STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="macrolev.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -120,14 +120,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-HE16.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "HE16.list"
+macrolev.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "macrolev.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) HE16.elf HE16.list HE16.map default.size.stdout
+	-$(RM) default.size.stdout macrolev.elf macrolev.list macrolev.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
