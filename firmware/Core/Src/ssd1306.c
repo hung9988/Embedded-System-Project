@@ -229,12 +229,14 @@ void ssd1306_UpdateScreen(void) {
         ssd1306_WriteData(&SSD1306_Buffer[SSD1306_WIDTH*i],SSD1306_WIDTH);
     }
 } */
+
 /*
  * Draw one pixel in the screenbuffer
  * X => X Coordinate
  * Y => Y Coordinate
  * color => Pixel color
  */
+
 void ssd1306_DrawPixel(uint8_t x, uint8_t y, SSD1306_COLOR color) {
     if(x >= SSD1306_WIDTH || y >= SSD1306_HEIGHT) {
         // Don't write outside the buffer

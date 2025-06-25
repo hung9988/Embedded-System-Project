@@ -216,15 +216,15 @@ int main(void) {
     int label_row_top = 2;
     int percent_row_top = label_row_bot - 11;
 
-    char keycodes[6][4] = {0};
+    char keycodes[6][2] = {0};
     uint8_t key_percents[6] = {0};
     int tracker = 0;
 
     for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
       struct key *k = &keyboard_keys[0][amux];
 
-      if (k->state.filtered_distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-        uint16_t bitmask = *(uint16_t *)k->layers[_BASE_LAYER].value;
+      if (k->state.filtered_distance_8bits >= 15 && k->layers[current_layer].type == KEY_TYPE_MODIFIER) {
+        uint16_t bitmask = *(uint16_t *)k->layers[current_layer].value;
         const char *label = NULL;
 
         if (bitmask == 0b00000001)
@@ -251,18 +251,14 @@ int main(void) {
         }
       }
 
-      else if (k->state.filtered_distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
+      else if (k->state.filtered_distance_8bits >= 15 && tracker < 6 && k->layers[current_layer].type == KEY_TYPE_NORMAL) {
         uint16_t keycode = k->layers[current_layer].value[0];
         if (keycode >= 0x04 && keycode <= 0x1D) {
-          keycodes[tracker][0] = '0';
-          keycodes[tracker][1] = 'x';
-          keycodes[tracker][2] = 'A' + (keycode - 0x04);
-          keycodes[tracker][3] = '\0';
+          keycodes[tracker][0] = 'A' + (keycode - 0x04);
+          keycodes[tracker][1] = '\0';
         } else if (keycode >= 0x1E && keycode <= 0x27) {
-          keycodes[tracker][0] = '0';
-          keycodes[tracker][1] = 'x';
-          keycodes[tracker][2] = (keycode == 0x27) ? '0' : ('1' + (keycode - 0x1E));
-          keycodes[tracker][3] = '\0';
+          keycodes[tracker][0] = (keycode == 0x27) ? '0' : ('1' + (keycode - 0x1E));
+          keycodes[tracker][1] = '\0';
         }
 
         key_percents[tracker] = (k->state.filtered_distance_8bits * 100) / 254;
