@@ -1,50 +1,50 @@
 Core/Src/hid.o: ../Core/Src/hid.c ../Core/Inc/hid.h \
  ../Core/Inc/keyboard.h ../Core/Inc/config.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/tusb.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
  ../Core/Inc/tusb_config.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/device/usbd.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid_device.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc_device.h \
- C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/device/usbd.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid_device.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc_device.h \
+ /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc.h \
  ../Core/Inc/usb_descriptors.h ../Core/Inc/keyboard.h
 ../Core/Inc/hid.h:
 ../Core/Inc/keyboard.h:
 ../Core/Inc/config.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/tusb.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
 ../Core/Inc/tusb_config.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/device/usbd.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid_device.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc_device.h:
-C:/Users/monik/OneDrive/Documents/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_mcu.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_compiler.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_verify.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_types.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_debug.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal_none.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/osal/osal.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_fifo.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/device/usbd.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid_device.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/hid/hid.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc_device.h:
+/Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/class/cdc/cdc.h:
 ../Core/Inc/usb_descriptors.h:
 ../Core/Inc/keyboard.h:

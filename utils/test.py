@@ -4,7 +4,7 @@ import os
 import threading
 
 # Change COM port and baud rate accordingly
-ser = serial.Serial('COM13', 115200, timeout=1)
+ser = serial.Serial('/dev/tty.usbmodem1234561', 115200, timeout=1)
 
 # Terminal bar chart settings
 MAX_ADC = 4095

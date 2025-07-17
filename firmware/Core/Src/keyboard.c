@@ -20,7 +20,7 @@ struct user_config keyboard_user_config = {
     			                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE}},
     			            },
             [_TAP_LAYER] = {
-							  {{____}, {____}, {____}, {____}},
+				{{____}, {____}, {____}, {____}},
                 {{____}, {____}, {____}, {____}},
                 {{____}, {____}, {____}, {____}},
                 {{____}, {____}, {____}, {____}},
@@ -92,6 +92,9 @@ void init_key(uint8_t adc_channel, uint8_t amux_channel, uint8_t row, uint8_t co
 
   key->actuation.status = STATUS_RESET;
   key->actuation.trigger_offset = keyboard_user_config.trigger_offset;
+  //  if ( (row == 1) && (column == 0)) {
+  //	  key->actuation.trigger_offset = 42;
+  //   }
   key->actuation.reset_offset = keyboard_user_config.trigger_offset - keyboard_user_config.reset_threshold;
   key->actuation.rapid_trigger_offset = keyboard_user_config.rapid_trigger_offset;
 
@@ -313,7 +316,7 @@ void update_key(struct key *key) {
 }
 
 void keyboard_init_keys() {
-  	keyboard_read_config();
+  keyboard_read_config();
   for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
     for (uint8_t col = 0; col < MATRIX_COLS; col++) {
       if (channels_by_row_col[row][col][0] != XXXX) {
@@ -411,28 +414,28 @@ void snaptap_task() {
   keyboard_last_cycle_duration = keyboard_get_time() - started_at;
 
   // Snaptap logic - chỉ xử lý việc thả phím cũ, không nhấn phím mới
-  static struct key* current_pressed_key = NULL;
+  static struct key *current_pressed_key = NULL;
   uint32_t latest_triggered_time = 0;
-  static struct key* new_pressed_key = NULL;
+  static struct key *new_pressed_key = NULL;
   for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-      for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-          struct key* key = &keyboard_keys[adc_channel][amux_channel];
-          if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-              if (key->actuation.triggered_at >= latest_triggered_time) {
-                  latest_triggered_time = key->actuation.triggered_at;
-                  new_pressed_key = key;
-              }
-          }
+    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
+      struct key *key = &keyboard_keys[adc_channel][amux_channel];
+      if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
+        if (key->actuation.triggered_at >= latest_triggered_time) {
+          latest_triggered_time = key->actuation.triggered_at;
+          new_pressed_key = key;
+        }
       }
+    }
   }
-  
+
   // Xử lý snaptap - chỉ thả phím cũ, không nhấn phím mới
   if (new_pressed_key != current_pressed_key) {
-      if (current_pressed_key) {
-          hid_release_key(current_pressed_key, _BASE_LAYER);
-      }
-      // KHÔNG gọi hid_press_key() ở đây vì phím đã được nhấn trong update_key_actuation()
-      current_pressed_key = new_pressed_key;
+    if (current_pressed_key) {
+      hid_release_key(current_pressed_key, _BASE_LAYER);
+    }
+    // KHÔNG gọi hid_press_key() ở đây vì phím đã được nhấn trong update_key_actuation()
+    current_pressed_key = new_pressed_key;
   }
 }
 

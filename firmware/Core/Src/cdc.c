@@ -35,7 +35,8 @@ static void cdc_write_flush_wait(void);
 static void start_streaming(void);
 static void stop_streaming(void);
 static void handle_streaming(void);
-
+static void set_key_param(uint8_t row, uint8_t col, const char *param, uint16_t value);
+static void print_key_config(uint8_t row, uint8_t col);
 extern uint32_t started_at; // Define this somewhere in your code
 
 void cdc_performance_measure(uint32_t started_at) {
@@ -315,9 +316,85 @@ static void process_command(char *cmd) {
     reset_config();
   } else if (strcmp(token, "cycle") == 0) {
     cycle_count_on = 1;
-  } else {
+  } else if (strcmp(token, "setkeyparam") == 0) {
+    char *row_str = strtok(NULL, " ");
+    char *col_str = strtok(NULL, " ");
+    char *param = strtok(NULL, " ");
+    char *value_str = strtok(NULL, " ");
+
+    if (row_str && col_str && param && value_str) {
+      uint8_t row = atoi(row_str);
+      uint8_t col = atoi(col_str);
+      uint16_t value = atoi(value_str);
+
+      if (row < ADC_CHANNEL_COUNT && col < AMUX_CHANNEL_COUNT) {
+        set_key_param(row, col, param, value);
+      } else {
+        cdc_write_string_chunked("Invalid row/col values\r\n");
+      }
+    } else {
+      cdc_write_string_chunked("Usage: setkeyparam <row> <col> <param> <value>\r\n");
+    }
+  } else if (strcmp(token, "showkey") == 0) {
+    char *row_str = strtok(NULL, " ");
+    char *col_str = strtok(NULL, " ");
+
+    if (row_str && col_str) {
+      uint8_t row = atoi(row_str);
+      uint8_t col = atoi(col_str);
+
+      if (row < ADC_CHANNEL_COUNT && col < AMUX_CHANNEL_COUNT) {
+        print_key_config(row, col);
+      } else {
+        cdc_write_string_chunked("Invalid row/col values\r\n");
+      }
+    } else {
+      cdc_write_string_chunked("Usage: showkey <row> <col>\r\n");
+    }
+  }
+
+  else {
     cdc_write_string_chunked("Unknown command. Type 'help' for available commands\r\n");
   }
+}
+
+static void print_key_config(uint8_t row, uint8_t col) {
+  char buffer[512];
+  struct key *k = &keyboard_keys[row][col];
+
+  snprintf(buffer, sizeof(buffer),
+           "Key[%u][%u] Configuration:\r\n"
+           "  keymap              : %u\r\n"
+           "  idle_counter         : %u\r\n"
+           "  is_idle              : %u\r\n"
+           "  calibration:\r\n"
+           "    cycles_count       : %u\r\n"
+           "    idle_value         : %u\r\n"
+           "    max_distance       : %u\r\n"
+           "  actuation:\r\n"
+           "    direction          : %u\r\n"
+           "    direction_changed  : %u\r\n"
+           "    status             : %u\r\n"
+           "    reset_offset       : %u\r\n"
+           "    trigger_offset     : %u\r\n"
+           "    rapid_trigger_off  : %u\r\n"
+           "    triggered_at       : %lu\r\n",
+           row, col,
+           k->layers[0].value,
+           k->idle_counter,
+           k->is_idle,
+           k->calibration.cycles_count,
+           k->calibration.idle_value,
+           k->calibration.max_distance,
+           k->actuation.direction,
+           k->actuation.direction_changed_point,
+           k->actuation.status,
+           k->actuation.reset_offset,
+           k->actuation.trigger_offset,
+           k->actuation.rapid_trigger_offset,
+           k->actuation.triggered_at);
+
+  cdc_write_string_chunked(buffer);
 }
 
 static void print_help(void) {
@@ -332,9 +409,32 @@ static void print_help(void) {
   cdc_write_string_chunked("  save                    - Save configuration to flash\r\n");
   cdc_write_string_chunked("  load                    - Load configuration from flash\r\n");
   cdc_write_string_chunked("  reset                   - Reset to default values\r\n");
+  cdc_write_string_chunked("  showkey <R> <C>        - Show config for key at row R, column C\r\n");
+  cdc_write_string_chunked("  setkeyparam <R> <C> <param> <value> - Set key actuation param (trigger_offset, reset_offset, etc.)\r\n");
+
   cdc_write_string_chunked("\r\nParameters:\r\n");
   cdc_write_string_chunked("  reverse_magnet_pole, trigger_offset, reset_threshold,\r\n");
   cdc_write_string_chunked("  rapid_trigger_offset, tap_timeout\r\n");
+}
+
+static void set_key_param(uint8_t row, uint8_t col, const char *param, uint16_t value) {
+  char buffer[128];
+  struct key *k = &keyboard_keys[row][col];
+
+  if (strcmp(param, "trigger_offset") == 0) {
+    k->actuation.trigger_offset = (uint8_t)value;
+    snprintf(buffer, sizeof(buffer), "Key[%u][%u] trigger_offset set to %u\r\n", row, col, value);
+  } else if (strcmp(param, "reset_offset") == 0) {
+    k->actuation.reset_offset = (uint8_t)value;
+    snprintf(buffer, sizeof(buffer), "Key[%u][%u] reset_offset set to %u\r\n", row, col, value);
+  } else if (strcmp(param, "rapid_trigger_offset") == 0) {
+    k->actuation.rapid_trigger_offset = (uint8_t)value;
+    snprintf(buffer, sizeof(buffer), "Key[%u][%u] rapid_trigger_offset set to %u\r\n", row, col, value);
+  } else {
+    snprintf(buffer, sizeof(buffer), "Unknown key parameter: %s\r\n", param);
+  }
+
+  cdc_write_string_chunked(buffer);
 }
 
 static void print_config(void) {

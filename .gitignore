@@ -1,2 +1,4 @@
 */production/
 */*-backups
+.DS_Store
+.venv
