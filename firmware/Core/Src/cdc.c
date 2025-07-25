@@ -6,39 +6,71 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern cycle_count_on;
 extern struct user_config keyboard_user_config;
 extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 // Command buffer for parsing
 static char cmd_buffer[CFG_TUD_CDC_RX_BUFSIZE];
 static uint8_t cmd_index = 0;
+extern uint32_t started_at;
 
-// Streaming control variables
-static bool streaming_active = false;
-static uint32_t last_stream_time = 0;
-static const uint32_t STREAM_INTERVAL_MS = 1; // 1ms for ~1kHz
+// Map ASCII codes to special character enum
+static special_char_t get_special_char(char c) {
+  switch (c) {
+  case 3:
+    return SPECIAL_CTRL_C; // Ctrl+C
+  case 4:
+    return SPECIAL_CTRL_D; // Ctrl+D
+  case '\b':
+  case 127:
+    return SPECIAL_BACKSPACE; // Backspace
+  case '\r':
+  case '\n':
+    return SPECIAL_ENTER; // Enter
+  default:
+    return SPECIAL_NONE;
+  }
+}
 
-// Function prototypes
-void cdc_performance_measure(uint32_t started_at);
-static void process_command(char *cmd);
-static void print_help(void);
-static void print_config(void);
-static void set_config_value(char *param, char *value);
-static void print_keymap(uint8_t layer);
-static void set_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t value);
-static void set_macro_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t values[MAX_MACRO_LEN]);
-static void save_config(void);
-static void load_config(void);
-static void reset_config(void);
-static void cdc_write_string_chunked(const char *str);
-static void cdc_write_flush_wait(void);
-static void start_streaming(void);
-static void stop_streaming(void);
-static void handle_streaming(void);
-static void set_key_param(uint8_t row, uint8_t col, const char *param, uint16_t value);
-static void print_key_config(uint8_t row, uint8_t col);
-extern uint32_t started_at; // Define this somewhere in your code
-
+// Handle special character actions
+static void handle_special_char(special_char_t sc) {
+  switch (sc) {
+  case SPECIAL_BACKSPACE:
+    if (cmd_index > 0) {
+      cmd_index--;
+      // Send backspace sequence: move cursor back, write space to erase, move cursor back again
+      // This works properly with CR/LF terminals
+      char backspace_seq[] = {'\b', ' ', '\b', '\0'};
+      cdc_write_string_chunked(backspace_seq);
+      cdc_write_flush_wait();
+    }
+    break;
+  case SPECIAL_CTRL_C:
+    // if (streaming_active) {
+    //   stop_streaming();
+    //   cdc_write_string_chunked("\r\nStreaming stopped\r\n");
+    //   cdc_write_string_chunked("Ready> ");
+    // }
+    break;
+  case SPECIAL_CTRL_D:
+    cdc_write_string_chunked("\r\nTerminal exit (Ctrl+D)\r\n");
+    // Optionally reset state or disconnect
+    cdc_write_flush_wait();
+    tud_disconnect(); // Disconnect the USB CDC device from the host
+    cmd_index = 0;
+    break;
+  case SPECIAL_ENTER:
+    cdc_write_string_chunked("\r\n");
+    cmd_buffer[cmd_index] = '\0';
+    if (cmd_index > 0) {
+      process_command(cmd_buffer);
+      cmd_index = 0;
+    }
+    cdc_write_string_chunked("Ready> ");
+    break;
+  default:
+    break;
+  }
+}
 void cdc_performance_measure(uint32_t started_at) {
   if (!tud_cdc_connected())
     return;
@@ -55,65 +87,40 @@ void cdc_performance_measure(uint32_t started_at) {
 
 void cdc_task(void) {
   if (tud_cdc_connected()) {
-    // Handle streaming if active
-    handle_streaming();
-
     if (tud_cdc_available()) {
       uint8_t buf[CFG_TUD_CDC_RX_BUFSIZE];
       uint32_t count = tud_cdc_read(buf, sizeof(buf));
-
       for (uint32_t i = 0; i < count; i++) {
         char c = buf[i];
+        special_char_t sc = get_special_char(c);
 
-        // Handle Ctrl+C to stop streaming
-        if (c == 3) { // Ctrl+C ASCII code
-          if (streaming_active) {
-            stop_streaming();
-            cdc_write_string_chunked("\r\nStreaming stopped\r\n");
-            cdc_write_string_chunked("Ready> ");
-          }
-          continue;
-        }
-
-        // Handle backspace
-        if (c == '\b' || c == 127) {
-          if (cmd_index > 0 && !streaming_active) {
-            cmd_index--;
-            cdc_write_string_chunked("\b \b"); // Erase character
-          }
-        }
-        // Handle enter/newline
-        else if (c == '\r' || c == '\n') {
-          if (!streaming_active) {
-            cdc_write_string_chunked("\r\n");
-            cmd_buffer[cmd_index] = '\0';
-
-            if (cmd_index > 0) {
-              process_command(cmd_buffer);
-              cmd_index = 0;
-            }
-
-            if (!streaming_active) {
-              cdc_write_string_chunked("Ready> ");
-            }
-          }
-        }
-        // Handle printable characters
-        else if (c >= 32 && c <= 126 && cmd_index < sizeof(cmd_buffer) - 1 && !streaming_active) {
+        if (sc != SPECIAL_NONE) {
+          handle_special_char(sc);
+        } else if (c >= 32 && c <= 126 && cmd_index < sizeof(cmd_buffer) - 1) {
           cmd_buffer[cmd_index++] = c;
           tud_cdc_write(&c, 1); // Echo character
+          tud_cdc_write_flush();
         }
-      }
-
-      if (!streaming_active) {
-        cdc_write_flush_wait();
       }
     }
   } else {
-    // Reset flags when disconnected
     cmd_index = 0;
-    streaming_active = false;
-    cycle_count_on = 0;
+  }
+}
+
+void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
+  (void)itf;
+
+  // Check if terminal is connecting (DTR asserted)
+  if (dtr) {
+    // Give a small delay to ensure connection is stable
+    for (volatile int i = 0; i < 10000; i++)
+      ;
+
+    cdc_write_string_chunked("\r\n=== HE16 Configuration Interface ===\r\n");
+    cdc_write_string_chunked("Type 'help' for available commands\r\n");
+    cdc_write_string_chunked("Ready> ");
+    cdc_write_flush_wait();
   }
 }
 
@@ -151,67 +158,8 @@ static void cdc_write_flush_wait(void) {
   // Wait for data to be sent
   uint32_t timeout = 0;
   while (tud_cdc_write_available() < CFG_TUD_CDC_TX_BUFSIZE && timeout < 10000) {
-    tud_task(); // Process USB tasks
+    tud_task();
     timeout++;
-  }
-}
-
-static void start_streaming(void) {
-  streaming_active = true;
-  last_stream_time = HAL_GetTick();
-  cdc_write_string_chunked("Starting ADC stream (Press Ctrl+C to stop)...\r\n");
-}
-
-static void stop_streaming(void) {
-  streaming_active = false;
-}
-
-static void handle_streaming(void) {
-  if (!streaming_active || !tud_cdc_connected()) {
-    return;
-  }
-
-  uint32_t current_time = HAL_GetTick();
-
-  // Check if it's time to send data (1ms interval for ~1kHz)
-  if (current_time - last_stream_time >= STREAM_INTERVAL_MS) {
-    last_stream_time = current_time;
-
-    // Build CSV string with all keyboard_keys state.value data
-    char csv_buffer[512];
-    int pos = 0;
-
-    // Iterate through the keyboard_keys array and collect state.value for each key
-    bool first = true;
-    for (uint8_t adc_ch = 0; adc_ch < ADC_CHANNEL_COUNT; adc_ch++) {
-      for (uint8_t amux_ch = 0; amux_ch < AMUX_CHANNEL_COUNT; amux_ch++) {
-        if (!first) {
-          pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, ",");
-        }
-        first = false;
-
-        // Get the state.value from the current key
-        uint16_t value = keyboard_keys[adc_ch][amux_ch].state.value;
-        pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, "%u", value);
-
-        // Safety check to prevent buffer overflow
-        if (pos >= sizeof(csv_buffer) - 10) {
-          break;
-        }
-      }
-      if (pos >= sizeof(csv_buffer) - 10) {
-        break;
-      }
-    }
-
-    // Add newline
-    pos += snprintf(csv_buffer + pos, sizeof(csv_buffer) - pos, "\r\n");
-
-    // Send the CSV data
-    if (tud_cdc_write_available() >= pos) {
-      tud_cdc_write(csv_buffer, pos);
-      tud_cdc_write_flush();
-    }
   }
 }
 
@@ -223,401 +171,236 @@ static void process_command(char *cmd) {
     }
   }
 
+  // Get command name
   char *token = strtok(cmd, " ");
   if (!token)
     return;
 
-  if (strcmp(token, "help") == 0) {
-    print_help();
-  } else if (strcmp(token, "show") == 0) {
-    print_config();
-  } else if (strcmp(token, "stream") == 0) {
-    start_streaming();
-  } else if (strcmp(token, "set") == 0) {
-    char *param = strtok(NULL, " ");
-    char *value = strtok(NULL, " ");
-    if (param && value) {
-      set_config_value(param, value);
-    } else {
-      cdc_write_string_chunked("Usage: set <parameter> <value>\r\n");
-    }
-  } else if (strcmp(token, "keymap") == 0) {
-    char *layer_str = strtok(NULL, " ");
-    if (layer_str) {
-      uint8_t layer = atoi(layer_str);
-      if (layer < LAYERS_COUNT) {
-        print_keymap(layer);
-      } else {
-        cdc_write_string_chunked("Invalid layer number\r\n");
-      }
-    } else {
-      cdc_write_string_chunked("Usage: keymap <layer>\r\n");
-    }
-  } else if (strcmp(token, "setkey") == 0) {
-    char *layer_str = strtok(NULL, " ");
-    char *row_str = strtok(NULL, " ");
-    char *col_str = strtok(NULL, " ");
-    char *value_str = strtok(NULL, " ");
+  char *args = strtok(NULL, ""); // Get rest of the string as arguments
 
-    if (layer_str && row_str && col_str && value_str) {
-      uint8_t layer = atoi(layer_str);
-      uint8_t row = atoi(row_str);
-      uint8_t col = atoi(col_str);
-      uint16_t value = atoi(value_str);
-
-      if (layer < LAYERS_COUNT && row < MATRIX_ROWS && col < MATRIX_COLS) {
-        set_keymap_value(layer, row, col, value);
-      } else {
-        cdc_write_string_chunked("Invalid layer/row/col values\r\n");
-      }
-    } else {
-      cdc_write_string_chunked("Usage: setkey <layer> <row> <col> <value>\r\n");
-    }
-  } else if (strcmp(token, "setmacro") == 0) {
-    char *layer_str = strtok(NULL, " ");
-    char *row_str = strtok(NULL, " ");
-    char *col_str = strtok(NULL, " ");
-
-    if (layer_str && row_str && col_str) {
-      uint8_t layer = atoi(layer_str);
-      uint8_t row = atoi(row_str);
-      uint8_t col = atoi(col_str);
-
-      if (layer < LAYERS_COUNT && row < MATRIX_ROWS && col < MATRIX_COLS) {
-        uint16_t values[MAX_MACRO_LEN];
-        uint8_t value_count = 0;
-
-        // Parse up to MAX_MACRO_LEN values
-        char *value_str = strtok(NULL, " ");
-        while (value_str && value_count < MAX_MACRO_LEN) {
-          values[value_count] = atoi(value_str);
-          value_count++;
-          value_str = strtok(NULL, " ");
-        }
-
-        // Fill remaining slots with ____ if not enough values provided
-        while (value_count < MAX_MACRO_LEN) {
-          values[value_count] = ____;
-          value_count++;
-        }
-
-        set_macro_keymap_value(layer, row, col, values);
-      } else {
-        cdc_write_string_chunked("Invalid layer/row/col values\r\n");
-      }
-    } else {
-      cdc_write_string_chunked("Usage: setmacro <layer> <row> <col> <value1> [value2] [value3] [value4]\r\n");
-    }
-  } else if (strcmp(token, "save") == 0) {
-    save_config();
-  } else if (strcmp(token, "load") == 0) {
-    load_config();
-  } else if (strcmp(token, "reset") == 0) {
-    reset_config();
-  } else if (strcmp(token, "cycle") == 0) {
-    cycle_count_on = 1;
-  } else if (strcmp(token, "setkeyparam") == 0) {
-    char *row_str = strtok(NULL, " ");
-    char *col_str = strtok(NULL, " ");
-    char *param = strtok(NULL, " ");
-    char *value_str = strtok(NULL, " ");
-
-    if (row_str && col_str && param && value_str) {
-      uint8_t row = atoi(row_str);
-      uint8_t col = atoi(col_str);
-      uint16_t value = atoi(value_str);
-
-      if (row < ADC_CHANNEL_COUNT && col < AMUX_CHANNEL_COUNT) {
-        set_key_param(row, col, param, value);
-      } else {
-        cdc_write_string_chunked("Invalid row/col values\r\n");
-      }
-    } else {
-      cdc_write_string_chunked("Usage: setkeyparam <row> <col> <param> <value>\r\n");
-    }
-  } else if (strcmp(token, "showkey") == 0) {
-    char *row_str = strtok(NULL, " ");
-    char *col_str = strtok(NULL, " ");
-
-    if (row_str && col_str) {
-      uint8_t row = atoi(row_str);
-      uint8_t col = atoi(col_str);
-
-      if (row < ADC_CHANNEL_COUNT && col < AMUX_CHANNEL_COUNT) {
-        print_key_config(row, col);
-      } else {
-        cdc_write_string_chunked("Invalid row/col values\r\n");
-      }
-    } else {
-      cdc_write_string_chunked("Usage: showkey <row> <col>\r\n");
+  // Iterate over command table
+  for (size_t i = 0; i < sizeof(command_table) / sizeof(command_table[0]); i++) {
+    if (strcmp(token, command_table[i].name) == 0) {
+      command_table[i].handler(args);
+      return;
     }
   }
 
-  else {
-    cdc_write_string_chunked("Unknown command. Type 'help' for available commands\r\n");
-  }
+  cdc_write_string_chunked("Unknown command. Type 'help' for available commands\r\n");
 }
 
-static void print_key_config(uint8_t row, uint8_t col) {
-  char buffer[512];
-  struct key *k = &keyboard_keys[row][col];
-
-  snprintf(buffer, sizeof(buffer),
-           "Key[%u][%u] Configuration:\r\n"
-           "  keymap              : %u\r\n"
-           "  idle_counter         : %u\r\n"
-           "  is_idle              : %u\r\n"
-           "  calibration:\r\n"
-           "    cycles_count       : %u\r\n"
-           "    idle_value         : %u\r\n"
-           "    max_distance       : %u\r\n"
-           "  actuation:\r\n"
-           "    direction          : %u\r\n"
-           "    direction_changed  : %u\r\n"
-           "    status             : %u\r\n"
-           "    reset_offset       : %u\r\n"
-           "    trigger_offset     : %u\r\n"
-           "    rapid_trigger_off  : %u\r\n"
-           "    triggered_at       : %lu\r\n",
-           row, col,
-           k->layers[0].value,
-           k->idle_counter,
-           k->is_idle,
-           k->calibration.cycles_count,
-           k->calibration.idle_value,
-           k->calibration.max_distance,
-           k->actuation.direction,
-           k->actuation.direction_changed_point,
-           k->actuation.status,
-           k->actuation.reset_offset,
-           k->actuation.trigger_offset,
-           k->actuation.rapid_trigger_offset,
-           k->actuation.triggered_at);
-
-  cdc_write_string_chunked(buffer);
-}
-
-static void print_help(void) {
+static void cmd_help(char *args) {
+  (void)args;
   cdc_write_string_chunked("Available commands:\r\n");
-  cdc_write_string_chunked("  help                    - Show this help\r\n");
-  cdc_write_string_chunked("  show                    - Show current configuration\r\n");
-  //  cdc_write_string_chunked("  stream                  - Start streaming ADC values (Ctrl+C to stop)\r\n");
-  cdc_write_string_chunked("  set <param> <value>     - Set configuration parameter\r\n");
-  cdc_write_string_chunked("  keymap <layer>          - Show keymap for layer\r\n");
-  cdc_write_string_chunked("  setkey <L> <R> <C> <V>  - Set key value (Layer/Row/Col/Value)\r\n");
-  cdc_write_string_chunked("  setmacro <L> <R> <C> <V1> [V2] [V3] [V4]  - Set macro key value (Layer/Row/Col/Value1 [Value2] [Value3] [Value4])\r\n");
-  cdc_write_string_chunked("  save                    - Save configuration to flash\r\n");
-  cdc_write_string_chunked("  load                    - Load configuration from flash\r\n");
-  cdc_write_string_chunked("  reset                   - Reset to default values\r\n");
-  cdc_write_string_chunked("  showkey <R> <C>        - Show config for key at row R, column C\r\n");
-  cdc_write_string_chunked("  setkeyparam <R> <C> <param> <value> - Set key actuation param (trigger_offset, reset_offset, etc.)\r\n");
-
-  cdc_write_string_chunked("\r\nParameters:\r\n");
-  cdc_write_string_chunked("  reverse_magnet_pole, trigger_offset, reset_threshold,\r\n");
-  cdc_write_string_chunked("  rapid_trigger_offset, tap_timeout\r\n");
-}
-
-static void set_key_param(uint8_t row, uint8_t col, const char *param, uint16_t value) {
-  char buffer[128];
-  struct key *k = &keyboard_keys[row][col];
-
-  if (strcmp(param, "trigger_offset") == 0) {
-    k->actuation.trigger_offset = (uint8_t)value;
-    snprintf(buffer, sizeof(buffer), "Key[%u][%u] trigger_offset set to %u\r\n", row, col, value);
-  } else if (strcmp(param, "reset_offset") == 0) {
-    k->actuation.reset_offset = (uint8_t)value;
-    snprintf(buffer, sizeof(buffer), "Key[%u][%u] reset_offset set to %u\r\n", row, col, value);
-  } else if (strcmp(param, "rapid_trigger_offset") == 0) {
-    k->actuation.rapid_trigger_offset = (uint8_t)value;
-    snprintf(buffer, sizeof(buffer), "Key[%u][%u] rapid_trigger_offset set to %u\r\n", row, col, value);
-  } else {
-    snprintf(buffer, sizeof(buffer), "Unknown key parameter: %s\r\n", param);
+  for (size_t i = 0; i < sizeof(command_table) / sizeof(command_table[0]); i++) {
+    cdc_write_string_chunked(command_table[i].name);
+    cdc_write_string_chunked(" ");
+    cdc_write_string_chunked(command_table[i].usage);
+    cdc_write_string_chunked("\r\n");
   }
-
-  cdc_write_string_chunked(buffer);
 }
 
-static void print_config(void) {
-  char buffer[128];
+static void cmd_show(char *args) {
+  (void)args;
+  cdc_write_string_chunked("Current configuration:\r\n");
+  char buf[64]; // Buffer for formatted strings
+  snprintf(buf, sizeof(buf), "Reverse Magnet Pole: %d\r\n", keyboard_user_config.reverse_magnet_pole);
+  cdc_write_string_chunked(buf);
+  snprintf(buf, sizeof(buf), "Trigger Offset: %d\r\n", keyboard_user_config.trigger_offset);
+  cdc_write_string_chunked(buf);
+  snprintf(buf, sizeof(buf), "Reset Threshold: %d\r\n", keyboard_user_config.reset_threshold);
+  cdc_write_string_chunked(buf);
+  snprintf(buf, sizeof(buf), "Rapid Trigger Offset: %d\r\n", keyboard_user_config.rapid_trigger_offset);
+  cdc_write_string_chunked(buf);
+  snprintf(buf, sizeof(buf), "Tap Timeout: %d ms\r\n", keyboard_user_config.tap_timeout);
+  cdc_write_string_chunked(buf);
 
-  cdc_write_string_chunked("Current Configuration:\r\n");
-
-  snprintf(buffer, sizeof(buffer), "  reverse_magnet_pole: %u\r\n", keyboard_user_config.reverse_magnet_pole);
-  cdc_write_string_chunked(buffer);
-
-  snprintf(buffer, sizeof(buffer), "  trigger_offset: %u\r\n", keyboard_user_config.trigger_offset);
-  cdc_write_string_chunked(buffer);
-
-  snprintf(buffer, sizeof(buffer), "  reset_threshold: %u\r\n", keyboard_user_config.reset_threshold);
-  cdc_write_string_chunked(buffer);
-
-  snprintf(buffer, sizeof(buffer), "  rapid_trigger_offset: %u\r\n", keyboard_user_config.rapid_trigger_offset);
-  cdc_write_string_chunked(buffer);
-
-  snprintf(buffer, sizeof(buffer), "  tap_timeout: %u\r\n", keyboard_user_config.tap_timeout);
-  cdc_write_string_chunked(buffer);
-
-  cdc_write_string_chunked("Use 'keymap <layer>' to view keymaps\r\n");
-}
-
-static void set_config_value(char *param, char *value) {
-  char buffer[64];
-  uint32_t val = atoi(value);
-
-  if (strcmp(param, "reverse_magnet_pole") == 0) {
-    keyboard_user_config.reverse_magnet_pole = (uint8_t)val;
-    snprintf(buffer, sizeof(buffer), "Set reverse_magnet_pole to %u\r\n", keyboard_user_config.reverse_magnet_pole);
-  } else if (strcmp(param, "trigger_offset") == 0) {
-    keyboard_user_config.trigger_offset = (uint8_t)val;
-    keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
-    keyboard_init_keys();
-    snprintf(buffer, sizeof(buffer), "Set trigger_offset to %u\r\n", keyboard_user_config.trigger_offset);
-  } else if (strcmp(param, "reset_threshold") == 0) {
-    keyboard_user_config.reset_threshold = (uint8_t)val;
-    snprintf(buffer, sizeof(buffer), "Set reset_threshold to %u\r\n", keyboard_user_config.reset_threshold);
-  } else if (strcmp(param, "rapid_trigger_offset") == 0) {
-    keyboard_user_config.rapid_trigger_offset = (uint8_t)val;
-    snprintf(buffer, sizeof(buffer), "Set rapid_trigger_offset to %u\r\n", keyboard_user_config.rapid_trigger_offset);
-  } else if (strcmp(param, "tap_timeout") == 0) {
-    keyboard_user_config.tap_timeout = (uint16_t)val;
-    snprintf(buffer, sizeof(buffer), "Set tap_timeout to %u\r\n", keyboard_user_config.tap_timeout);
-  } else {
-    snprintf(buffer, sizeof(buffer), "Unknown parameter: %s\r\n", param);
-  }
-  keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
-  cdc_write_string_chunked(buffer);
-}
-
-static void print_keymap(uint8_t layer) {
-  char buffer[128];
-
-  snprintf(buffer, sizeof(buffer), "Keymap for Layer %u:\r\n", layer);
-  cdc_write_string_chunked(buffer);
-
-  // Print keymap row by row with proper chunking
-  for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
-    // Build the row string first
-    char row_buffer[512]; // Larger buffer for macro display
-    int pos = 0;
-
-    pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "Row %u: ", row);
-
-    for (uint8_t col = 0; col < MATRIX_COLS; col++) {
-      // Check if this is a macro (multiple non-zero values)
-      uint8_t macro_count = 0;
-      for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
-        if (keyboard_user_config.keymaps[layer][row][col][i] != ____) {
-          macro_count++;
+  cdc_write_flush_wait();
+  cdc_write_string_chunked("Keymaps:\r\n");
+  for (uint8_t layer = 0; layer < LAYERS_COUNT; layer++) {
+    char layer_buf[16];
+    snprintf(layer_buf, sizeof(layer_buf), "Layer %d:\r\n", layer);
+    cdc_write_string_chunked(layer_buf);
+    for (uint8_t row = 0; row < MATRIX_ROWS; row++) {
+      for (uint8_t col = 0; col < MATRIX_COLS; col++) {
+        uint16_t value = keyboard_user_config.keymaps[layer][row][col][0];
+        char key_info[64];
+        if (value >= 0x04 && value <= 0x1D) { // HID keycodes for 'a'-'z'
+          char ascii = 'a' + (value - 0x04);
+          snprintf(key_info, sizeof(key_info), "Row %d, Col %d: 0x%02X ('%c')\r\n", row, col, value, ascii);
+        } else {
+          snprintf(key_info, sizeof(key_info), "Row %d, Col %d: 0x%02X\r\n", row, col, value);
         }
-      }
-
-      if (macro_count > 1) {
-        // This is a macro - show all values in brackets
-        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "[");
-        for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
-          if (i > 0)
-            pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, ",");
-          pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "%u",
-                          keyboard_user_config.keymaps[layer][row][col][i]);
-        }
-        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "] ");
-      } else {
-        // Single key - show just the first value
-        pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "%4u ",
-                        keyboard_user_config.keymaps[layer][row][col][0]);
+        cdc_write_string_chunked(key_info);
       }
     }
-
-    pos += snprintf(row_buffer + pos, sizeof(row_buffer) - pos, "\r\n");
-
-    // Send the complete row
-    cdc_write_string_chunked(row_buffer);
   }
 }
 
-static void set_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t value) {
-  char buffer[64];
-
-  keyboard_user_config.keymaps[layer][row][col][0] = value;
-  // Clear remaining macro slots
-  for (uint8_t i = 1; i < MAX_MACRO_LEN; i++) {
-    keyboard_user_config.keymaps[layer][row][col][i] = ____;
+static void cmd_set(char *args) {
+  if (!args) {
+    cdc_write_string_chunked("Usage: set <parameter> <value>\r\n");
+    return;
   }
-  keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
-  keyboard_init_keys();
+  char *param = strtok(args, " ");
+  char *value = strtok(NULL, " ");
+  if (param && value) {
+    if (strcmp(param, "reverse_magnet_pole") == 0) {
+      keyboard_user_config.reverse_magnet_pole = atoi(value);
+      cdc_write_string_chunked("Reverse Magnet Pole set to ");
+      cdc_write_string_chunked(value);
+    } else if (strcmp(param, "trigger_offset") == 0) {
+      keyboard_user_config.trigger_offset = atoi(value);
+      cdc_write_string_chunked("Trigger Offset set to ");
+      cdc_write_string_chunked(value);
+      cdc_write_string_chunked("\r\n");
+    } else if (strcmp(param, "reset_threshold") == 0) {
+      keyboard_user_config.reset_threshold = atoi(value);
+      cdc_write_string_chunked("Reset Threshold set to ");
+      cdc_write_string_chunked(value);
+      cdc_write_string_chunked("\r\n");
+    } else if (strcmp(param, "rapid_trigger_offset") == 0) {
+      keyboard_user_config.rapid_trigger_offset = atoi(value);
+      cdc_write_string_chunked("Rapid Trigger Offset set to ");
+      cdc_write_string_chunked(value);
+      cdc_write_string_chunked("\r\n");
+    } else if (strcmp(param, "tap_timeout") == 0) {
+      keyboard_user_config.tap_timeout = atoi(value);
+      cdc_write_string_chunked("Tap Timeout set to ");
+      cdc_write_string_chunked(value);
+      cdc_write_string_chunked("\r\n");
+    } else {
+      cdc_write_string_chunked("Unknown parameter\r\n");
+    }
+    cmd_save(NULL); // Save changes to config
 
-  snprintf(buffer, sizeof(buffer), "Set keymap[%u][%u][%u] to %u\r\n", layer, row, col, value);
-  cdc_write_string_chunked(buffer);
+  } else {
+    cdc_write_string_chunked("Usage: set <parameter> <value>\r\n");
+  }
 }
 
-static void set_macro_keymap_value(uint8_t layer, uint8_t row, uint8_t col, uint16_t values[MAX_MACRO_LEN]) {
-  char buffer[128];
+static void cmd_save(char *args) {
+  (void)args;
 
-  // Copy all macro values
-  for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
-    keyboard_user_config.keymaps[layer][row][col][i] = values[i];
-  }
-  keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
-  keyboard_init_keys();
-
-  // Build response message showing all macro values
-  int pos = snprintf(buffer, sizeof(buffer), "Set macro keymap[%u][%u][%u] to [", layer, row, col);
-  for (uint8_t i = 0; i < MAX_MACRO_LEN; i++) {
-    if (i > 0)
-      pos += snprintf(buffer + pos, sizeof(buffer) - pos, ", ");
-    pos += snprintf(buffer + pos, sizeof(buffer) - pos, "%u", values[i]);
-  }
-  pos += snprintf(buffer + pos, sizeof(buffer) - pos, "]\r\n");
-  cdc_write_string_chunked(buffer);
-}
-
-static void save_config(void) {
-  // TODO: Implement flash save functionality
-  // This would typically write the config struct to flash memory
   keyboard_write_config(&keyboard_user_config, 0, sizeof keyboard_user_config);
   keyboard_init_keys();
   cdc_write_string_chunked("Configuration saved to flash\r\n");
 }
 
-static void load_config(void) {
-  // TODO: Implement flash load functionality
-  // This would typically read the config struct from flash memory
-  keyboard_read_config();
+static void cmd_load(char *args) {
+  (void)args;
+  keyboard_init_keys();
   cdc_write_string_chunked("Configuration loaded from flash\r\n");
 }
 
-static void reset_config(void) {
+static void cmd_reset(char *args) {
+  (void)args;
   // Reset to default values
   keyboard_write_config(&keyboard_default_user_config, 0, sizeof keyboard_default_user_config);
-  keyboard_read_config();
   keyboard_init_keys();
-
   cdc_write_string_chunked("Configuration reset to defaults\r\n");
 }
+static void cmd_setkey(char *args) {
+  if (!args) {
+    cdc_write_string_chunked("Usage: setkey <layer> <row> <col> <parameter> <value>\r\n");
+    return;
+  }
+  char *layer_str = strtok(args, " ");
+  char *adc_str = strtok(NULL, " ");
+  char *amux_str = strtok(NULL, " ");
+  char *param = strtok(NULL, " ");
+  char *value = strtok(NULL, " ");
 
-// Getter function for other modules to access configuration
-struct user_config *get_user_config(void) {
-  return &keyboard_user_config;
-}
+  if (layer_str && adc_str && amux_str && param && value) {
+    uint8_t layer = atoi(layer_str);
+    uint8_t adc = atoi(adc_str);
+    uint8_t amux = atoi(amux_str);
+    uint16_t val = (uint16_t)atoi(value);
 
-void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts) {
-  (void)itf;
-
-  // Check if terminal is connecting (DTR asserted)
-  if (dtr) {
-    // Give a small delay to ensure connection is stable
-    for (volatile int i = 0; i < 10000; i++)
-      ;
-
-    cdc_write_string_chunked("\r\n=== HE16 Configuration Interface ===\r\n");
-    cdc_write_string_chunked("Type 'help' for available commands\r\n");
-    cdc_write_string_chunked("Ready> ");
-    cdc_write_flush_wait();
+    if (layer < LAYERS_COUNT && adc < ADC_CHANNEL_COUNT && amux < AMUX_CHANNEL_COUNT) {
+      if (strcmp(param, "keymap") == 0) {
+        keyboard_keys[adc][amux].layers[layer].value[0] = val;
+        cdc_write_string_chunked("Keymap updated\r\n");
+      } else {
+        if (strcmp(param, "is_enabled") == 0) {
+          keyboard_keys[adc][amux].is_enabled = val ? 1 : 0;
+          cdc_write_string_chunked("Key enabled state updated\r\n");
+        } else if (strcmp(param, "trigger_offset") == 0) {
+          keyboard_keys[adc][amux].actuation.trigger_offset = val;
+          cdc_write_string_chunked("Trigger offset updated\r\n");
+        } else if (strcmp(param, "reset_offset") == 0) {
+          keyboard_keys[adc][amux].actuation.reset_offset = val;
+          cdc_write_string_chunked("Reset offset updated\r\n");
+        } else if (strcmp(param, "rapid_trigger_offset") == 0) {
+          keyboard_keys[adc][amux].actuation.rapid_trigger_offset = val;
+          cdc_write_string_chunked("Rapid trigger offset updated\r\n");
+        } else {
+          cdc_write_string_chunked("Unknown parameter\r\n");
+        }
+      }
+      // cmd_save(NULL); // Save changes to config
+    } else {
+      cdc_write_string_chunked("Invalid layer/row/col\r\n");
+    }
+  } else {
+    cdc_write_string_chunked("Usage: setkey <layer> <row> <col> <parameter> <value>\r\n");
   }
 }
 
-// Invoked when CDC interface received data from host
-void tud_cdc_rx_cb(uint8_t itf) {
-  (void)itf;
-  // Data handling is done in cdc_task()
+static void cmd_showkey(char *args) {
+  if (!args) {
+    cdc_write_string_chunked("Usage: showkey <layer> <adc> <amux>\r\n");
+    return;
+  }
+  char *layer_str = strtok(args, " ");
+  char *adc_str = strtok(NULL, " ");
+  char *amux_str = strtok(NULL, " ");
+
+  if (layer_str && adc_str && amux_str) {
+    uint8_t layer = atoi(layer_str);
+    uint8_t adc = atoi(adc_str);
+    uint8_t amux = atoi(amux_str);
+
+    if (layer < LAYERS_COUNT && adc < ADC_CHANNEL_COUNT && amux < AMUX_CHANNEL_COUNT) {
+      char buf[128];
+      snprintf(buf, sizeof(buf), "Available parameter for key of layer %d, adc %d, amux %d:\r\n", layer, adc, amux);
+      cdc_write_string_chunked(buf);
+      if (keyboard_keys[adc][amux].layers[layer].type == KEY_TYPE_EMPTY) {
+        cdc_write_string_chunked("This key is empty\r\n");
+        return;
+      } else if (keyboard_keys[adc][amux].layers[layer].type == KEY_TYPE_NORMAL) {
+        snprintf(buf, sizeof(buf), "Keymap: 0x%04X\r\n", keyboard_keys[adc][amux].layers[layer].value[0]);
+        cdc_write_string_chunked(buf);
+      } else if (keyboard_keys[adc][amux].layers[layer].type == KEY_TYPE_MODIFIER) {
+        snprintf(buf, sizeof(buf), "Modifier Keymap: 0x%04X\r\n", keyboard_keys[adc][amux].layers[layer].value[0]);
+        cdc_write_string_chunked(buf);
+      } else if (keyboard_keys[adc][amux].layers[layer].type == KEY_TYPE_CONSUMER_CONTROL) {
+        snprintf(buf, sizeof(buf), "Consumer Control Keymap: 0x%04X\r\n", keyboard_keys[adc][amux].layers[layer].value[0]);
+        cdc_write_string_chunked(buf);
+      } else if (keyboard_keys[adc][amux].layers[layer].type == KEY_TYPE_MACRO) {
+        cdc_write_string_chunked("Macro Keymap: ");
+        for (int i = 0; i < MAX_MACRO_LEN; i++) {
+          snprintf(buf, sizeof(buf), "0x%04X ", keyboard_keys[adc][amux].layers[layer].value[i]);
+          cdc_write_string_chunked(buf);
+        }
+        cdc_write_string_chunked("\r\n");
+      }
+
+      cdc_write_string_chunked(buf);
+      snprintf(buf, sizeof(buf), "Enabled: %d\r\n", keyboard_keys[adc][amux].is_enabled);
+      cdc_write_string_chunked(buf);
+      snprintf(buf, sizeof(buf), "Trigger Offset: %d\r\n", keyboard_keys[adc][amux].actuation.trigger_offset);
+      cdc_write_string_chunked(buf);
+      snprintf(buf, sizeof(buf), "Reset Offset: %d\r\n", keyboard_keys[adc][amux].actuation.reset_offset);
+      cdc_write_string_chunked(buf);
+      snprintf(buf, sizeof(buf), "Rapid Trigger Offset: %d\r\n", keyboard_keys[adc][amux].actuation.rapid_trigger_offset);
+      cdc_write_string_chunked(buf);
+      cdc_write_string_chunked("You can set these parameters using 'setkey' command\r\n");
+      cdc_write_flush_wait();
+    } else {
+      cdc_write_string_chunked("Invalid layer/row/col\r\n");
+    }
+  } else {
+    cdc_write_string_chunked("Usage: showkey <layer> <adc> <amux>\r\n");
+  }
 }

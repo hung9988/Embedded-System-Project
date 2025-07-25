@@ -24,9 +24,6 @@
 #include "config.h"
 #include "hid.h"
 #include "keyboard.h"
-#include "ssd1306.h"
-#include "ssd1306_conf.h"
-#include "ssd1306_fonts.h"
 #include "tusb.h"
 #include <cdc.h>
 #include <ctype.h>
@@ -39,10 +36,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
-#define MOD_WIDTH 38
-#define KEY_WIDTH ((SSD1306_WIDTH - MOD_WIDTH) / 3)
-#define DIVIDER 32
 
 /* USER CODE END PD */
 
@@ -62,18 +55,12 @@ PCD_HandleTypeDef hpcd_USB_OTG_FS;
 ADC_ChannelConfTypeDef ADC_channel_Config = {0};
 
 extern struct user_config keyboard_user_config;
+extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
 
 const uint32_t adc_channels[ADC_CHANNEL_COUNT] = {ADC_CHANNEL_9};
 const uint32_t amux_select_pins[AMUX_SELECT_PINS_COUNT] = {GPIO_PIN_15, GPIO_PIN_14, GPIO_PIN_12, GPIO_PIN_13};
 
-extern struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT];
-
-// Add global mode variable
-keyboard_mode_t g_keyboard_mode = MODE_COMBO_KEY;
-uint8_t last_mode_key_pressed = 0;
-uint8_t last_layer_key_pressed = 0;
-// Thêm biến toàn cục lưu layer hiện tại
-int current_layer = _BASE_LAYER;
+uint8_t key_init_state = 1; // Flag to check if keys are initialized
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,7 +75,6 @@ static void MX_I2C1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t cycle_count_on = 0;
 /* USER CODE END 0 */
 
 /**
@@ -125,9 +111,7 @@ int main(void) {
 
   ADC_channel_Config.Rank = 1;
   ADC_channel_Config.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-
   keyboard_init_keys();
-  ssd1306_Init();
   tusb_rhport_init_t dev_init = {
       .role = TUSB_ROLE_DEVICE,
       .speed = TUSB_SPEED_AUTO};
@@ -141,165 +125,12 @@ int main(void) {
   while (1) {
     // MARK: Main loop
     start_at = HAL_GetTick();
+
     tud_task();
-
-    struct key *mode_key = NULL;
-    struct key *layer_key = NULL;
-    for (int adc = 0; adc < ADC_CHANNEL_COUNT; ++adc) {
-      for (int amux = 0; amux < AMUX_CHANNEL_COUNT; ++amux) {
-        struct key *k = &keyboard_keys[adc][amux];
-        if (k->layers[_BASE_LAYER].value[0] == HID_MODE_CHANGE) {
-          mode_key = k;
-        }
-        if (k->layers[_BASE_LAYER].value[0] == HID_LAYER_CHANGE) {
-          layer_key = k;
-        }
-      }
-    }
-    uint8_t mode_key_pressed = (mode_key && mode_key->actuation.status == STATUS_TRIGGERED);
-    uint8_t layer_key_pressed = (layer_key && layer_key->actuation.status == STATUS_TRIGGERED);
-    if (mode_key_pressed && !last_mode_key_pressed) {
-      g_keyboard_mode = (g_keyboard_mode == MODE_COMBO_KEY) ? MODE_SNAP_TAP : MODE_COMBO_KEY;
-      if (g_keyboard_mode == MODE_COMBO_KEY) {
-        tud_cdc_write_str("Mode: COMBO_KEY\r\n");
-      } else {
-        tud_cdc_write_str("Mode: SNAP_TAP\r\n");
-      }
-      tud_cdc_write_flush();
-    }
-    if (layer_key_pressed && !last_layer_key_pressed) {
-      // Toggle tuần tự giữa BASE, ALT, ALT2
-      if (current_layer == _BASE_LAYER) {
-        current_layer = _ALT_LAYER;
-        tud_cdc_write_str("Layer: ALT\r\n");
-      } else if (current_layer == _ALT_LAYER) {
-        current_layer = _ALT_LAYER_2;
-        tud_cdc_write_str("Layer: ALT2\r\n");
-      } else {
-        current_layer = _BASE_LAYER;
-        tud_cdc_write_str("Layer: BASE\r\n");
-      }
-      tud_cdc_write_flush();
-    }
-    last_mode_key_pressed = mode_key_pressed;
-    last_layer_key_pressed = layer_key_pressed;
-
-    // Call the appropriate task based on mode
-    if (g_keyboard_mode == MODE_COMBO_KEY) {
-      keyboard_task();
-    } else {
-      snaptap_task();
-    }
-    //    snaptap_task();
-    //    keyboard_task();
-
+    keyboard_task();
     hid_task();
     cdc_task();
 
-    ssd1306_Fill(White);
-    ssd1306_FlipScreen(1, 1);
-
-    ssd1306_DrawRectangle(0, 0, SSD1306_WIDTH - 1, SSD1306_HEIGHT - 1, Black);
-    ssd1306_Line(MOD_WIDTH, DIVIDER, SSD1306_WIDTH - 1, DIVIDER, Black);
-    ssd1306_Line(MOD_WIDTH, 0, MOD_WIDTH, SSD1306_HEIGHT - 1, Black);
-    for (int i = 1; i < 3; i++) {
-      int x = MOD_WIDTH + i * KEY_WIDTH;
-      ssd1306_Line(x, 0, x, SSD1306_HEIGHT - 1, Black);
-    }
-
-    int mod_y = 2;
-    const int mod_line_height = 10;
-
-    int label_row_bot = SSD1306_HEIGHT - DIVIDER + 2;
-    int percent_row_bot = SSD1306_HEIGHT - 8 - 2;
-
-    int label_row_top = 2;
-    int percent_row_top = label_row_bot - 11;
-
-    char keycodes[6][4] = {0};
-    uint8_t key_percents[6] = {0};
-    int tracker = 0;
-
-    for (int amux = 0; amux < AMUX_CHANNEL_COUNT; amux++) {
-      struct key *k = &keyboard_keys[0][amux];
-
-      if (k->state.filtered_distance_8bits >= 15 && k->layers[_BASE_LAYER].type == KEY_TYPE_MODIFIER) {
-        uint16_t bitmask = *(uint16_t *)k->layers[_BASE_LAYER].value;
-        const char *label = NULL;
-
-        if (bitmask == 0b00000001)
-          label = "LCtrl";
-        else if (bitmask == 0b00000010)
-          label = "LShift";
-        else if (bitmask == 0b00000100)
-          label = "LAlt";
-        else if (bitmask == 0b00001000)
-          label = "LGUI";
-        else if (bitmask == 0b00010000)
-          label = "RCtrl";
-        else if (bitmask == 0b00100000)
-          label = "RShift";
-        else if (bitmask == 0b01000000)
-          label = "RAlt";
-        else if (bitmask == 0b10000000)
-          label = "RGUI";
-
-        if (label) {
-          ssd1306_SetCursor(2, mod_y);
-          ssd1306_WriteString(label, Font_6x8, Black);
-          mod_y += mod_line_height;
-        }
-      }
-
-      else if (k->state.filtered_distance_8bits >= 15 && tracker < 6 && k->layers[_BASE_LAYER].type == KEY_TYPE_NORMAL) {
-        uint16_t keycode = k->layers[current_layer].value[0];
-        if (keycode >= 0x04 && keycode <= 0x1D) {
-          keycodes[tracker][0] = '0';
-          keycodes[tracker][1] = 'x';
-          keycodes[tracker][2] = 'A' + (keycode - 0x04);
-          keycodes[tracker][3] = '\0';
-        } else if (keycode >= 0x1E && keycode <= 0x27) {
-          keycodes[tracker][0] = '0';
-          keycodes[tracker][1] = 'x';
-          keycodes[tracker][2] = (keycode == 0x27) ? '0' : ('1' + (keycode - 0x1E));
-          keycodes[tracker][3] = '\0';
-        }
-
-        key_percents[tracker] = (k->state.filtered_distance_8bits * 100) / 254;
-        tracker++;
-      }
-    }
-
-    for (int i = 1; i <= 3; i++) {
-      if (keycodes[i - 1][0] != '\0') {
-        int x = MOD_WIDTH + (i - 1) * KEY_WIDTH + 4;
-        ssd1306_SetCursor(x, label_row_top);
-        ssd1306_WriteString((char *)keycodes[i - 1], Font_6x8, Black);
-
-        char buf[6];
-        sprintf(buf, "%d%%", key_percents[i - 1]);
-        ssd1306_SetCursor(x, percent_row_top);
-        ssd1306_WriteString(buf, Font_6x8, Black);
-      }
-    }
-
-    for (int i = 4; i <= 6; i++) {
-      if (keycodes[i - 1][0] != '\0') {
-        int x = MOD_WIDTH + (i - 4) * KEY_WIDTH + 4;
-        ssd1306_SetCursor(x, label_row_bot);
-        ssd1306_WriteString((char *)keycodes[i - 1], Font_6x8, Black);
-
-        char buf[6];
-        sprintf(buf, "%d%%", key_percents[i - 1]);
-        ssd1306_SetCursor(x, percent_row_bot);
-        ssd1306_WriteString(buf, Font_6x8, Black);
-      }
-    }
-
-    ssd1306_UpdateScreen();
-    if (cycle_count_on) {
-      cdc_performance_measure(start_at);
-    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

@@ -5,47 +5,11 @@
 #include <stdlib.h>
 
 struct key keyboard_keys[ADC_CHANNEL_COUNT][AMUX_CHANNEL_COUNT] = {0};
-struct user_config keyboard_user_config = {
-    .reverse_magnet_pole = 0,
-    .trigger_offset = 150,
-    .reset_threshold = 3,
-    .rapid_trigger_offset = 40,
-    .tap_timeout = 200,
-    .keymaps = {
-        // clang-format off
-		        [_BASE_LAYER] = {
-								{{HID_KEY_0}, {HID_KEY_1}, {HID_KEY_2}, {HID_KEY_3}},
-    			                {{HID_KEY_4}, {HID_KEY_5}, {HID_KEY_6}, {HID_KEY_7}},
-    			                {{HID_KEY_8}, {HID_KEY_9}, {HID_KEY_A}, {HID_KEY_D}},
-    			                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE}},
-    			            },
-            [_TAP_LAYER] = {
-				{{____}, {____}, {____}, {____}},
-                {{____}, {____}, {____}, {____}},
-                {{____}, {____}, {____}, {____}},
-                {{____}, {____}, {____}, {____}},
-            },
-            [_ALT_LAYER] = {
-                {{HID_KEY_A}, {HID_KEY_B}, {HID_KEY_C}, {HID_KEY_D}},
-                {{HID_KEY_E}, {HID_KEY_F}, {HID_KEY_G}, {HID_KEY_H}},
-                {{HID_KEY_J}, {HID_KEY_K}, {HID_KEY_L}, {HID_KEY_M}},
-                {{HID_KEY_CONTROL_LEFT}, {HID_KEY_SHIFT_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE}},
-            },
-            [_ALT_LAYER_2] = {
-                { {HID_KEY_N}, {HID_KEY_O}, {HID_KEY_P}, {HID_KEY_Q} },
-                { {HID_KEY_R}, {HID_KEY_S}, {HID_KEY_T}, {HID_KEY_U} },
-                { {HID_KEY_V}, {HID_KEY_W}, {HID_KEY_X}, {HID_KEY_Y} },
-                { {HID_KEY_Z}, {HID_KEY_CONTROL_LEFT}, {HID_LAYER_CHANGE}, {HID_MODE_CHANGE} },
-            },
-        // clang-format on
-    }};
+struct user_config keyboard_user_config = {0};
 
 uint32_t keyboard_last_cycle_duration = 0;
-
+extern uint8_t key_init_state; // Flag to check if keys are initialized
 static uint8_t key_triggered = 0;
-
-struct key *current_pressed_key = NULL;
-
 uint8_t get_bitmask_for_modifier(uint8_t keycode) {
   switch (keycode) {
   case HID_KEY_CONTROL_LEFT:
@@ -311,8 +275,7 @@ void update_key(struct key *key) {
     return;
   }
 
-  extern int current_layer;
-  update_key_actuation(key, current_layer);
+  update_key_actuation(key, _BASE_LAYER);
 }
 
 void keyboard_init_keys() {
@@ -368,102 +331,4 @@ void keyboard_task() {
   }
 
   keyboard_last_cycle_duration = keyboard_get_time() - started_at;
-}
-
-void snaptap_task() {
-  uint32_t started_at = keyboard_get_time();
-  key_triggered = 0;
-
-  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-    keyboard_select_amux(amux_channel);
-
-    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-      if (keyboard_keys[adc_channel][amux_channel].is_enabled == 0) {
-        continue;
-      }
-      keyboard_select_adc(adc_channel);
-
-      update_key(&keyboard_keys[adc_channel][amux_channel]);
-
-      keyboard_close_adc();
-    }
-  }
-
-  // If a key might be tap and a non tap key has been triggered, then the might be tap key is a normal trigger
-  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-      if (keyboard_keys[adc_channel][amux_channel].is_enabled == 0 || keyboard_keys[adc_channel][amux_channel].actuation.status != STATUS_MIGHT_BE_TAP) {
-        continue;
-      }
-
-      struct key *key = &keyboard_keys[adc_channel][amux_channel];
-      uint8_t is_before_reset_offset = key->state.distance_8bits < key->actuation.reset_offset;
-      uint8_t is_before_timeout = keyboard_get_time() - key->actuation.triggered_at <= keyboard_user_config.tap_timeout;
-
-      // if might be tap, can be tap or triggered
-      if (is_before_reset_offset && is_before_timeout) {
-        key->actuation.status = STATUS_TAP;
-        hid_press_key(key, _TAP_LAYER);
-      } else if (!is_before_timeout || key_triggered) {
-        key->actuation.status = STATUS_TRIGGERED;
-        hid_press_key(key, _BASE_LAYER);
-      }
-    }
-  }
-
-  keyboard_last_cycle_duration = keyboard_get_time() - started_at;
-
-  // Snaptap logic - chỉ xử lý việc thả phím cũ, không nhấn phím mới
-  static struct key *current_pressed_key = NULL;
-  uint32_t latest_triggered_time = 0;
-  static struct key *new_pressed_key = NULL;
-  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-      struct key *key = &keyboard_keys[adc_channel][amux_channel];
-      if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-        if (key->actuation.triggered_at >= latest_triggered_time) {
-          latest_triggered_time = key->actuation.triggered_at;
-          new_pressed_key = key;
-        }
-      }
-    }
-  }
-
-  // Xử lý snaptap - chỉ thả phím cũ, không nhấn phím mới
-  if (new_pressed_key != current_pressed_key) {
-    if (current_pressed_key) {
-      hid_release_key(current_pressed_key, _BASE_LAYER);
-    }
-    // KHÔNG gọi hid_press_key() ở đây vì phím đã được nhấn trong update_key_actuation()
-    current_pressed_key = new_pressed_key;
-  }
-}
-
-void check_snaptap_debug() {
-  static struct key *last_pressed_key = NULL;
-  struct key *current_pressed_key = NULL;
-
-  // Tìm phím đang được giữ (trạng thái TRIGGERED)
-  for (uint8_t amux_channel = 0; amux_channel < AMUX_CHANNEL_COUNT; amux_channel++) {
-    for (uint8_t adc_channel = 0; adc_channel < ADC_CHANNEL_COUNT; adc_channel++) {
-      struct key *key = &keyboard_keys[adc_channel][amux_channel];
-      if (key->is_enabled && key->actuation.status == STATUS_TRIGGERED) {
-        current_pressed_key = key;
-        break;
-      }
-    }
-    if (current_pressed_key)
-      break;
-  }
-
-  // Nếu phím mới khác phím cũ, in log
-  if (current_pressed_key != last_pressed_key) {
-    if (last_pressed_key) {
-      printf("Release key: row=%d, col=%d\n", last_pressed_key->row, last_pressed_key->column);
-    }
-    if (current_pressed_key) {
-      printf("Press key: row=%d, col=%d\n", current_pressed_key->row, current_pressed_key->column);
-    }
-    last_pressed_key = current_pressed_key;
-  }
 }

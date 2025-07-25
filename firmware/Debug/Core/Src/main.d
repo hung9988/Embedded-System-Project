@@ -33,9 +33,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
  ../Core/Inc/config.h ../Core/Inc/hid.h ../Core/Inc/keyboard.h \
- ../Core/Inc/config.h ../Core/Inc/keyboard.h ../Core/Inc/ssd1306.h \
- ../Core/Inc/ssd1306_conf.h ../Core/Inc/ssd1306_conf.h \
- ../Core/Inc/ssd1306_fonts.h ../Core/Inc/ssd1306.h \
+ ../Core/Inc/config.h ../Core/Inc/keyboard.h \
  /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb.h \
  /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h \
  /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h \
@@ -97,11 +95,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/keyboard.h:
 ../Core/Inc/config.h:
 ../Core/Inc/keyboard.h:
-../Core/Inc/ssd1306.h:
-../Core/Inc/ssd1306_conf.h:
-../Core/Inc/ssd1306_conf.h:
-../Core/Inc/ssd1306_fonts.h:
-../Core/Inc/ssd1306.h:
 /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb.h:
 /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/common/tusb_common.h:
 /Users/hung1fps/Embedded-System-Project/firmware/tinyusb/src/tusb_option.h:
